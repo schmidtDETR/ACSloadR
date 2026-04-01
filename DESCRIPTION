@@ -1,0 +1,18 @@
+Package: ACSloadR
+Type: Package
+Title: Tools for accessing the U.S. Census Bureau's American Community Survey for labor market information
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "David", "Schmidt",
+      email = "deschmidt@detr.nv.gov",
+      role = c("aut", "cre")
+    )
+  )
+Description: The Census Bureau's American Community Survey provides granular detail about populations throughout the United States.
+    This data is readily available, but not always formatted consistently for use in providing labor market information. This package
+    helps to bridge that gap by providing tools to streamline access and use of the ACS to generate insights into local labor markets.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.3
