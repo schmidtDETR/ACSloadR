@@ -11,23 +11,20 @@ get_2301_variables(acs_year, acs_scope, verbose = FALSE)
 
 \item{acs_scope}{Numeric or character. The ACS survey type: 1 for 1-year or 5 for 5-year.}
 
-\item{verbose}{Logical. FALSE by default.  If TRUE, return processing messages when executing the function.}
+\item{verbose}{Logical. If TRUE, prints status messages indicating the year and scope being processed. Defaults to FALSE.}
 }
 \value{
-A tibble containing the original variable names and labels,
-along with several new columns representing the broken-down demographic hierarchy.
+A tibble with structured demographic labels. Master_Variable and
+Parent_Variable columns are located at the end of the table.
 }
 \description{
-This function retrieves the variable metadata for ACS Subject Table S2301 (Employment Status)
-for a specified year and scope. It cleans the hierarchical Census labels into
-readable "Group" and "Group_Alone" columns for easier plotting and analysis.
+This function retrieves variable metadata for ACS Subject Table S2301,
+cleans the hierarchical Census labels, ensures "Population" labels
+are correctly assigned, and creates hierarchical mapping for both
+Master (population root) and Parent (immediate ancestor) variables.
 }
 \examples{
 \dontrun{
-  # Get variables for the 2023 1-year ACS
-  vars_2023 <- get_2301_variables(2023, 1)
-
-  # Get variables for the 2022 5-year ACS
-  vars_2022 <- get_2301_variables(2022, "5-year")
+  vars_2023 <- get_2301_variables(2023, 1, verbose = TRUE)
 }
 }
