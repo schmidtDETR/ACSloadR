@@ -52,10 +52,22 @@ occupation$occupation |>
     sex == "Female",
     measure == "share_of_sex_employment"
   )
+
+occupation$race_ethnicity |>
+  dplyr::filter(
+    race_ethnicity == "Black or African American alone",
+    sex == "Total",
+    measure == "share_of_race_sex_employment"
+  )
 ```
 
 `S2301` rates are published ACS measures. Occupation distribution shares are
-derived only where the table provides an unambiguous denominator.
+derived only where the table provides an unambiguous denominator. Occupation
+race and ethnicity tables remain a separate component because ACS publishes
+them at less detail than `S2401`, with different source families in the 1-year
+and 5-year surveys. Total-sex occupation rows in this component are derived by
+summing the published male and female estimates. They retain both variable IDs
+in `source_variables` and use the ACS approximate MOE formula for a sum.
 
 ## Earnings and commuting
 

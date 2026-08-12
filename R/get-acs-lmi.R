@@ -71,19 +71,39 @@ get_acs_employment <- function(year, survey = c("acs5", "acs1"), geography, ...,
 
 #' Get tidy ACS occupation data
 #'
-#' Downloads and parses subject table S2401, retaining its occupation hierarchy
-#' and published sex counts and percentages.
+#' Downloads and parses subject table S2401 plus the available detailed-table
+#' race and ethnicity companions. ACS 1-year data use B24010A-I; ACS 5-year
+#' data use the more aggregated C24010A-I tables. The outputs remain separate
+#' because their occupation hierarchies differ. Race/ethnicity occupation totals
+#' are derived by summing the published male and female estimates; derived rows
+#' retain both source variable IDs and approximate the MOE for a sum.
 #'
 #' @inheritParams get_acs_employment
-#' @return An `acs_lmi_bundle` containing an `occupation` tibble.
+#' @return An `acs_lmi_bundle` containing `occupation` and `race_ethnicity`
+#'   tibbles.
 #' @export
 get_acs_occupation <- function(year, survey = c("acs5", "acs1"), geography, ...,
                                cache_table = TRUE) {
   survey <- match.arg(survey)
-  run_topic_getter(
-    "occupation", "Occupation by sex", "occupation", year, survey,
-    geography, cache_table, ...
+  registry <- acs_table_registry()
+  race_config <- registry[[paste0("occupation_race_", survey)]]
+
+  occupation_raw <- load_acs_lmi_table(
+    registry$occupation, year, survey, geography, cache_table, ...
   )
+  race_raw <- load_acs_lmi_table(
+    race_config, year, survey, geography, cache_table, ...
+  )
+
+  components <- list(
+    occupation = parse_acs_topic(
+      occupation_raw, registry$occupation$parser, registry$occupation
+    ),
+    race_ethnicity = parse_acs_topic(
+      race_raw, race_config$parser, race_config
+    )
+  )
+  new_acs_lmi_bundle(components, "Occupation by sex", year, survey)
 }
 
 #' Get tidy ACS earnings by educational attainment data

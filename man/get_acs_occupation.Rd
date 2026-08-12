@@ -26,9 +26,14 @@ and `output` cannot be supplied here.}
 \item{cache_table}{Logical; cache Census metadata and downloaded tables.}
 }
 \value{
-An `acs_lmi_bundle` containing an `occupation` tibble.
+An `acs_lmi_bundle` containing `occupation` and `race_ethnicity`
+  tibbles.
 }
 \description{
-Downloads and parses subject table S2401, retaining its occupation hierarchy
-and published sex counts and percentages.
+Downloads and parses subject table S2401 plus the available detailed-table
+race and ethnicity companions. ACS 1-year data use B24010A-I; ACS 5-year
+data use the more aggregated C24010A-I tables. The outputs remain separate
+because their occupation hierarchies differ. Race/ethnicity occupation totals
+are derived by summing the published male and female estimates; derived rows
+retain both source variable IDs and approximate the MOE for a sum.
 }

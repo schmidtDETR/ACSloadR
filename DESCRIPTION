@@ -9,6 +9,11 @@ Authors@R: c(
       "David", "Schmidt",
       email = "deschmidt@detr.nv.gov",
       role = c("aut", "cre")
+    ),
+    person(
+      "Mark", "Rembert",
+      email = "mark.rembert@mass.gov",
+      role = "aut"
     )
   )
 Description: The Census Bureau's American Community Survey provides granular detail about populations throughout the United States.
@@ -18,9 +23,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    collapsibleTree,
     dplyr (>= 1.1),
-    DT,
     shiny,
     tidycensus,
     stringr,
@@ -28,6 +31,8 @@ Imports:
     rlang,
     tidyr
 Suggests:
+    collapsibleTree,
+    DT,
     htmlwidgets,
     knitr,
     rmarkdown,

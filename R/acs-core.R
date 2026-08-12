@@ -51,7 +51,7 @@ load_acs_lmi_table <- function(config, year, survey, geography, cache_table, ...
   downloaded <- do.call(tidycensus::get_acs, args)
 
   metadata <- metadata |>
-    dplyr::select(.data$name, .data$label, .data$concept) |>
+    dplyr::select(dplyr::all_of(c("name", "label", "concept"))) |>
     dplyr::rename(variable = name)
 
   downloaded |>

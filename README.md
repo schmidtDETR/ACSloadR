@@ -35,6 +35,7 @@ commuting <- get_acs_commuting(2024, "acs5", "state", state = "MA")
 
 employment$employment
 occupation$occupation
+occupation$race_ethnicity
 earnings$earnings
 commuting$commuting
 ```
@@ -43,6 +44,15 @@ Each component is long data. `measure` and `unit` identify what an observation
 represents, while `value_source` distinguishes published ACS values from
 derived shares. Derived rows retain `denominator_variable` and propagated
 90-percent margins of error.
+
+Occupation race and ethnicity data are also kept separate from `S2401`.
+ACS 1-year calls use `B24010A-I`; ACS 5-year calls use the more aggregated
+`C24010A-I` tables. The `table` column makes the source and available level of
+occupation detail explicit. Because these tables publish occupation counts by
+male and female but not total sex, ACSloadR adds `sex = "Total"` rows by summing
+the two estimates. These rows are marked `value_source = "derived"`, identify
+both inputs in `source_variables`, and use the ACS approximation for the MOE of
+a sum.
 
 ## Geography and geometry
 

@@ -16,6 +16,16 @@ acs_table_registry <- function() {
       tables = "S2401", dataset_type = "subject", parser = "occupation",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
+    occupation_race_acs1 = list(
+      tables = paste0("B24010", LETTERS[1:9]), dataset_type = "detailed",
+      parser = "occupation_race",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    occupation_race_acs5 = list(
+      tables = paste0("C24010", LETTERS[1:9]), dataset_type = "detailed",
+      parser = "occupation_race",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
     earnings = list(
       tables = "B20004", dataset_type = "detailed", parser = "earnings",
       universe = "Population 25 years and over with earnings", shares = FALSE

@@ -53,6 +53,53 @@ test_that("occupation parser retains hierarchy and published sex shares", {
   expect_equal(derived_total$denominator_variable, "S2401_C01_001")
 })
 
+test_that("occupation race parser handles survey-specific table depth", {
+  registry <- ACSloadR:::acs_table_registry()
+  acs1 <- ACSloadR:::parse_occupation_race_data(
+    fixture_rows("B24010A"), registry$occupation_race_acs1
+  )
+  acs5 <- ACSloadR:::parse_occupation_race_data(
+    fixture_rows("C24010A"), registry$occupation_race_acs5
+  )
+
+  expect_true(all(acs1$race_ethnicity == "White alone"))
+  expect_true(all(acs5$race_ethnicity == "White alone"))
+
+  detailed <- acs1[
+    acs1$variable == "B24010A_005" & acs1$value_source == "published",
+  ]
+  expect_equal(detailed$sex, "Male")
+  expect_equal(detailed$occupation_major, "Management, business, science, and arts occupations")
+  expect_equal(detailed$occupation_intermediate, "Management, business, and financial occupations")
+  expect_equal(detailed$occupation_detail, "Management occupations")
+
+  collapsed <- acs5[
+    acs5$variable == "C24010A_003" & acs5$value_source == "derived",
+  ]
+  expect_equal(collapsed$measure, "share_of_race_sex_employment")
+  expect_equal(collapsed$estimate, 100 * 120 / 330)
+  expect_equal(collapsed$denominator_variable, "C24010A_002")
+  expect_true(is.na(collapsed$occupation_intermediate))
+
+  total_count <- acs5[
+    acs5$sex == "Total" &
+      acs5$occupation == "Management, business, science, and arts occupations" &
+      acs5$measure == "employment",
+  ]
+  expect_equal(total_count$estimate, 230)
+  expect_equal(total_count$moe, sqrt(15^2 + 14^2))
+  expect_equal(total_count$value_source, "derived")
+  expect_equal(total_count$source_variables, "C24010A_003;C24010A_009")
+
+  total_share <- acs5[
+    acs5$sex == "Total" &
+      acs5$occupation == "Management, business, science, and arts occupations" &
+      acs5$measure == "share_of_race_sex_employment",
+  ]
+  expect_equal(total_share$estimate, 100 * 230 / 700)
+  expect_equal(total_share$denominator_variable, "C24010A_001")
+})
+
 test_that("earnings and commuting parsers expose domain-specific columns", {
   registry <- ACSloadR:::acs_table_registry()
   earnings <- ACSloadR:::parse_earnings_data(fixture_rows("B20004"), registry$earnings)

@@ -4,6 +4,7 @@ parse_acs_topic <- function(data, parser, config) {
     age = parse_age_data(data, config),
     employment = parse_employment_data(data, config),
     occupation = parse_occupation_data(data, config),
+    occupation_race = parse_occupation_race_data(data, config),
     earnings = parse_earnings_data(data, config),
     commuting = parse_commuting_data(data, config),
     stop("Unknown ACS parser: ", parser, call. = FALSE)
@@ -134,6 +135,104 @@ parse_occupation_data <- function(data, config) {
   finalize_acs_data(
     data,
     c("sex", "occupation", "occupation_major", "occupation_intermediate", "occupation_detail")
+  )
+}
+
+parse_occupation_race_data <- function(data, config) {
+  tokens <- acs_label_tokens(data$label)
+  second <- token_at(tokens, 2L)
+  hierarchy <- purrr::map(
+    tokens,
+    function(x) if (length(x) > 2L) x[3:length(x)] else character()
+  )
+
+  race_labels <- c(
+    A = "White alone",
+    B = "Black or African American alone",
+    C = "American Indian and Alaska Native alone",
+    D = "Asian alone",
+    E = "Native Hawaiian and Other Pacific Islander alone",
+    F = "Some other race alone",
+    G = "Two or more races",
+    H = "White alone, not Hispanic or Latino",
+    I = "Hispanic or Latino"
+  )
+  suffix <- stringr::str_match(data$table, "^[BC]24010([A-I])$")[, 2]
+
+  data$race_ethnicity <- unname(race_labels[suffix])
+  data$universe <- paste0(
+    data$race_ethnicity,
+    " civilian employed population 16 years and over"
+  )
+  data$sex <- dplyr::case_when(
+    second == "Male" ~ "Male",
+    second == "Female" ~ "Female",
+    TRUE ~ "Total"
+  )
+  data$measure <- "employment"
+  data$unit <- "count"
+  data$occupation_major <- token_at(hierarchy, 1L)
+  data$occupation_intermediate <- token_at(hierarchy, 2L)
+  data$occupation_detail <- token_at(hierarchy, 3L)
+  data$occupation <- deepest_token(hierarchy)
+  data$occupation[is.na(data$occupation)] <- "All occupations"
+  data$value_source <- "published"
+  data$denominator_variable <- NA_character_
+  data$source_variables <- NA_character_
+
+  # Race companion tables publish occupation-by-sex rows but only publish a
+  # total-sex estimate for all occupations. Build the missing occupation totals
+  # from matched male and female rows and retain both source variable IDs.
+  occupation_key <- paste(
+    data$GEOID, data$table, data$occupation_major,
+    data$occupation_intermediate, data$occupation_detail, data$occupation,
+    sep = "\r"
+  )
+  male_index <- which(data$sex == "Male" & data$occupation != "All occupations")
+  female_lookup <- stats::setNames(
+    which(data$sex == "Female" & data$occupation != "All occupations"),
+    occupation_key[data$sex == "Female" & data$occupation != "All occupations"]
+  )
+  female_index <- unname(female_lookup[occupation_key[male_index]])
+  matched <- !is.na(female_index)
+
+  if (any(matched)) {
+    male_index <- male_index[matched]
+    female_index <- female_index[matched]
+    totals <- data[male_index, , drop = FALSE]
+    totals$estimate <- data$estimate[male_index] + data$estimate[female_index]
+    totals$moe <- sqrt(data$moe[male_index]^2 + data$moe[female_index]^2)
+    totals$sex <- "Total"
+    totals$source_variables <- paste(
+      data$variable[male_index], data$variable[female_index], sep = ";"
+    )
+    totals$variable <- paste0("derived:", totals$source_variables)
+    totals$label <- paste0("Derived!!Total!!", totals$occupation)
+    totals$value_source <- "derived"
+    data <- dplyr::bind_rows(data, totals)
+  }
+
+  root_rows <- data$occupation == "All occupations"
+  denominator_lookup <- stats::setNames(
+    data$variable[root_rows],
+    paste(data$table[root_rows], data$sex[root_rows], sep = "\r")
+  )
+  denominator <- unname(
+    denominator_lookup[paste(data$table, data$sex, sep = "\r")]
+  )
+
+  data <- add_share_rows(
+    data,
+    eligible = config$shares & !is.na(denominator),
+    denominator_variable = denominator,
+    share_measure = "share_of_race_sex_employment"
+  )
+  finalize_acs_data(
+    data,
+    c(
+      "race_ethnicity", "sex", "occupation", "occupation_major",
+      "occupation_intermediate", "occupation_detail"
+    )
   )
 }
 
