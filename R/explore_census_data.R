@@ -8,15 +8,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' DETRLMI::explore_census_data()
+#' ACSloadR::explore_census_data()
 #' }
 explore_census_data <- function() {
   # Locate the app inside the installed package
-  app_dir <- system.file("shiny", "census_explorer", package = "DETRLMI")
+  app_dir <- system.file("shiny", "census_explorer", package = "ACSloadR")
 
   # Error handling just in case the folder goes missing
   if (app_dir == "") {
-    stop("Could not find the 'census_explorer' app directory. Try re-installing the `DETRLMI` package.", call. = FALSE)
+    stop(
+      "Could not find the 'census_explorer' app directory. Try re-installing `ACSloadR`.",
+      call. = FALSE
+    )
   }
 
   # Launch the app

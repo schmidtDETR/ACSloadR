@@ -1,0 +1,72 @@
+---
+title: "Getting Started with ACSloadR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with ACSloadR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, collapse = TRUE, comment = "#>")
+```
+
+ACSloadR provides topic-specific wrappers around `tidycensus::get_acs()`.
+Each wrapper adds ACS metadata, parses table semantics, and returns a named
+bundle of long data frames.
+
+## Age, sex, race, and ethnicity
+
+```{r}
+library(ACSloadR)
+
+age <- get_acs_age(
+  year = 2024,
+  survey = "acs5",
+  geography = "state",
+  state = "MA"
+)
+
+age$total_population
+age$race_ethnicity
+```
+
+The components are separate because B01001 and B01001A-I publish different
+age bands. ACSloadR does not row-bind or silently harmonize them.
+
+## Employment and occupation
+
+```{r}
+employment <- get_acs_employment(2024, "acs5", "county", state = "MA")
+
+employment$employment |>
+  dplyr::filter(
+    characteristic_type == "age",
+    measure == "unemployment_rate"
+  )
+
+occupation <- get_acs_occupation(2024, "acs5", "state", state = "MA")
+
+occupation$occupation |>
+  dplyr::filter(
+    sex == "Female",
+    measure == "share_of_sex_employment"
+  )
+```
+
+`S2301` rates are published ACS measures. Occupation distribution shares are
+derived only where the table provides an unambiguous denominator.
+
+## Earnings and commuting
+
+```{r}
+earnings <- get_acs_earnings(2024, "acs5", "state", state = "MA")
+earnings$earnings
+
+commuting <- get_acs_commuting(2024, "acs5", "state", state = "MA")
+commuting$commuting |>
+  dplyr::filter(measure == "share_of_table_universe")
+```
+
+Every component retains `variable`, `label`, `concept`, `table`, `year`, and
+`survey`. Derived shares additionally identify their denominator variable.

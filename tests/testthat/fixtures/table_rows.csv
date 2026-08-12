@@ -1,0 +1,26 @@
+GEOID,NAME,year,survey,table,variable,concept,label,estimate,moe
+25,Massachusetts,2024,acs5,B01001,B01001_001,Sex by Age,"Estimate!!Total:",1000,50
+25,Massachusetts,2024,acs5,B01001,B01001_002,Sex by Age,"Estimate!!Total:!!Male:",480,35
+25,Massachusetts,2024,acs5,B01001,B01001_003,Sex by Age,"Estimate!!Total:!!Male:!!Under 5 years",50,10
+25,Massachusetts,2024,acs5,B01001A,B01001A_001,Sex by Age (White Alone),"Estimate!!Total:",700,40
+25,Massachusetts,2024,acs5,B01001A,B01001A_002,Sex by Age (White Alone),"Estimate!!Total:!!Male:",330,28
+25,Massachusetts,2024,acs5,B01001A,B01001A_003,Sex by Age (White Alone),"Estimate!!Total:!!Male:!!Under 5 years",30,8
+25,Massachusetts,2024,acs5,S2301,S2301_C01_001,Employment Status,"Estimate!!Total!!Population 16 years and over",800,30
+25,Massachusetts,2024,acs5,S2301,S2301_C01_002,Employment Status,"Estimate!!Total!!Population 16 years and over!!AGE!!16 to 19 years",60,8
+25,Massachusetts,2024,acs5,S2301,S2301_C02_002,Employment Status,"Estimate!!Labor Force Participation Rate!!Population 16 years and over!!AGE!!16 to 19 years",45.2,2.1
+25,Massachusetts,2024,acs5,S2301,S2301_C01_032,Employment Status,"Estimate!!Total!!EDUCATIONAL ATTAINMENT!!Population 25 to 64 years!!High school graduate (includes equivalency)",300,20
+25,Massachusetts,2024,acs5,S2301,S2301_C01_025,Employment Status,"Estimate!!Total!!Population 20 to 64 years!!SEX!!Female!!With own children under 18 years!!With own children under 6 years only",125,15
+25,Massachusetts,2024,acs5,S2401,S2401_C01_001,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Total!!Civilian employed population 16 years and over",1000,40
+25,Massachusetts,2024,acs5,S2401,S2401_C01_002,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Total!!Civilian employed population 16 years and over!!Management, business, science, and arts occupations:",400,30
+25,Massachusetts,2024,acs5,S2401,S2401_C02_001,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Male!!Civilian employed population 16 years and over",520,28
+25,Massachusetts,2024,acs5,S2401,S2401_C02_002,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Male!!Civilian employed population 16 years and over!!Management, business, science, and arts occupations:",210,20
+25,Massachusetts,2024,acs5,S2401,S2401_C03_002,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Percent Male!!Civilian employed population 16 years and over!!Management, business, science, and arts occupations:",52.5,2.5
+25,Massachusetts,2024,acs5,S2401,S2401_C04_001,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Female!!Civilian employed population 16 years and over",480,25
+25,Massachusetts,2024,acs5,S2401,S2401_C04_002,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Female!!Civilian employed population 16 years and over!!Management, business, science, and arts occupations:",190,18
+25,Massachusetts,2024,acs5,S2401,S2401_C05_002,Occupation by Sex for the Civilian Employed Population 16 Years and Over,"Estimate!!Percent Female!!Civilian employed population 16 years and over!!Management, business, science, and arts occupations:",47.5,2.5
+25,Massachusetts,2024,acs5,B20004,B20004_001,Median Earnings by Sex by Educational Attainment,"Estimate!!Total:",55000,1500
+25,Massachusetts,2024,acs5,B20004,B20004_002,Median Earnings by Sex by Educational Attainment,"Estimate!!Total:!!Less than high school graduate",32000,1200
+25,Massachusetts,2024,acs5,B20004,B20004_008,Median Earnings by Sex by Educational Attainment,"Estimate!!Total:!!Male:!!Less than high school graduate",36000,1400
+25,Massachusetts,2024,acs5,B08301,B08301_001,Means of Transportation to Work,"Estimate!!Total:",1000,50
+25,Massachusetts,2024,acs5,B08301,B08301_002,Means of Transportation to Work,"Estimate!!Total:!!Car, truck, or van:",400,30
+25,Massachusetts,2024,acs5,B08301,B08301_003,Means of Transportation to Work,"Estimate!!Total:!!Car, truck, or van:!!Drove alone",300,25

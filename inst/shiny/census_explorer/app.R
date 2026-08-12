@@ -1,47 +1,10 @@
 library(shiny)
 library(tidycensus)
-library(tidyverse)
-library(data.table)
+library(dplyr)
+library(stringr)
+library(tidyr)
 library(DT)
 library(collapsibleTree)
-
-# --- 1. DATA PREP FUNCTION ---
-parsed_variables <- function(year, dataset){
-
-  out <- tidycensus::load_variables(year = year, dataset = dataset)
-
-  out <- out |>
-    mutate(
-      table = str_remove(name, "_.*"),
-      year = year,
-      dataset = dataset,
-      label_clean = trimws(label, which = "both"),
-      label_clean = str_remove_all(label_clean, ":"),
-      label_clean = str_remove_all(label_clean, "--"),
-      label_tokens = stringr::str_split(label_clean, "!!"),
-      label_tokens = purrr::map(label_tokens, \(x) {
-        x |> stringr::str_trim() |> purrr::discard(\(y) y == "")
-      }),
-      label_depth = purrr::map_int(label_tokens, length)
-    ) |>
-    rename("variable" = "name")
-
-  max_depth <- max(out$label_depth, na.rm = TRUE)
-
-  if (is.finite(max_depth) && max_depth > 0) {
-    for (i in seq_len(max_depth)) {
-      out[[paste0("label_level_", i-1)]] <- purrr::map_chr(
-        out$label_tokens,
-        \(x) if (length(x) >= i) x[[i]] else NA_character_
-      )
-    }
-  }
-
-  out <- out |>
-    dplyr::select(-label_tokens, -label_depth, -label_clean, -label_level_0)
-
-  return(out)
-}
 
 # --- 2. SHINY UI ---
 ui <- fluidPage(
@@ -119,7 +82,7 @@ server <- function(input, output, session) {
     )
     on.exit(removeNotification(id), add = TRUE)
 
-    parsed_variables(year = as.numeric(input$year), dataset = input$dataset)
+    ACSloadR::parsed_variables(year = as.numeric(input$year), dataset = input$dataset)
   })
 
   # Dynamically calculate level columns based on the current dataset

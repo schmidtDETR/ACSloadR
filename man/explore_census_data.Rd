@@ -12,6 +12,6 @@ filter, and download Census ACS variables.
 }
 \examples{
 \dontrun{
-DETRLMI::explore_census_data()
+ACSloadR::explore_census_data()
 }
 }

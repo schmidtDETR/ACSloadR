@@ -1,0 +1,19 @@
+utils::globalVariables(c(
+  "Demographic_Group",
+  "Demographic_Population",
+  "Demographic_Subgroup_1",
+  "Demographic_Subgroup_2",
+  "Demographic_Type",
+  "Group",
+  "Group_Alone",
+  "Master_Variable",
+  "Measure",
+  "Measure_Code",
+  "Parent_Variable",
+  "label",
+  "name",
+  "needs_swap",
+  "p_group",
+  "p_sub1",
+  "temp_pop"
+))
