@@ -34,7 +34,9 @@ age$race_ethnicity
 The components are separate because B01001 and B01001A-I publish different
 age bands. ACSloadR does not row-bind or silently harmonize them.
 
-## Employment and occupation
+## Employment and labor market topics
+
+### Baseline and subject summaries
 
 ```{r}
 employment <- get_acs_employment(2024, "acs5", "county", state = "MA")
@@ -44,32 +46,63 @@ employment$employment |>
     characteristic_type == "age",
     measure == "unemployment_rate"
   )
-
-occupation <- get_acs_occupation(2024, "acs5", "state", state = "MA")
-
-occupation$occupation |>
-  dplyr::filter(
-    sex == "Female",
-    measure == "share_of_sex_employment"
-  )
-
-occupation$race_ethnicity |>
-  dplyr::filter(
-    race_ethnicity == "Black or African American alone",
-    sex == "Total",
-    measure == "share_of_race_sex_employment"
-  )
 ```
 
-`S2301` rates are published ACS measures. Occupation distribution shares are
-derived only where the table provides an unambiguous denominator. Occupation
-race and ethnicity tables remain a separate component because ACS publishes
-them at less detail than `S2401`, with different source families in the 1-year
-and 5-year surveys. Total-sex occupation rows in this component are derived by
-summing the published male and female estimates. They retain both variable IDs
-in `source_variables` and use the ACS approximate MOE formula for a sum.
+### Detailed employment status and demographics
 
-## Earnings and commuting
+```{r}
+emp_detail <- get_acs_employment_detail(2024, "acs5", "county", state = "MA")
+emp_detail$status
+emp_detail$age_sex
+emp_detail$race_ethnicity
+emp_detail$education
+emp_detail$poverty_disability
+```
+
+### Work experience, hours, and full-time status
+
+```{r}
+work <- get_acs_work_experience(2024, "acs5", "state", state = "MA")
+work$hours_weeks
+work$full_time_by_age
+work$hours_summary
+```
+
+### Family and child employment
+
+```{r}
+family <- get_acs_family_employment(2024, "acs5", "state", state = "MA")
+family$children_parent_status
+family$females_with_children
+family$family_type_status
+family$family_workers
+```
+
+### Industry and Class of Worker
+
+```{r}
+industry <- get_acs_industry(2024, "acs5", "state", state = "MA")
+industry$industry
+industry$earnings
+industry$industry_by_occupation
+
+cow <- get_acs_class_of_worker(2024, "acs5", "state", state = "MA")
+cow$class_of_worker
+cow$earnings
+cow$class_by_occupation
+```
+
+### Occupation and detailed categories
+
+```{r}
+occupation <- get_acs_occupation(2024, "acs5", "state", state = "MA")
+occupation$occupation
+occupation$race_ethnicity
+
+occ_detail <- get_acs_occupation_detailed(2024, "acs5", "state", state = "MA")
+occ_detail$occupation
+occ_detail$earnings
+```
 
 ```{r}
 earnings <- get_acs_earnings(2024, "acs5", "state", state = "MA")
@@ -78,6 +111,86 @@ earnings$earnings
 commuting <- get_acs_commuting(2024, "acs5", "state", state = "MA")
 commuting$commuting |>
   dplyr::filter(measure == "share_of_table_universe")
+```
+
+## Household, Family, & Individual Income & Inequality
+
+```{r}
+# Household income brackets and medians
+hh_inc <- get_acs_household_income(2024, "acs5", "state", state = "MA")
+hh_inc$income_brackets
+hh_inc$median_income
+
+# Family income and children presence
+fam_inc <- get_acs_family_income(2024, "acs5", "state", state = "MA")
+fam_inc$family_brackets
+fam_inc$family_medians
+
+# Income composition (earnings, wages, SSI, retirement, SNAP)
+inc_types <- get_acs_income_types(2024, "acs5", "state", state = "MA")
+inc_types$household_counts
+
+# Gini Index and Quintile shares
+ineq <- get_acs_income_inequality(2024, "acs5", "state", state = "MA")
+ineq$gini_index
+ineq$quintile_shares
+
+# Individual income & earnings by sex and work experience
+ind_inc <- get_acs_individual_income(2024, "acs5", "state", state = "MA")
+ind_inc$earnings_brackets
+ind_inc$earnings_work_exp
+```
+
+## School Enrollment, Educational Attainment, & Field of Degree
+
+```{r}
+# School enrollment level and detailed grades
+enroll <- get_acs_school_enrollment(2024, "acs5", "state", state = "MA")
+enroll$enrollment_level
+enroll$enrollment_detailed
+
+# Highest educational attainment by age and sex
+attain <- get_acs_educational_attainment(2024, "acs5", "state", state = "MA")
+attain$attainment_sex
+attain$attainment_detailed
+
+# Undergraduate Bachelor's degree field of degree majors
+field <- get_acs_field_of_degree(2024, "acs5", "state", state = "MA")
+field$field_detailed
+field$earnings_by_sex
+```
+
+## Commute, Travel Time, Place of Work, & Mode Cross-tabulations
+
+```{r}
+# Travel time to work and departure/arrival times
+tt <- get_acs_commuting_travel_time(2024, "acs5", "state", state = "MA")
+tt$travel_time_residence
+tt$departure_time_residence
+
+# Place of work geography
+pow <- get_acs_place_of_work(2024, "acs5", "state", state = "MA")
+pow$place_of_work_county
+pow$workplace_worker_pop
+
+# Transportation mode cross-tabulations (earnings, vehicles available, etc.)
+comm_char <- get_acs_commuting_characteristics(2024, "acs5", "state", state = "MA")
+comm_char$commuting_earnings_residence
+comm_char$commuting_vehicles_residence
+```
+
+## Geographical Mobility & Migration
+
+```{r}
+# Migration and mobility by current residence
+mig_curr <- get_acs_migration_current(2024, "acs5", "state", state = "MA")
+mig_curr$migration_age
+mig_curr$migration_income
+
+# Migration and mobility by residence 1 year ago
+mig_prior <- get_acs_migration_prior(2024, "acs5", "state", state = "MA")
+mig_prior$migration_age
+mig_prior$migration_income
 ```
 
 Every component retains `variable`, `label`, `concept`, `table`, `year`, and

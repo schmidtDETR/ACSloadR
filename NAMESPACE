@@ -2,27 +2,54 @@
 
 S3method(as.data.frame,acs_lmi_bundle)
 S3method(print,acs_lmi_bundle)
+export(acs_wizard)
+export(create_acs_script)
 export(explore_census_data)
+export(generate_acs_script)
 export(get_2301_variables)
 export(get_acs_age)
+export(get_acs_class_of_worker)
 export(get_acs_commuting)
+export(get_acs_commuting_characteristics)
+export(get_acs_commuting_travel_time)
 export(get_acs_earnings)
+export(get_acs_educational_attainment)
 export(get_acs_employment)
+export(get_acs_employment_detail)
+export(get_acs_family_employment)
+export(get_acs_family_income)
+export(get_acs_field_of_degree)
+export(get_acs_household_income)
+export(get_acs_income_inequality)
+export(get_acs_income_types)
+export(get_acs_individual_income)
+export(get_acs_industry)
+export(get_acs_migration_current)
+export(get_acs_migration_prior)
+export(get_acs_national_detailed)
 export(get_acs_occupation)
+export(get_acs_occupation_detailed)
+export(get_acs_place_of_work)
+export(get_acs_school_enrollment)
+export(get_acs_work_experience)
 export(parsed_variables)
 import(shiny)
-importFrom(dplyr,case_when)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,if_else)
-importFrom(dplyr,mutate)
-importFrom(dplyr,relocate)
-importFrom(dplyr,select)
-importFrom(dplyr,ungroup)
+importFrom(dplyr,
+  case_when,
+  filter,
+  group_by,
+  if_else,
+  mutate,
+  relocate,
+  select,
+  ungroup
+)
 importFrom(rlang,.data)
-importFrom(stringr,str_detect)
-importFrom(stringr,str_extract)
-importFrom(stringr,str_replace_all)
-importFrom(stringr,str_to_title)
+importFrom(stringr,
+  str_detect,
+  str_extract,
+  str_replace_all,
+  str_to_title
+)
 importFrom(tidycensus,load_variables)
 importFrom(tidyr,separate)
