@@ -14,11 +14,35 @@ validate_getter_dots <- function(dots) {
 
 load_acs_lmi_table <- function(config, year, survey, geography, cache_table, ...) {
   dataset <- acs_dataset(survey, config$dataset_type)
-  metadata <- tidycensus::load_variables(
-    year = year,
-    dataset = dataset,
-    cache = cache_table
+  metadata <- tryCatch(
+    tidycensus::load_variables(
+      year = year,
+      dataset = dataset,
+      cache = cache_table
+    ),
+    error = function(e) {
+      warning(
+        "Failed to load ACS variables metadata for ", year, " ", dataset, ": ", e$message,
+        call. = FALSE
+      )
+      NULL
+    }
   )
+
+  empty_res <- tibble::tibble(
+    GEOID = character(), NAME = character(), variable = character(),
+    estimate = numeric(), moe = numeric(), year = integer(), survey = character(),
+    table = character(), label = character(), concept = character()
+  )
+
+  if (is.null(metadata) || nrow(metadata) == 0) {
+    warning(
+      "ACS table(s) unavailable for ", year, " ", dataset, ": ",
+      paste(config$tables, collapse = ", "),
+      call. = FALSE
+    )
+    return(empty_res)
+  }
 
   pattern <- paste0("^(", paste(config$tables, collapse = "|"), ")_")
   metadata <- metadata[stringr::str_detect(metadata$name, pattern), , drop = FALSE]
@@ -26,11 +50,15 @@ load_acs_lmi_table <- function(config, year, survey, geography, cache_table, ...
   missing_tables <- setdiff(config$tables, found_tables)
 
   if (length(missing_tables)) {
-    stop(
+    warning(
       "ACS table(s) unavailable for ", year, " ", dataset, ": ",
       paste(missing_tables, collapse = ", "),
       call. = FALSE
     )
+  }
+
+  if (nrow(metadata) == 0) {
+    return(empty_res)
   }
 
   dots <- rlang::list2(...)
@@ -48,10 +76,24 @@ load_acs_lmi_table <- function(config, year, survey, geography, cache_table, ...
     ),
     dots
   )
-  downloaded <- do.call(tidycensus::get_acs, args)
+  downloaded <- tryCatch(
+    do.call(tidycensus::get_acs, args),
+    error = function(e) {
+      warning(
+        "Failed to download ACS data for ", year, " ", dataset, " (",
+        paste(found_tables, collapse = ", "), "): ", e$message,
+        call. = FALSE
+      )
+      NULL
+    }
+  )
+
+  if (is.null(downloaded) || nrow(downloaded) == 0) {
+    return(empty_res)
+  }
 
   metadata <- metadata |>
-    dplyr::select(.data$name, .data$label, .data$concept) |>
+    dplyr::select(dplyr::all_of(c("name", "label", "concept"))) |>
     dplyr::rename(variable = name)
 
   downloaded |>

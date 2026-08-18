@@ -31,16 +31,16 @@ print.acs_lmi_bundle <- function(x, ...) {
 
   for (component in names(x)) {
     value <- x[[component]]
-    tables <- if ("table" %in% names(value)) {
-      paste(unique(stats::na.omit(value$table)), collapse = ", ")
-    } else {
-      "unknown"
+    if (is.null(value) || nrow(value) == 0) {
+      cat("  $", component, ": [WARNING: 0 rows - table unavailable]\n", sep = "")
+      next
     }
-    universes <- if ("universe" %in% names(value)) {
-      paste(unique(stats::na.omit(value$universe)), collapse = "; ")
-    } else {
-      "unknown"
-    }
+    table_vals <- if ("table" %in% names(value)) stats::na.omit(value$table) else character()
+    tables <- if (length(table_vals) > 0) paste(unique(table_vals), collapse = ", ") else "unknown"
+
+    universe_vals <- if ("universe" %in% names(value)) stats::na.omit(value$universe) else character()
+    universes <- if (length(universe_vals) > 0) paste(unique(universe_vals), collapse = "; ") else "unknown"
+
     cat("  $", component, ": ", nrow(value), " rows | ", tables,
         " | ", universes, "\n", sep = "")
   }
