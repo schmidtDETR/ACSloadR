@@ -115,6 +115,7 @@ my_topic_acs1 = list(
 - Add switch case to `parse_acs_topic()`.
 - Write `parse_my_topic_data(data, config)` using `acs_label_tokens()`, `token_at()`, and `deepest_token()`.
 - Call `add_share_rows()` if derived shares are enabled, then `finalize_acs_data(data, key_cols)`.
+- *For detailed step-by-step guidance on writing topic parsers, see Section 6 below.*
 
 ### Step 3: Export Public Getter Function in [`R/get-acs-lmi.R`](file:///Users/mremb/projects/ACSloadR/R/get-acs-lmi.R)
 - Define `get_acs_my_topic(year, survey, geography, ..., cache_table = TRUE)`.
@@ -153,7 +154,134 @@ my_topic = list(
 
 ---
 
-## 6. Testing & Quality Assurance Protocols
+## 6. Deep Dive: Topic Parser Mechanics & Implementation Guide
+
+Converting raw Census Bureau API rows into tidy long data is the core transformation engine of `ACSloadR`. This section explains label tokenization, parser architecture, edge-case handling, and share derivation.
+
+### 6.1 Understanding Census Variable Labels
+Raw Census variable labels are returned as colon-delimited hierarchical strings:
+```
+"Estimate!!Total:"
+"Estimate!!Total:!!Male:"
+"Estimate!!Total:!!Male:!!Management, business, science, and arts occupations:"
+"Estimate!!Total:!!Male:!!Management, business, science, and arts occupations:!!Management occupations"
+```
+
+### 6.2 Tokenizer Helpers (`R/label-parsing.R`)
+[`R/label-parsing.R`](file:///Users/mremb/projects/ACSloadR/R/label-parsing.R) provides 3 core tokenization functions used by all parsers:
+
+1. **`acs_label_tokens(labels, remove_measure = TRUE)`**:
+   Strips `"Estimate!!"` and `"Margin of Error!!"`, splits on `"!!"`, trims trailing colons, and returns a list of token vectors:
+   - Input: `"Estimate!!Total:!!Male:!!Management occupations:"`
+   - Output: `c("Total", "Male", "Management occupations")`
+
+2. **`token_at(tokens, position)`**:
+   Extracts the token at specific 1-indexed position across all rows, returning `NA_character_` if the row token depth is smaller:
+   - `token_at(tokens, 1L)` -> `"Total"`, `"Male"`, `"Female"`
+
+3. **`deepest_token(tokens, start = 1L)`**:
+   Extracts the innermost (leaf) node token starting at or after index `start`. Essential for extracting specific categories regardless of hierarchy depth.
+
+---
+
+### 6.3 Anatomy of a Standard Topic Parser
+
+Every parser function takes two arguments: `data` (a downloaded data frame) and `config` (the table configuration list from `acs_table_registry()`).
+
+```r
+parse_my_topic_data <- function(data, config) {
+  # 1. Tokenize labels
+  tokens <- acs_label_tokens(data$label)
+  first <- token_at(tokens, 1L)
+
+  # 2. Assign standard metadata
+  data$universe <- config$universe
+  data$measure <- "population"      # or "workers", "median_income", "median_age", etc.
+  data$unit <- "count"             # or "dollars", "years", "minutes", etc.
+
+  # 3. Extract dimension columns using token helpers
+  data$group_level <- dplyr::if_else(!is.na(first), first, "Total")
+  data$category <- deepest_token(tokens, start = 2L)
+  data$category[is.na(data$category)] <- "Total"
+
+  # 4. Set default value source
+  data$value_source <- "published"
+  data$denominator_variable <- NA_character_
+
+  # 5. Derive percentage shares (if enabled in registry config)
+  denominator <- paste0(data$table, "_001")
+  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
+
+  # 6. Finalize output column order and sort keys
+  finalize_acs_data(data, c("group_level", "category"))
+}
+```
+
+---
+
+### 6.4 The Parser Switch Router
+In [`R/topic-parsers.R`](file:///Users/mremb/projects/ACSloadR/R/topic-parsers.R), `parse_acs_topic()` dispatches table data based on `config$parser`:
+
+```r
+parse_acs_topic <- function(data, parser, config) {
+  switch(
+    parser,
+    employment_status = parse_employment_status_data(data, config),
+    migration_age     = parse_migration_age_data(data, config),
+    commuting_mode    = parse_commuting_mode_data(data, config),
+    ...
+    stop("Unknown ACS parser: ", parser, call. = FALSE)
+  )
+}
+```
+
+---
+
+### 6.5 Handling Complex Table Types & Edge Cases
+
+#### Case A: Racial Iteration Companion Tables (`A` through `I` Suffixes)
+Census publishes racial iterations of standard tables using letter suffixes (`B01001A` = White Alone, `B01001B` = Black Alone, etc.).
+Use `parse_income_race_suffix(table)` to automatically attach racial group names:
+```r
+parse_migration_race_data <- function(data, config) {
+  tokens <- acs_label_tokens(data$label)
+  race <- parse_income_race_suffix(data$table[[1]])  # Maps "B07004A" -> "White alone"
+
+  data$race_ethnicity <- if (!is.na(race)) race else NA_character_
+  data$universe <- if (!is.na(race)) paste0(race, " population 1 year and over") else config$universe
+  ...
+}
+```
+
+#### Case B: Tables Lacking Total Sex Rows (`B24082`, `B24032`, `B24012`)
+Some Census earnings tables break down categories by `Male` and `Female` but omit total sex rows.
+In these parsers, `ACSloadR` calculates derived `sex = "Total"` rows by summing estimates and combining MOEs with $\sqrt{\text{MOE}_1^2 + \text{MOE}_2^2}$:
+```r
+data$value_source <- "derived"
+data$source_variables <- paste(male_var, female_var, sep = ", ")
+```
+
+#### Case C: Collapsed Companion Series (`B` vs. `C` Tables)
+ACS 1-year uses detailed `B` series tables (e.g. `B24010`), while ACS 5-year uses collapsed `C` series tables (e.g. `C24010`).
+The parser uses `deepest_token()` so that both detailed and collapsed category labels map seamlessly to the same dimension columns.
+
+---
+
+### 6.6 Share Derivation & Finalization
+
+1. **`add_share_rows(data, eligible, denominator_variable)`**:
+   - Calculates $\text{share} = 100 \times \frac{\text{estimate}}{\text{denominator\_estimate}}$.
+   - Computes margin of error using the Census proportion MOE formula:
+     $$\text{MOE}_{\text{share}} = \frac{100}{\text{denom}} \sqrt{\text{MOE}_{\text{num}}^2 - \left(\text{share}^2 \times \text{MOE}_{\text{denom}}^2\right)}$$
+   - Adds derived share rows with `value_source = "derived_share"`, `measure = "share_of_table_universe"`, `unit = "percent"`.
+
+2. **`finalize_acs_data(data, key_cols)`**:
+   - Reorders columns into standard schema: `GEOID`, `NAME`, `variable`, `label`, `concept`, `table`, `year`, `survey`, `universe`, `measure`, `unit`, `estimate`, `moe`, `value_source`, `denominator_variable`, `source_variables`, followed by topic dimension columns (`key_cols`).
+   - Sorts rows deterministically by geography and variable keys.
+
+---
+
+## 7. Testing & Quality Assurance Protocols
 
 To verify package integrity before submitting pull requests or committing:
 
