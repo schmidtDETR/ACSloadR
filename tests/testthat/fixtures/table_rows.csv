@@ -38,3 +38,448 @@ GEOID,NAME,year,survey,table,variable,concept,label,estimate,moe
 25,Massachusetts,2024,acs5,B08301,B08301_001,Means of Transportation to Work,"Estimate!!Total:",1000,50
 25,Massachusetts,2024,acs5,B08301,B08301_002,Means of Transportation to Work,"Estimate!!Total:!!Car, truck, or van:",400,30
 25,Massachusetts,2024,acs5,B08301,B08301_003,Means of Transportation to Work,"Estimate!!Total:!!Car, truck, or van:!!Drove alone",300,25
+25,Massachusetts,2024,acs5,B23025,B23025_001,Employment Status for the Population 16 Years and Over,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,B23025,B23025_002,Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!In labor force:",700,35
+25,Massachusetts,2024,acs5,B23025,B23025_003,Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!In labor force:!!Civilian labor force:",690,34
+25,Massachusetts,2024,acs5,B23025,B23025_004,Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!In labor force:!!Civilian labor force:!!Employed",650,32
+25,Massachusetts,2024,acs5,B23025,B23025_005,Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!In labor force:!!Civilian labor force:!!Unemployed",40,10
+25,Massachusetts,2024,acs5,B23025,B23025_006,Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!In labor force:!!Armed Forces",10,5
+25,Massachusetts,2024,acs5,B23025,B23025_007,Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!Not in labor force",300,20
+25,Massachusetts,2024,acs5,B23001,B23001_001,Sex by Age by Employment Status for the Population 16 Years and Over,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,B23001,B23001_002,Sex by Age by Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!Male:",490,30
+25,Massachusetts,2024,acs5,B23001,B23001_003,Sex by Age by Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!Male:!!16 to 19 years:",40,8
+25,Massachusetts,2024,acs5,B23001,B23001_004,Sex by Age by Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!Male:!!16 to 19 years:!!In labor force:",20,5
+25,Massachusetts,2024,acs5,B23001,B23001_006,Sex by Age by Employment Status for the Population 16 Years and Over,"Estimate!!Total:!!Male:!!16 to 19 years:!!In labor force:!!Civilian labor force:!!Employed",18,4
+25,Massachusetts,2024,acs5,C23002A,C23002A_001,Sex by Age by Employment Status (White Alone),"Estimate!!Total:",700,35
+25,Massachusetts,2024,acs5,C23002A,C23002A_002,Sex by Age by Employment Status (White Alone),"Estimate!!Total:!!Male:",340,25
+25,Massachusetts,2024,acs5,C23002A,C23002A_003,Sex by Age by Employment Status (White Alone),"Estimate!!Total:!!Male:!!16 to 64 years:",280,20
+25,Massachusetts,2024,acs5,C23002A,C23002A_004,Sex by Age by Employment Status (White Alone),"Estimate!!Total:!!Male:!!16 to 64 years:!!In labor force:",230,18
+25,Massachusetts,2024,acs5,C23002A,C23002A_006,Sex by Age by Employment Status (White Alone),"Estimate!!Total:!!Male:!!16 to 64 years:!!In labor force:!!Civilian labor force:!!Employed",215,16
+25,Massachusetts,2024,acs5,B23006,B23006_001,Educational Attainment by Employment Status for the Population 25 to 64 Years,"Estimate!!Total:",800,35
+25,Massachusetts,2024,acs5,B23006,B23006_002,Educational Attainment by Employment Status for the Population 25 to 64 Years,"Estimate!!Total:!!Less than high school graduate:",60,10
+25,Massachusetts,2024,acs5,B23006,B23006_004,Educational Attainment by Employment Status for the Population 25 to 64 Years,"Estimate!!Total:!!Less than high school graduate:!!In labor force:!!Employed",35,8
+25,Massachusetts,2024,acs5,B23024,B23024_001,Poverty Status by Disability Status by Employment Status for the Population 20 to 64 Years,"Estimate!!Total:",750,30
+25,Massachusetts,2024,acs5,B23024,B23024_002,Poverty Status by Disability Status by Employment Status for the Population 20 to 64 Years,"Estimate!!Total:!!Income in the past 12 months below poverty level:",80,12
+25,Massachusetts,2024,acs5,B23024,B23024_003,Poverty Status by Disability Status by Employment Status for the Population 20 to 64 Years,"Estimate!!Total:!!Income in the past 12 months below poverty level:!!With a disability:",30,6
+25,Massachusetts,2024,acs5,B23024,B23024_005,Poverty Status by Disability Status by Employment Status for the Population 20 to 64 Years,"Estimate!!Total:!!Income in the past 12 months below poverty level:!!With a disability:!!In labor force:!!Employed",10,3
+25,Massachusetts,2024,acs1,C23004,C23004_001,Work Status by Employment Status for the Civilian Population 65 Years and Over,"Estimate!!Total:",200,15
+25,Massachusetts,2024,acs1,C23004,C23004_002,Work Status by Employment Status for the Civilian Population 65 Years and Over,"Estimate!!Total:!!Worked in the past 12 months:",60,8
+25,Massachusetts,2024,acs1,C23004,C23004_004,Work Status by Employment Status for the Civilian Population 65 Years and Over,"Estimate!!Total:!!Worked in the past 12 months:!!In labor force:!!Employed",55,7
+25,Massachusetts,2024,acs5,B23022,B23022_001,Sex by Work Status by Usual Hours Worked Per Week by Weeks Worked,"Estimate!!Total:",900,40
+25,Massachusetts,2024,acs5,B23022,B23022_002,Sex by Work Status by Usual Hours Worked Per Week by Weeks Worked,"Estimate!!Total:!!Male:",450,25
+25,Massachusetts,2024,acs5,B23022,B23022_003,Sex by Work Status by Usual Hours Worked Per Week by Weeks Worked,"Estimate!!Total:!!Male:!!Worked in the past 12 months:",380,22
+25,Massachusetts,2024,acs5,B23022,B23022_004,Sex by Work Status by Usual Hours Worked Per Week by Weeks Worked,"Estimate!!Total:!!Male:!!Worked in the past 12 months:!!Usually worked 35 or more hours per week:",300,20
+25,Massachusetts,2024,acs5,B23022,B23022_005,Sex by Work Status by Usual Hours Worked Per Week by Weeks Worked,"Estimate!!Total:!!Male:!!Worked in the past 12 months:!!Usually worked 35 or more hours per week:!!50 to 52 weeks",250,18
+25,Massachusetts,2024,acs5,B23027,B23027_001,"Full-Time, Year-Round Work Status by Age","Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,B23027,B23027_002,"Full-Time, Year-Round Work Status by Age","Estimate!!Total:!!16 to 64 years:",800,35
+25,Massachusetts,2024,acs5,B23027,B23027_003,"Full-Time, Year-Round Work Status by Age","Estimate!!Total:!!16 to 64 years:!!Worked full-time, year-round in the past 12 months",550,28
+25,Massachusetts,2024,acs5,B23018,B23018_001,Aggregate Usual Hours Worked in the Past 12 Months for Workers 16 to 64 Years,"Estimate!!Total:",25000000,50000
+25,Massachusetts,2024,acs5,B23020,B23020_001,Mean Usual Hours Worked in the Past 12 Months for Workers 16 to 64 Years,"Estimate!!Total:",38.5,0.4
+25,Massachusetts,2024,acs5,B23013,B23013_001,Median Age by Sex for Workers 16 to 64 Years,"Estimate!!Total:",41.2,0.3
+25,Massachusetts,2024,acs5,B23008,B23008_001,Age of Own Children in Families and Subfamilies by Living Arrangements by Employment Status of Parents,"Estimate!!Total:",350,20
+25,Massachusetts,2024,acs5,B23008,B23008_002,Age of Own Children in Families and Subfamilies by Living Arrangements by Employment Status of Parents,"Estimate!!Total:!!Under 6 years:",120,12
+25,Massachusetts,2024,acs5,B23008,B23008_003,Age of Own Children in Families and Subfamilies by Living Arrangements by Employment Status of Parents,"Estimate!!Total:!!Under 6 years:!!Living with two parents:",90,10
+25,Massachusetts,2024,acs5,B23008,B23008_004,Age of Own Children in Families and Subfamilies by Living Arrangements by Employment Status of Parents,"Estimate!!Total:!!Under 6 years:!!Living with two parents:!!Both parents in labor force",60,8
+25,Massachusetts,2024,acs5,B23003,B23003_001,Presence of Own Children by Age of Own Children by Employment Status for Females 20 to 64 Years,"Estimate!!Total:",450,25
+25,Massachusetts,2024,acs5,B23003,B23003_002,Presence of Own Children by Age of Own Children by Employment Status for Females 20 to 64 Years,"Estimate!!Total:!!With own children under 6 years only:",80,10
+25,Massachusetts,2024,acs5,B23003,B23003_005,Presence of Own Children by Age of Own Children by Employment Status for Females 20 to 64 Years,"Estimate!!Total:!!With own children under 6 years only:!!In labor force:!!Civilian labor force:!!Employed",55,8
+25,Massachusetts,2024,acs5,B23007,B23007_001,Presence of Own Children by Family Type by Employment Status,"Estimate!!Total:",350,20
+25,Massachusetts,2024,acs5,B23007,B23007_002,Presence of Own Children by Family Type by Employment Status,"Estimate!!Total:!!In married-couple families:",250,18
+25,Massachusetts,2024,acs5,B23007,B23007_003,Presence of Own Children by Family Type by Employment Status,"Estimate!!Total:!!In married-couple families:!!With own children under 6 years only:",70,9
+25,Massachusetts,2024,acs5,B23007,B23007_005,Presence of Own Children by Family Type by Employment Status,"Estimate!!Total:!!In married-couple families:!!With own children under 6 years only:!!One or more parents in labor force:!!Both parents in labor force",50,7
+25,Massachusetts,2024,acs5,B23009,B23009_001,Presence of Own Children by Family Type by Number of Workers in Family,"Estimate!!Total:",400,22
+25,Massachusetts,2024,acs5,B23009,B23009_002,Presence of Own Children by Family Type by Number of Workers in Family,"Estimate!!Total:!!In married-couple families:",300,18
+25,Massachusetts,2024,acs5,B23009,B23009_003,Presence of Own Children by Family Type by Number of Workers in Family,"Estimate!!Total:!!In married-couple families:!!With own children under 18 years:",180,14
+25,Massachusetts,2024,acs5,B23009,B23009_005,Presence of Own Children by Family Type by Number of Workers in Family,"Estimate!!Total:!!In married-couple families:!!With own children under 18 years:!!1 worker",40,7
+25,Massachusetts,2024,acs5,C24030,C24030_001,Sex by Industry for the Civilian Employed Population 16 Years and Over,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,C24030,C24030_002,Sex by Industry for the Civilian Employed Population 16 Years and Over,"Estimate!!Total:!!Male:",520,28
+25,Massachusetts,2024,acs5,C24030,C24030_003,Sex by Industry for the Civilian Employed Population 16 Years and Over,"Estimate!!Total:!!Male:!!Agriculture, forestry, fishing and hunting, and mining",15,4
+25,Massachusetts,2024,acs5,C24030,C24030_029,Sex by Industry for the Civilian Employed Population 16 Years and Over,"Estimate!!Total:!!Female:",480,25
+25,Massachusetts,2024,acs5,C24030,C24030_030,Sex by Industry for the Civilian Employed Population 16 Years and Over,"Estimate!!Total:!!Female:!!Agriculture, forestry, fishing and hunting, and mining",5,2
+25,Massachusetts,2024,acs5,C24031,C24031_001,Industry by Median Earnings,"Estimate!!Total:",60000,1800
+25,Massachusetts,2024,acs5,C24031,C24031_002,Industry by Median Earnings,"Estimate!!Total:!!Agriculture, forestry, fishing and hunting, and mining",45000,3200
+25,Massachusetts,2024,acs5,C24080,C24080_001,Sex by Class of Worker,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,C24080,C24080_002,Sex by Class of Worker,"Estimate!!Total:!!Male:",520,28
+25,Massachusetts,2024,acs5,C24080,C24080_003,Sex by Class of Worker,"Estimate!!Total:!!Male:!!Private for-profit wage and salary workers:!!Employee of private company workers",360,22
+25,Massachusetts,2024,acs5,C24080,C24080_011,Sex by Class of Worker,"Estimate!!Total:!!Female:",480,25
+25,Massachusetts,2024,acs5,C24080,C24080_012,Sex by Class of Worker,"Estimate!!Total:!!Female:!!Private for-profit wage and salary workers:!!Employee of private company workers",320,20
+25,Massachusetts,2024,acs5,C24081,C24081_001,Class of Worker by Median Earnings,"Estimate!!Total:",58000,1600
+25,Massachusetts,2024,acs5,C24081,C24081_002,Class of Worker by Median Earnings,"Estimate!!Total:!!Private for-profit wage and salary workers",55000,1500
+25,Massachusetts,2024,acs5,C24050,C24050_001,Industry by Occupation,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,C24050,C24050_002,Industry by Occupation,"Estimate!!Total:!!Agriculture, forestry, fishing and hunting, and mining:!!Management, business, science, and arts occupations",8,3
+25,Massachusetts,2024,acs5,C24060,C24060_001,Occupation by Class of Worker,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,C24060,C24060_002,Occupation by Class of Worker,"Estimate!!Total:!!Management, business, science, and arts occupations:!!Private for-profit wage and salary workers",280,18
+25,Massachusetts,2024,acs5,C24070,C24070_001,Industry by Class of Worker,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,C24070,C24070_002,Industry by Class of Worker,"Estimate!!Total:!!Agriculture, forestry, fishing and hunting, and mining:!!Private for-profit wage and salary workers",12,3
+25,Massachusetts,2024,acs5,C24010,C24010_001,Sex by Occupation for Total Civilian Employed Population,"Estimate!!Total:",1000,45
+25,Massachusetts,2024,acs5,C24010,C24010_002,Sex by Occupation for Total Civilian Employed Population,"Estimate!!Total:!!Male:",520,28
+25,Massachusetts,2024,acs5,C24010,C24010_003,Sex by Occupation for Total Civilian Employed Population,"Estimate!!Total:!!Male:!!Management, business, science, and arts occupations",210,20
+25,Massachusetts,2024,acs5,C24010,C24010_008,Sex by Occupation for Total Civilian Employed Population,"Estimate!!Total:!!Female:",480,25
+25,Massachusetts,2024,acs5,C24010,C24010_009,Sex by Occupation for Total Civilian Employed Population,"Estimate!!Total:!!Female:!!Management, business, science, and arts occupations",190,18
+25,Massachusetts,2024,acs5,C24011,C24011_001,Occupation by Median Earnings,"Estimate!!Total:",62000,1500
+25,Massachusetts,2024,acs5,C24011,C24011_002,Occupation by Median Earnings,"Estimate!!Total:!!Management, business, science, and arts occupations",85000,2500
+25,Massachusetts,2024,acs5,B24114,B24114_001,Detailed Occupation (National),"Estimate!!Total:",150000000,100000
+25,Massachusetts,2024,acs5,B24114,B24114_002,Detailed Occupation (National),"Estimate!!Total:!!Chief executives",1800000,25000
+25,Massachusetts,2024,acs5,B24134,B24134_001,Detailed Industry (National),"Estimate!!Total:",150000000,100000
+25,Massachusetts,2024,acs5,B24134,B24134_002,Detailed Industry (National),"Estimate!!Total:!!Crop production",1200000,20000
+25,Massachusetts,2024,acs5,B19001,B19001_001,Household Income,"Estimate!!Total:",2500000,5000
+25,Massachusetts,2024,acs5,B19001,B19001_002,Household Income,"Estimate!!Total:!!Less than $10,000",100000,1500
+25,Massachusetts,2024,acs5,C19001,C19001_001,Household Income (Collapsed),"Estimate!!Total:",2500000,5000
+25,Massachusetts,2024,acs5,C19001,C19001_002,Household Income (Collapsed),"Estimate!!Total:!!Less than $10,000",100000,1500
+25,Massachusetts,2024,acs5,B19001A,B19001A_001,Household Income (White Alone),"Estimate!!Total:",2000000,4000
+25,Massachusetts,2024,acs5,B19001A,B19001A_002,Household Income (White Alone),"Estimate!!Total:!!Less than $10,000",75000,1200
+25,Massachusetts,2024,acs5,C19001A,C19001A_001,Household Income (White Alone Collapsed),"Estimate!!Total:",2000000,4000
+25,Massachusetts,2024,acs5,C19001A,C19001A_002,Household Income (White Alone Collapsed),"Estimate!!Total:!!Less than $10,000",75000,1200
+25,Massachusetts,2024,acs5,B19013,B19013_001,Median Household Income,"Estimate!!Median household income in the past 12 months (in 2024 inflation-adjusted dollars)",95000,800
+25,Massachusetts,2024,acs5,B19013A,B19013A_001,Median Household Income (White Alone),"Estimate!!Median household income in the past 12 months (in 2024 inflation-adjusted dollars)",98000,900
+25,Massachusetts,2024,acs5,B19019,B19019_001,Median Household Income by Household Size,"Estimate!!Total:",95000,800
+25,Massachusetts,2024,acs5,B19019,B19019_002,Median Household Income by Household Size,"Estimate!!Total:!!1-person household",45000,600
+25,Massachusetts,2024,acs5,B19037,B19037_001,Age of Householder by Household Income,"Estimate!!Total:",2500000,5000
+25,Massachusetts,2024,acs5,B19037,B19037_002,Age of Householder by Household Income,"Estimate!!Total:!!Householder under 25 years:",50000,2000
+25,Massachusetts,2024,acs5,B19037,B19037_003,Age of Householder by Household Income,"Estimate!!Total:!!Householder under 25 years:!!Less than $10,000",5000,400
+25,Massachusetts,2024,acs5,B19049,B19049_001,Median Household Income by Age of Householder,"Estimate!!Median household income in the past 12 months (in 2024 inflation-adjusted dollars)",95000,800
+25,Massachusetts,2024,acs5,B19049,B19049_002,Median Household Income by Age of Householder,"Estimate!!Median household income in the past 12 months (in 2024 inflation-adjusted dollars)--!!Householder under 25 years",42000,1100
+25,Massachusetts,2024,acs5,B19101,B19101_001,Family Income,"Estimate!!Total:",1600000,4000
+25,Massachusetts,2024,acs5,B19101,B19101_002,Family Income,"Estimate!!Total:!!Less than $10,000",30000,800
+25,Massachusetts,2024,acs5,C19101,C19101_001,Family Income (Collapsed),"Estimate!!Total:",1600000,4000
+25,Massachusetts,2024,acs5,C19101,C19101_002,Family Income (Collapsed),"Estimate!!Total:!!Less than $10,000",30000,800
+25,Massachusetts,2024,acs5,B19101A,B19101A_001,Family Income (White Alone),"Estimate!!Total:",1300000,3500
+25,Massachusetts,2024,acs5,B19101A,B19101A_002,Family Income (White Alone),"Estimate!!Total:!!Less than $10,000",20000,600
+25,Massachusetts,2024,acs5,C19101A,C19101A_001,Family Income (White Alone Collapsed),"Estimate!!Total:",1300000,3500
+25,Massachusetts,2024,acs5,C19101A,C19101A_002,Family Income (White Alone Collapsed),"Estimate!!Total:!!Less than $10,000",20000,600
+25,Massachusetts,2024,acs5,B19113,B19113_001,Median Family Income,"Estimate!!Median family income in the past 12 months (in 2024 inflation-adjusted dollars)",115000,1200
+25,Massachusetts,2024,acs5,B19113A,B19113A_001,Median Family Income (White Alone),"Estimate!!Median family income in the past 12 months (in 2024 inflation-adjusted dollars)",120000,1300
+25,Massachusetts,2024,acs5,B19119,B19119_001,Median Family Income by Family Size,"Estimate!!Total:",115000,1200
+25,Massachusetts,2024,acs5,B19119,B19119_002,Median Family Income by Family Size,"Estimate!!Total:!!2-person families",95000,1000
+25,Massachusetts,2024,acs5,B19121,B19121_001,Median Family Income by Number of Earners,"Estimate!!Total:",115000,1200
+25,Massachusetts,2024,acs5,B19121,B19121_002,Median Family Income by Number of Earners,"Estimate!!Total:!!No earners",48000,900
+25,Massachusetts,2024,acs5,B19125,B19125_001,Median Family Income by Children,"Estimate!!Total:",115000,1200
+25,Massachusetts,2024,acs5,B19125,B19125_002,Median Family Income by Children,"Estimate!!Total:!!With own children under 18 years",118000,1400
+25,Massachusetts,2024,acs5,B19126,B19126_001,Median Family Income by Family Type by Children,"Estimate!!Total:",115000,1200
+25,Massachusetts,2024,acs5,B19126,B19126_002,Median Family Income by Family Type by Children,"Estimate!!Total:!!Married-couple family:",135000,1500
+25,Massachusetts,2024,acs5,B19131,B19131_001,Family Type by Children by Family Income,"Estimate!!Total:",1600000,4000
+25,Massachusetts,2024,acs5,B19131,B19131_002,Family Type by Children by Family Income,"Estimate!!Total:!!Married-couple family:",1100000,3000
+25,Massachusetts,2024,acs5,B19131,B19131_003,Family Type by Children by Family Income,"Estimate!!Total:!!Married-couple family:!!With own children under 18 years:",500000,2000
+25,Massachusetts,2024,acs5,B19131,B19131_004,Family Type by Children by Family Income,"Estimate!!Total:!!Married-couple family:!!With own children under 18 years:!!Less than $10,000",8000,300
+25,Massachusetts,2024,acs5,C19131,C19131_001,Family Type by Children by Family Income (Collapsed),"Estimate!!Total:",1600000,4000
+25,Massachusetts,2024,acs5,C19131,C19131_002,Family Type by Children by Family Income (Collapsed),"Estimate!!Total:!!Married-couple family:",1100000,3000
+25,Massachusetts,2024,acs5,C19131,C19131_003,Family Type by Children by Family Income (Collapsed),"Estimate!!Total:!!Married-couple family:!!With own children under 18 years:",500000,2000
+25,Massachusetts,2024,acs5,C19131,C19131_004,Family Type by Children by Family Income (Collapsed),"Estimate!!Total:!!Married-couple family:!!With own children under 18 years:!!Less than $10,000",8000,300
+25,Massachusetts,2024,acs5,B19201,B19201_001,Nonfamily Household Income,"Estimate!!Total:",900000,3000
+25,Massachusetts,2024,acs5,B19201,B19201_002,Nonfamily Household Income,"Estimate!!Total:!!Less than $10,000",70000,1200
+25,Massachusetts,2024,acs5,C19201,C19201_001,Nonfamily Household Income (Collapsed),"Estimate!!Total:",900000,3000
+25,Massachusetts,2024,acs5,C19201,C19201_002,Nonfamily Household Income (Collapsed),"Estimate!!Total:!!Less than $10,000",70000,1200
+25,Massachusetts,2024,acs5,B19202,B19202_001,Median Nonfamily Household Income,"Estimate!!Median nonfamily household income in the past 12 months (in 2024 inflation-adjusted dollars)",55000,900
+25,Massachusetts,2024,acs5,B19202A,B19202A_001,Median Nonfamily Household Income (White Alone),"Estimate!!Median nonfamily household income in the past 12 months (in 2024 inflation-adjusted dollars)",58000,1000
+25,Massachusetts,2024,acs5,B19215,B19215_001,Median Nonfamily Household Income by Householder,"Estimate!!Total:",55000,900
+25,Massachusetts,2024,acs5,B19215,B19215_002,Median Nonfamily Household Income by Householder,"Estimate!!Total:!!Male householder:",62000,1100
+25,Massachusetts,2024,acs5,B19051,B19051_001,Earnings for Households,"Estimate!!Total:",2500000,5000
+25,Massachusetts,2024,acs5,B19051,B19051_002,Earnings for Households,"Estimate!!Total:!!With earnings",2000000,4500
+25,Massachusetts,2024,acs5,B19061,B19061_001,Aggregate Earnings for Households,"Estimate!!Aggregate earnings in the past 12 months (in 2024 inflation-adjusted dollars) for households",180000000000,2000000000
+25,Massachusetts,2024,acs5,B19083,B19083_001,Gini Index of Income Inequality,"Estimate!!Gini Index",0.485,0.005
+25,Massachusetts,2024,acs5,B19080,B19080_001,Household Income Quintile Upper Limits,"Estimate!!Lowest Quintile",28000,500
+25,Massachusetts,2024,acs5,B19081,B19081_001,Mean Household Income of Quintiles,"Estimate!!Lowest Quintile",14000,300
+25,Massachusetts,2024,acs5,B19082,B19082_001,Shares of Aggregate Household Income by Quintile,"Estimate!!Lowest Quintile",3.2,0.1
+25,Massachusetts,2024,acs5,B19301,B19301_001,Per Capita Income,"Estimate!!Per capita income in the past 12 months (in 2024 inflation-adjusted dollars)",52000,600
+25,Massachusetts,2024,acs5,B19301A,B19301A_001,Per Capita Income (White Alone),"Estimate!!Per capita income in the past 12 months (in 2024 inflation-adjusted dollars)",56000,700
+25,Massachusetts,2024,acs5,B19313,B19313_001,Aggregate Income,"Estimate!!Aggregate income in the past 12 months (in 2024 inflation-adjusted dollars)",360000000000,4000000000
+25,Massachusetts,2024,acs5,B19313A,B19313A_001,Aggregate Income (White Alone),"Estimate!!Aggregate income in the past 12 months (in 2024 inflation-adjusted dollars)",280000000000,3000000000
+25,Massachusetts,2024,acs5,B20001,B20001_001,Sex by Earnings,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B20001,B20001_002,Sex by Earnings,"Estimate!!Total:!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,B20001,B20001_003,Sex by Earnings,"Estimate!!Total:!!Male:!!$1 to $2,499 or loss",50000,1000
+25,Massachusetts,2024,acs5,B20002,B20002_001,Median Earnings by Sex,"Estimate!!Total:",52000,700
+25,Massachusetts,2024,acs5,B20002,B20002_002,Median Earnings by Sex,"Estimate!!Male",60000,900
+25,Massachusetts,2024,acs5,B20003,B20003_001,Aggregate Earnings by Sex by Work Experience,"Estimate!!Total:",180000000000,2000000000
+25,Massachusetts,2024,acs5,B20003,B20003_002,Aggregate Earnings by Sex by Work Experience,"Estimate!!Male:",105000000000,1500000000
+25,Massachusetts,2024,acs5,B20003,B20003_003,Aggregate Earnings by Sex by Work Experience,"Estimate!!Male:!!Worked full-time, year-round",90000000000,1200000000
+25,Massachusetts,2024,acs5,B20005,B20005_001,Sex by Work Experience by Earnings,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B20005,B20005_002,Sex by Work Experience by Earnings,"Estimate!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,B20005,B20005_003,Sex by Work Experience by Earnings,"Estimate!!Male:!!Worked full-time, year-round",1300000,3000
+25,Massachusetts,2024,acs5,B20005,B20005_004,Sex by Work Experience by Earnings,"Estimate!!Male:!!Worked full-time, year-round:!!$1 to $2,499 or loss",10000,400
+25,Massachusetts,2024,acs5,C20005,C20005_001,Sex by Work Experience by Earnings (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C20005,C20005_002,Sex by Work Experience by Earnings (Collapsed),"Estimate!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,C20005,C20005_003,Sex by Work Experience by Earnings (Collapsed),"Estimate!!Male:!!Worked full-time, year-round",1300000,3000
+25,Massachusetts,2024,acs5,C20005,C20005_004,Sex by Work Experience by Earnings (Collapsed),"Estimate!!Male:!!Worked full-time, year-round:!!$1 to $2,499 or loss",10000,400
+25,Massachusetts,2024,acs5,B20005A,B20005A_001,Sex by Work Experience by Earnings (White Alone),"Estimate!!Total:",2700000,5000
+25,Massachusetts,2024,acs5,B20005A,B20005A_002,Sex by Work Experience by Earnings (White Alone),"Estimate!!Male:",1400000,3500
+25,Massachusetts,2024,acs5,C20005A,C20005A_001,Sex by Work Experience by Earnings (White Alone Collapsed),"Estimate!!Total:",2700000,5000
+25,Massachusetts,2024,acs5,C20005A,C20005A_002,Sex by Work Experience by Earnings (White Alone Collapsed),"Estimate!!Male:",1400000,3500
+25,Massachusetts,2024,acs5,B20017,B20017_001,Median Earnings by Sex by Work Experience,"Estimate!!Total:",52000,700
+25,Massachusetts,2024,acs5,B20017,B20017_002,Median Earnings by Sex by Work Experience,"Estimate!!Male:",60000,900
+25,Massachusetts,2024,acs5,B20017,B20017_003,Median Earnings by Sex by Work Experience,"Estimate!!Male:!!Worked full-time, year-round",72000,1000
+25,Massachusetts,2024,acs5,B20017A,B20017A_001,Median Earnings by Sex by Work Experience (White Alone),"Estimate!!Total:",55000,800
+25,Massachusetts,2024,acs5,B20017A,B20017A_002,Median Earnings by Sex by Work Experience (White Alone),"Estimate!!Male:",65000,1000
+25,Massachusetts,2024,acs5,B20018,B20018_001,Median Earnings Full-Time Workers,"Estimate!!Total:",68000,900
+25,Massachusetts,2024,acs5,B20018,B20018_002,Median Earnings Full-Time Workers,"Estimate!!Male",74000,1100
+25,Massachusetts,2024,acs5,B19325,B19325_001,Sex by Work Experience by Income,"Estimate!!Total:",3800000,6500
+25,Massachusetts,2024,acs5,B19325,B19325_002,Sex by Work Experience by Income,"Estimate!!Male:",1900000,4200
+25,Massachusetts,2024,acs5,B19325,B19325_003,Sex by Work Experience by Income,"Estimate!!Male:!!Worked full-time, year-round",1400000,3200
+25,Massachusetts,2024,acs5,B19325,B19325_004,Sex by Work Experience by Income,"Estimate!!Male:!!Worked full-time, year-round:!!$1 to $2,499 or loss",8000,350
+25,Massachusetts,2024,acs5,B19326,B19326_001,Median Income by Sex by Work Experience,"Estimate!!Total:",48000,600
+25,Massachusetts,2024,acs5,B19326,B19326_002,Median Income by Sex by Work Experience,"Estimate!!Male:",56000,800
+25,Massachusetts,2024,acs5,B19326,B19326_003,Median Income by Sex by Work Experience,"Estimate!!Male:!!Worked full-time, year-round",68000,1000
+25,Massachusetts,2024,acs5,B14001,B14001_001,School Enrollment,"Estimate!!Total:",6500000,10000
+25,Massachusetts,2024,acs5,B14001,B14001_002,School Enrollment,"Estimate!!Total:!!Enrolled in school",1800000,5000
+25,Massachusetts,2024,acs5,B14002,B14002_001,Sex by School Enrollment,"Estimate!!Total:",1800000,5000
+25,Massachusetts,2024,acs5,B14002,B14002_002,Sex by School Enrollment,"Estimate!!Total:!!Male:",900000,3000
+25,Massachusetts,2024,acs5,B14002,B14002_003,Sex by School Enrollment,"Estimate!!Total:!!Male:!!Enrolled in nursery school, preschool:",60000,1200
+25,Massachusetts,2024,acs5,B14002,B14002_004,Sex by School Enrollment,"Estimate!!Total:!!Male:!!Enrolled in nursery school, preschool:!!Public school",40000,1000
+25,Massachusetts,2024,acs5,C14002,C14002_001,Sex by School Enrollment (Collapsed),"Estimate!!Total:",1800000,5000
+25,Massachusetts,2024,acs5,C14002,C14002_002,Sex by School Enrollment (Collapsed),"Estimate!!Total:!!Male:",900000,3000
+25,Massachusetts,2024,acs5,B14003,B14003_001,Sex by School Enrollment by Age,"Estimate!!Total:",1800000,5000
+25,Massachusetts,2024,acs5,B14003,B14003_002,Sex by School Enrollment by Age,"Estimate!!Total:!!Male:",900000,3000
+25,Massachusetts,2024,acs5,B14003,B14003_003,Sex by School Enrollment by Age,"Estimate!!Total:!!Male:!!Enrolled in public school:",650000,2500
+25,Massachusetts,2024,acs5,B14003,B14003_004,Sex by School Enrollment by Age,"Estimate!!Total:!!Male:!!Enrolled in public school:!!3 to 4 years",25000,800
+25,Massachusetts,2024,acs5,C14003,C14003_001,Sex by School Enrollment by Age (Collapsed),"Estimate!!Total:",1800000,5000
+25,Massachusetts,2024,acs5,C14003,C14003_002,Sex by School Enrollment by Age (Collapsed),"Estimate!!Total:!!Male:",900000,3000
+25,Massachusetts,2024,acs5,B14004,B14004_001,College Enrollment by Age,"Estimate!!Total:",500000,3000
+25,Massachusetts,2024,acs5,B14004,B14004_002,College Enrollment by Age,"Estimate!!Total:!!Male:",230000,2000
+25,Massachusetts,2024,acs5,B14004,B14004_003,College Enrollment by Age,"Estimate!!Total:!!Male:!!Enrolled in undergraduate college:",180000,1800
+25,Massachusetts,2024,acs5,B14004,B14004_004,College Enrollment by Age,"Estimate!!Total:!!Male:!!Enrolled in undergraduate college:!!15 to 17 years",5000,300
+25,Massachusetts,2024,acs5,B14005,B14005_001,Youth Enrollment and Employment,"Estimate!!Total:",350000,2000
+25,Massachusetts,2024,acs5,B14005,B14005_002,Youth Enrollment and Employment,"Estimate!!Total:!!Male:",175000,1200
+25,Massachusetts,2024,acs5,B14005,B14005_003,Youth Enrollment and Employment,"Estimate!!Total:!!Male:!!Enrolled in school:",150000,1100
+25,Massachusetts,2024,acs5,B14005,B14005_004,Youth Enrollment and Employment,"Estimate!!Total:!!Male:!!Enrolled in school:!!High school graduate",20000,500
+25,Massachusetts,2024,acs5,C14005,C14005_001,Youth Enrollment and Employment (Collapsed),"Estimate!!Total:",350000,2000
+25,Massachusetts,2024,acs5,C14005,C14005_002,Youth Enrollment and Employment (Collapsed),"Estimate!!Total:!!Male:",175000,1200
+25,Massachusetts,2024,acs5,B14006,B14006_001,School Enrollment by Poverty,"Estimate!!Total:",6500000,10000
+25,Massachusetts,2024,acs5,B14006,B14006_002,School Enrollment by Poverty,"Estimate!!Total:!!Income in the past 12 months below poverty level:",600000,3000
+25,Massachusetts,2024,acs5,B14006,B14006_003,School Enrollment by Poverty,"Estimate!!Total:!!Income in the past 12 months below poverty level:!!Enrolled in school:",250000,2000
+25,Massachusetts,2024,acs5,B14007,B14007_001,Detailed School Enrollment,"Estimate!!Total:",6500000,10000
+25,Massachusetts,2024,acs5,B14007,B14007_002,Detailed School Enrollment,"Estimate!!Total:!!Enrolled in nursery school, preschool",80000,1500
+25,Massachusetts,2024,acs5,C14007,C14007_001,Detailed School Enrollment (Collapsed),"Estimate!!Total:",6500000,10000
+25,Massachusetts,2024,acs5,C14007,C14007_002,Detailed School Enrollment (Collapsed),"Estimate!!Total:!!Enrolled in nursery school, preschool",80000,1500
+25,Massachusetts,2024,acs5,B14007A,B14007A_001,Detailed School Enrollment (White Alone),"Estimate!!Total:",5000000,8000
+25,Massachusetts,2024,acs5,B14007A,B14007A_002,Detailed School Enrollment (White Alone),"Estimate!!Total:!!Enrolled in nursery school, preschool",60000,1200
+25,Massachusetts,2024,acs5,B15001,B15001_001,Attainment by Age and Sex,"Estimate!!Total:",5200000,8000
+25,Massachusetts,2024,acs5,B15001,B15001_002,Attainment by Age and Sex,"Estimate!!Total:!!Male:",2500000,5000
+25,Massachusetts,2024,acs5,B15001,B15001_003,Attainment by Age and Sex,"Estimate!!Total:!!Male:!!18 to 24 years:",450000,2500
+25,Massachusetts,2024,acs5,B15001,B15001_004,Attainment by Age and Sex,"Estimate!!Total:!!Male:!!18 to 24 years:!!Bachelor's degree or higher",120000,1500
+25,Massachusetts,2024,acs5,B15002,B15002_001,Sex by Attainment,"Estimate!!Total:",4800000,7000
+25,Massachusetts,2024,acs5,B15002,B15002_002,Sex by Attainment,"Estimate!!Total:!!Male:",2300000,4500
+25,Massachusetts,2024,acs5,B15002,B15002_003,Sex by Attainment,"Estimate!!Total:!!Male:!!Bachelor's degree",750000,3000
+25,Massachusetts,2024,acs5,C15002,C15002_001,Sex by Attainment (Collapsed),"Estimate!!Total:",4800000,7000
+25,Massachusetts,2024,acs5,C15002,C15002_002,Sex by Attainment (Collapsed),"Estimate!!Total:!!Male:",2300000,4500
+25,Massachusetts,2024,acs5,C15002,C15002_003,Sex by Attainment (Collapsed),"Estimate!!Total:!!Male:!!Bachelor's degree",750000,3000
+25,Massachusetts,2024,acs5,B15002A,B15002A_001,Sex by Attainment (White Alone),"Estimate!!Total:",3800000,6000
+25,Massachusetts,2024,acs5,B15002A,B15002A_002,Sex by Attainment (White Alone),"Estimate!!Total:!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,B15003,B15003_001,Detailed Attainment,"Estimate!!Total:",4800000,7000
+25,Massachusetts,2024,acs5,B15003,B15003_002,Detailed Attainment,"Estimate!!Total:!!No schooling completed",30000,800
+25,Massachusetts,2024,acs5,C15003,C15003_001,Detailed Attainment (Collapsed),"Estimate!!Total:",4800000,7000
+25,Massachusetts,2024,acs5,C15003,C15003_002,Detailed Attainment (Collapsed),"Estimate!!Total:!!No schooling completed",30000,800
+25,Massachusetts,2024,acs5,B15010,B15010_001,Detailed Field of Degree,"Estimate!!Total:",2100000,5000
+25,Massachusetts,2024,acs5,B15010,B15010_002,Detailed Field of Degree,"Estimate!!Total:!!Computers, Mathematics and Statistics:",180000,2000
+25,Massachusetts,2024,acs5,C15010,C15010_001,Detailed Field of Degree (Collapsed),"Estimate!!Total:",2100000,5000
+25,Massachusetts,2024,acs5,C15010,C15010_002,Detailed Field of Degree (Collapsed),"Estimate!!Total:!!Computers, Mathematics and Statistics:",180000,2000
+25,Massachusetts,2024,acs5,B15010A,B15010A_001,Detailed Field of Degree (White Alone),"Estimate!!Total:",1700000,4000
+25,Massachusetts,2024,acs5,B15010A,B15010A_002,Detailed Field of Degree (White Alone),"Estimate!!Total:!!Computers, Mathematics and Statistics:",130000,1600
+25,Massachusetts,2024,acs5,B15011,B15011_001,Broad Field of Degree by Sex/Age,"Estimate!!Total:",2100000,5000
+25,Massachusetts,2024,acs5,B15011,B15011_002,Broad Field of Degree by Sex/Age,"Estimate!!Total:!!Male:",1000000,3000
+25,Massachusetts,2024,acs5,B15011,B15011_003,Broad Field of Degree by Sex/Age,"Estimate!!Total:!!Male:!!25 to 39 years:",350000,1800
+25,Massachusetts,2024,acs5,B15011,B15011_004,Broad Field of Degree by Sex/Age,"Estimate!!Total:!!Male:!!25 to 39 years:!!Science and Engineering",140000,1200
+25,Massachusetts,2024,acs5,B15012,B15012_001,Total Fields Reported,"Estimate!!Total:",2300000,5500
+25,Massachusetts,2024,acs5,B15012,B15012_002,Total Fields Reported,"Estimate!!Total:!!Computers, Mathematics and Statistics:",190000,2100
+25,Massachusetts,2024,acs5,B15013,B15013_001,Median Earnings by Field and Sex,"Estimate!!Total:",85000,1000
+25,Massachusetts,2024,acs5,B15013,B15013_002,Median Earnings by Field and Sex,"Estimate!!Male:",95000,1200
+25,Massachusetts,2024,acs5,B15013,B15013_003,Median Earnings by Field and Sex,"Estimate!!Male:!!Science and Engineering",110000,1500
+25,Massachusetts,2024,acs5,B15014,B15014_001,Median Earnings by Field and Age,"Estimate!!Total:",85000,1000
+25,Massachusetts,2024,acs5,B15014,B15014_002,Median Earnings by Field and Age,"Estimate!!Total:!!25 to 39 years:",75000,1100
+25,Massachusetts,2024,acs5,B15014,B15014_003,Median Earnings by Field and Age,"Estimate!!Total:!!25 to 39 years:!!Science and Engineering",90000,1300
+25,Massachusetts,2024,acs5,B08303,B08303_001,Travel Time to Work,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08303,B08303_002,Travel Time to Work,"Estimate!!Total:!!Less than 5 minutes",80000,1200
+25,Massachusetts,2024,acs5,B08603,B08603_001,Travel Time to Work (Workplace),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08603,B08603_002,Travel Time to Work (Workplace),"Estimate!!Total:!!Less than 5 minutes",80000,1200
+25,Massachusetts,2024,acs5,B08302,B08302_001,Time Leaving Home,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08302,B08302_002,Time Leaving Home,"Estimate!!Total:!!12:00 a.m. to 4:59 a.m.",120000,1500
+25,Massachusetts,2024,acs5,B08602,B08602_001,Time Arriving at Work,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08602,B08602_002,Time Arriving at Work,"Estimate!!Total:!!12:00 a.m. to 4:59 a.m.",120000,1500
+25,Massachusetts,2024,acs5,B08011,B08011_001,Departure Time by Sex,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08011,B08011_002,Departure Time by Sex,"Estimate!!Total:!!Male:",1700000,4000
+25,Massachusetts,2024,acs5,B08011,B08011_003,Departure Time by Sex,"Estimate!!Total:!!Male:!!12:00 a.m. to 4:59 a.m.",70000,1100
+25,Massachusetts,2024,acs5,B08012,B08012_001,Travel Time by Sex,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08012,B08012_002,Travel Time by Sex,"Estimate!!Total:!!Male:",1700000,4000
+25,Massachusetts,2024,acs5,B08012,B08012_003,Travel Time by Sex,"Estimate!!Total:!!Male:!!Less than 5 minutes",45000,900
+25,Massachusetts,2024,acs5,B08412,B08412_001,Travel Time by Sex (Workplace),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08412,B08412_002,Travel Time by Sex (Workplace),"Estimate!!Total:!!Male:",1700000,4000
+25,Massachusetts,2024,acs5,B08134,B08134_001,Travel Time by Mode,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08134,B08134_002,Travel Time by Mode,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08134,B08134_003,Travel Time by Mode,"Estimate!!Total:!!Car, truck, or van -- drove alone:!!Less than 5 minutes",60000,1000
+25,Massachusetts,2024,acs5,C08134,C08134_001,Travel Time by Mode (Collapsed),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,C08134,C08134_002,Travel Time by Mode (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08534,B08534_001,Travel Time by Mode (Workplace),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08534,B08534_002,Travel Time by Mode (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,C08534,C08534_001,Travel Time by Mode (Workplace Collapsed),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,C08534,C08534_002,Travel Time by Mode (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08132,B08132_001,Departure Time by Mode,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08132,B08132_002,Departure Time by Mode,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,C08132,C08132_001,Departure Time by Mode (Collapsed),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,C08132,C08132_002,Departure Time by Mode (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08532,B08532_001,Arrival Time by Mode (Workplace),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08532,B08532_002,Arrival Time by Mode (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,C08532,C08532_001,Arrival Time by Mode (Workplace Collapsed),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,C08532,C08532_002,Arrival Time by Mode (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08136,B08136_001,Aggregate Travel Time by Mode,"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,B08136,B08136_002,Aggregate Travel Time by Mode,"Estimate!!Total:!!Car, truck, or van -- drove alone",65000000,800000
+25,Massachusetts,2024,acs5,C08136,C08136_001,Aggregate Travel Time by Mode (Collapsed),"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,C08136,C08136_002,Aggregate Travel Time by Mode (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone",65000000,800000
+25,Massachusetts,2024,acs5,B08536,B08536_001,Aggregate Travel Time by Mode (Workplace),"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,B08536,B08536_002,Aggregate Travel Time by Mode (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone",65000000,800000
+25,Massachusetts,2024,acs5,C08536,C08536_001,Aggregate Travel Time by Mode (Workplace Collapsed),"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,C08536,C08536_002,Aggregate Travel Time by Mode (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone",65000000,800000
+25,Massachusetts,2024,acs5,B08013,B08013_001,Aggregate Travel Time by Sex,"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,B08013,B08013_002,Aggregate Travel Time by Sex,"Estimate!!Male",52000000,700000
+25,Massachusetts,2024,acs5,B08131,B08131_001,Aggregate Travel Time by Place,"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,B08131,B08131_002,Aggregate Travel Time by Place,"Estimate!!Total:!!Worked in state of residence:",85000000,900000
+25,Massachusetts,2024,acs5,B08135,B08135_001,Aggregate Travel Time by Travel Time,"Estimate!!Total:",95000000,1000000
+25,Massachusetts,2024,acs5,B08135,B08135_002,Aggregate Travel Time by Travel Time,"Estimate!!Total:!!Less than 5 minutes",2000000,50000
+25,Massachusetts,2024,acs5,B08007,B08007_001,Sex of Workers by Place of Work County,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08007,B08007_002,Sex of Workers by Place of Work County,"Estimate!!Total:!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,B08007,B08007_003,Sex of Workers by Place of Work County,"Estimate!!Total:!!Male:!!Worked in state of residence:",1600000,3500
+25,Massachusetts,2024,acs5,B08008,B08008_001,Sex of Workers by Place of Work Place,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08008,B08008_002,Sex of Workers by Place of Work Place,"Estimate!!Total:!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,B08009,B08009_001,Sex of Workers by Place of Work MCD,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08009,B08009_002,Sex of Workers by Place of Work MCD,"Estimate!!Total:!!Male:",1800000,4000
+25,Massachusetts,2024,acs5,B08016,B08016_001,Place of Work MSA,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08016,B08016_002,Place of Work MSA,"Estimate!!Total:!!Worked in MSA of residence:",2800000,5000
+25,Massachusetts,2024,acs5,C08016,C08016_001,Place of Work MSA (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08016,C08016_002,Place of Work MSA (Collapsed),"Estimate!!Total:!!Worked in MSA of residence:",2800000,5000
+25,Massachusetts,2024,acs5,B08017,B08017_001,Place of Work Micro,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08017,B08017_002,Place of Work Micro,"Estimate!!Total:!!Worked in Micro area of residence:",300000,2000
+25,Massachusetts,2024,acs5,B08018,B08018_001,Place of Work Nonmetro,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08018,B08018_002,Place of Work Nonmetro,"Estimate!!Total:!!Worked outside MSA/Micro area:",100000,1000
+25,Massachusetts,2024,acs5,B08604,B08604_001,Workplace Worker Population,"Estimate!!Total:",3600000,7000
+25,Massachusetts,2024,acs5,B08101,B08101_001,Means of Transportation by Age,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08101,B08101_002,Means of Transportation by Age,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08101,B08101_003,Means of Transportation by Age,"Estimate!!Total:!!Car, truck, or van -- drove alone:!!16 to 19 years",60000,1000
+25,Massachusetts,2024,acs5,C08101,C08101_001,Means of Transportation by Age (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08101,C08101_002,Means of Transportation by Age (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08501,B08501_001,Means of Transportation by Age (Workplace),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08501,B08501_002,Means of Transportation by Age (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08501,C08501_001,Means of Transportation by Age (Workplace Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08501,C08501_002,Means of Transportation by Age (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08103,B08103_001,Median Age by Means of Transportation,"Estimate!!Total:",41.2,0.2
+25,Massachusetts,2024,acs5,B08103,B08103_002,Median Age by Means of Transportation,"Estimate!!Total:!!Car, truck, or van -- drove alone",42.5,0.3
+25,Massachusetts,2024,acs5,B08503,B08503_001,Median Age by Means of Transportation (Workplace),"Estimate!!Total:",41.2,0.2
+25,Massachusetts,2024,acs5,B08503,B08503_002,Median Age by Means of Transportation (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone",42.5,0.3
+25,Massachusetts,2024,acs5,B08105A,B08105A_001,Means of Transportation (White Alone),"Estimate!!Total:",2700000,5000
+25,Massachusetts,2024,acs5,B08105A,B08105A_002,Means of Transportation (White Alone),"Estimate!!Total:!!Car, truck, or van -- drove alone",1900000,4000
+25,Massachusetts,2024,acs5,B08505A,B08505A_001,Means of Transportation (White Alone Workplace),"Estimate!!Total:",2700000,5000
+25,Massachusetts,2024,acs5,B08505A,B08505A_002,Means of Transportation (White Alone Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone",1900000,4000
+25,Massachusetts,2024,acs5,B08119,B08119_001,Means of Transportation by Earnings,"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08119,B08119_002,Means of Transportation by Earnings,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,C08119,C08119_001,Means of Transportation by Earnings (Collapsed),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,C08119,C08119_002,Means of Transportation by Earnings (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08519,B08519_001,Means of Transportation by Earnings (Workplace),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,B08519,B08519_002,Means of Transportation by Earnings (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,C08519,C08519_001,Means of Transportation by Earnings (Workplace Collapsed),"Estimate!!Total:",3200000,6000
+25,Massachusetts,2024,acs5,C08519,C08519_002,Means of Transportation by Earnings (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2200000,5000
+25,Massachusetts,2024,acs5,B08121,B08121_001,Median Earnings by Means of Transportation,"Estimate!!Total:",52000,700
+25,Massachusetts,2024,acs5,B08121,B08121_002,Median Earnings by Means of Transportation,"Estimate!!Total:!!Car, truck, or van -- drove alone",56000,800
+25,Massachusetts,2024,acs5,B08521,B08521_001,Median Earnings by Means of Transportation (Workplace),"Estimate!!Total:",52000,700
+25,Massachusetts,2024,acs5,B08521,B08521_002,Median Earnings by Means of Transportation (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone",56000,800
+25,Massachusetts,2024,acs5,B08122,B08122_001,Means of Transportation by Poverty,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08122,B08122_002,Means of Transportation by Poverty,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08122,C08122_001,Means of Transportation by Poverty (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08122,C08122_002,Means of Transportation by Poverty (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08522,B08522_001,Means of Transportation by Poverty (Workplace),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08522,B08522_002,Means of Transportation by Poverty (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08522,C08522_001,Means of Transportation by Poverty (Workplace Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08522,C08522_002,Means of Transportation by Poverty (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08124,B08124_001,Means of Transportation by Occupation,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08124,B08124_002,Means of Transportation by Occupation,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08124,C08124_001,Means of Transportation by Occupation (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08124,C08124_002,Means of Transportation by Occupation (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08524,B08524_001,Means of Transportation by Occupation (Workplace),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08524,B08524_002,Means of Transportation by Occupation (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08524,C08524_001,Means of Transportation by Occupation (Workplace Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08524,C08524_002,Means of Transportation by Occupation (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08126,B08126_001,Means of Transportation by Industry,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08126,B08126_002,Means of Transportation by Industry,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08126,C08126_001,Means of Transportation by Industry (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08126,C08126_002,Means of Transportation by Industry (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08526,B08526_001,Means of Transportation by Industry (Workplace),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08526,B08526_002,Means of Transportation by Industry (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08526,C08526_001,Means of Transportation by Industry (Workplace Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08526,C08526_002,Means of Transportation by Industry (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08128,B08128_001,Means of Transportation by Class,"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08128,B08128_002,Means of Transportation by Class,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08128,C08128_001,Means of Transportation by Class (Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08128,C08128_002,Means of Transportation by Class (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08528,B08528_001,Means of Transportation by Class (Workplace),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,B08528,B08528_002,Means of Transportation by Class (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,C08528,C08528_001,Means of Transportation by Class (Workplace Collapsed),"Estimate!!Total:",3500000,6000
+25,Massachusetts,2024,acs5,C08528,C08528_002,Means of Transportation by Class (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2400000,5000
+25,Massachusetts,2024,acs5,B08141,B08141_001,Means of Transportation by Vehicles,"Estimate!!Total:",3400000,5800
+25,Massachusetts,2024,acs5,B08141,B08141_002,Means of Transportation by Vehicles,"Estimate!!Total:!!Car, truck, or van -- drove alone:",2300000,4800
+25,Massachusetts,2024,acs5,C08141,C08141_001,Means of Transportation by Vehicles (Collapsed),"Estimate!!Total:",3400000,5800
+25,Massachusetts,2024,acs5,C08141,C08141_002,Means of Transportation by Vehicles (Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2300000,4800
+25,Massachusetts,2024,acs5,B08541,B08541_001,Means of Transportation by Vehicles (Workplace),"Estimate!!Total:",3400000,5800
+25,Massachusetts,2024,acs5,B08541,B08541_002,Means of Transportation by Vehicles (Workplace),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2300000,4800
+25,Massachusetts,2024,acs5,C08541,C08541_002,Means of Transportation by Vehicles (Workplace Collapsed),"Estimate!!Total:!!Car, truck, or van -- drove alone:",2300000,4800
+25,Massachusetts,2024,acs5,B07001,B07001_001,Mobility by Age,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07001,B07001_002,Mobility by Age,"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07001,B07001_003,Mobility by Age,"Estimate!!Total:!!Moved within same county",500000,5000
+25,Massachusetts,2024,acs5,C07001,C07001_001,Mobility by Age (Collapsed),"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,C07001,C07001_002,Mobility by Age (Collapsed),"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07002,B07002_001,Median Age by Mobility,"Estimate!!Total:",39.8,0.2
+25,Massachusetts,2024,acs5,B07002,B07002_002,Median Age by Mobility,"Estimate!!Same house 1 year ago",41.5,0.2
+25,Massachusetts,2024,acs5,B07003,B07003_001,Mobility by Sex,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07003,B07003_002,Mobility by Sex,"Estimate!!Total:!!Male:",3300000,6000
+25,Massachusetts,2024,acs5,B07003,B07003_003,Mobility by Sex,"Estimate!!Total:!!Male:!!Same house 1 year ago",2850000,5500
+25,Massachusetts,2024,acs5,B07004A,B07004A_001,Mobility (White Alone),"Estimate!!Total:",5200000,8000
+25,Massachusetts,2024,acs5,B07004A,B07004A_002,Mobility (White Alone),"Estimate!!Same house 1 year ago",4600000,7500
+25,Massachusetts,2024,acs5,B07007,B07007_001,Mobility by Citizenship,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07007,B07007_002,Mobility by Citizenship,"Estimate!!Total:!!Native",5600000,9000
+25,Massachusetts,2024,acs5,B07007,B07007_003,Mobility by Citizenship,"Estimate!!Total:!!Native:!!Same house 1 year ago",4900000,8000
+25,Massachusetts,2024,acs5,B07008,B07008_001,Mobility by Marital Status,"Estimate!!Total:",5600000,9000
+25,Massachusetts,2024,acs5,B07008,B07008_002,Mobility by Marital Status,"Estimate!!Total:!!Never married",2100000,5000
+25,Massachusetts,2024,acs5,C07008,C07008_001,Mobility by Marital Status (Collapsed),"Estimate!!Total:",5600000,9000
+25,Massachusetts,2024,acs5,C07008,C07008_002,Mobility by Marital Status (Collapsed),"Estimate!!Total:!!Never married",2100000,5000
+25,Massachusetts,2024,acs5,B07009,B07009_001,Mobility by Education,"Estimate!!Total:",4800000,7000
+25,Massachusetts,2024,acs5,B07009,B07009_002,Mobility by Education,"Estimate!!Total:!!Bachelor's degree or higher",2100000,5000
+25,Massachusetts,2024,acs5,B07010,B07010_001,Mobility by Income,"Estimate!!Total:",4200000,6500
+25,Massachusetts,2024,acs5,B07010,B07010_002,Mobility by Income,"Estimate!!Total:!!$1 to $9,999 or loss",450000,3000
+25,Massachusetts,2024,acs5,B07011,B07011_001,Median Income by Mobility,"Estimate!!Total:",48000,600
+25,Massachusetts,2024,acs5,B07011,B07011_002,Median Income by Mobility,"Estimate!!Same house 1 year ago",50000,700
+25,Massachusetts,2024,acs5,B07012,B07012_001,Mobility by Poverty,"Estimate!!Total:",6600000,9500
+25,Massachusetts,2024,acs5,B07012,B07012_002,Mobility by Poverty,"Estimate!!Total:!!Below 100 percent of poverty level",650000,4000
+25,Massachusetts,2024,acs5,B07013,B07013_001,Mobility by Tenure,"Estimate!!Total:",6700000,9800
+25,Massachusetts,2024,acs5,B07013,B07013_002,Mobility by Tenure,"Estimate!!Total:!!Owner occupied",4200000,7000
+25,Massachusetts,2024,acs5,B07101,B07101_001,Region Movers,"Estimate!!Total:",250000,3000
+25,Massachusetts,2024,acs5,B07101,B07101_002,Region Movers,"Estimate!!Total:!!Same region",180000,2500
+25,Massachusetts,2024,acs5,B07201,B07201_001,Mobility MSA,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07201,B07201_002,Mobility MSA,"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,C07201,C07201_001,Mobility MSA (Collapsed),"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,C07201,C07201_002,Mobility MSA (Collapsed),"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07202,B07202_001,Mobility Micro,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07202,B07202_002,Mobility Micro,"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07203,B07203_001,Mobility Nonmetro,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07203,B07203_002,Mobility Nonmetro,"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07204,B07204_001,Mobility Place,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07204,B07204_002,Mobility Place,"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,C07204,C07204_001,Mobility Place (Collapsed),"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,C07204,C07204_002,Mobility Place (Collapsed),"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07401,B07401_001,Prior Mobility by Age,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07401,B07401_002,Prior Mobility by Age,"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,C07401,C07401_001,Prior Mobility by Age (Collapsed),"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,C07401,C07401_002,Prior Mobility by Age (Collapsed),"Estimate!!Total:!!Same house 1 year ago",5900000,9000
+25,Massachusetts,2024,acs5,B07402,B07402_001,Prior Median Age by Mobility,"Estimate!!Total:",39.8,0.2
+25,Massachusetts,2024,acs5,B07402,B07402_002,Prior Median Age by Mobility,"Estimate!!Same house 1 year ago",41.5,0.2
+25,Massachusetts,2024,acs5,B07403,B07403_001,Prior Mobility by Sex,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07403,B07403_002,Prior Mobility by Sex,"Estimate!!Total:!!Male:",3300000,6000
+25,Massachusetts,2024,acs5,B07404A,B07404A_001,Prior Mobility (White Alone),"Estimate!!Total:",5200000,8000
+25,Massachusetts,2024,acs5,B07404A,B07404A_002,Prior Mobility (White Alone),"Estimate!!Same house 1 year ago",4600000,7500
+25,Massachusetts,2024,acs5,B07407,B07407_001,Prior Mobility by Citizenship,"Estimate!!Total:",6800000,10000
+25,Massachusetts,2024,acs5,B07407,B07407_002,Prior Mobility by Citizenship,"Estimate!!Total:!!Native",5600000,9000
+25,Massachusetts,2024,acs5,B07408,B07408_001,Prior Mobility by Marital,"Estimate!!Total:",5600000,9000
+25,Massachusetts,2024,acs5,B07408,B07408_002,Prior Mobility by Marital,"Estimate!!Total:!!Never married",2100000,5000
+25,Massachusetts,2024,acs5,B07409,B07409_001,Prior Mobility by Education,"Estimate!!Total:",4800000,7000
+25,Massachusetts,2024,acs5,B07409,B07409_002,Prior Mobility by Education,"Estimate!!Total:!!Bachelor's degree or higher",2100000,5000
+25,Massachusetts,2024,acs5,B07410,B07410_001,Prior Mobility by Income,"Estimate!!Total:",4200000,6500
+25,Massachusetts,2024,acs5,B07410,B07410_002,Prior Mobility by Income,"Estimate!!Total:!!$1 to $9,999 or loss",450000,3000
+25,Massachusetts,2024,acs5,B07411,B07411_001,Prior Median Income by Mobility,"Estimate!!Total:",48000,600
+25,Massachusetts,2024,acs5,B07411,B07411_002,Prior Median Income by Mobility,"Estimate!!Same house 1 year ago",50000,700
+25,Massachusetts,2024,acs5,B07412,B07412_001,Prior Mobility by Poverty,"Estimate!!Total:",6600000,9500
+25,Massachusetts,2024,acs5,B07412,B07412_002,Prior Mobility by Poverty,"Estimate!!Total:!!Below 100 percent of poverty level",650000,4000
+25,Massachusetts,2024,acs5,B07413,B07413_001,Prior Mobility by Tenure,"Estimate!!Total:",6700000,9800
+25,Massachusetts,2024,acs5,B07413,B07413_002,Prior Mobility by Tenure,"Estimate!!Total:!!Owner occupied",4200000,7000
