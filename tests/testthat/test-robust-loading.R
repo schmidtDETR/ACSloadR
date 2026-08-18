@@ -54,9 +54,9 @@ test_that("print.acs_lmi_bundle displays warning badge for empty components", {
   expect_true(any(grepl("valid_part: 1 rows", output)))
 })
 
-test_that("wizard topic catalog includes caveats for topics with table caveats", {
+test_that("wizard topic catalog includes detailed and collapsed components", {
   cat <- acs_topic_catalog()
   expect_true("class_of_worker" %in% names(cat))
-  expect_false(is.null(cat$class_of_worker$caveat))
-  expect_match(cat$class_of_worker$caveat, "C24080")
+  expect_true("class_of_worker_collapsed" %in% cat$class_of_worker$components)
+  expect_true("industry_collapsed" %in% cat$industry$components)
 })

@@ -144,6 +144,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     industry_acs5 = list(
+      tables = "B24030", dataset_type = "detailed", parser = "industry_counts",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_collapsed_acs1 = list(
+      tables = "C24030", dataset_type = "detailed", parser = "industry_counts",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_collapsed_acs5 = list(
       tables = "C24030", dataset_type = "detailed", parser = "industry_counts",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
@@ -152,6 +160,14 @@ acs_table_registry <- function() {
       universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
     ),
     industry_full_time_acs5 = list(
+      tables = "B24040", dataset_type = "detailed", parser = "industry_counts",
+      universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_full_time_collapsed_acs1 = list(
+      tables = "C24040", dataset_type = "detailed", parser = "industry_counts",
+      universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_full_time_collapsed_acs5 = list(
       tables = "C24040", dataset_type = "detailed", parser = "industry_counts",
       universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
     ),
@@ -160,6 +176,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
     ),
     industry_earnings_acs5 = list(
+      tables = c("B24031", "B24032"), dataset_type = "detailed", parser = "industry_earnings",
+      universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    industry_earnings_collapsed_acs1 = list(
+      tables = c("C24031", "C24032"), dataset_type = "detailed", parser = "industry_earnings",
+      universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    industry_earnings_collapsed_acs5 = list(
       tables = c("C24031", "C24032"), dataset_type = "detailed", parser = "industry_earnings",
       universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
     ),
@@ -168,6 +192,14 @@ acs_table_registry <- function() {
       universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
     ),
     industry_earnings_full_time_acs5 = list(
+      tables = c("B24041", "B24042"), dataset_type = "detailed", parser = "industry_earnings",
+      universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    industry_earnings_full_time_collapsed_acs1 = list(
+      tables = c("C24041", "C24042"), dataset_type = "detailed", parser = "industry_earnings",
+      universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    industry_earnings_full_time_collapsed_acs5 = list(
       tables = c("C24041", "C24042"), dataset_type = "detailed", parser = "industry_earnings",
       universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
     ),
@@ -176,6 +208,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     industry_by_occupation_acs5 = list(
+      tables = "B24050", dataset_type = "detailed", parser = "industry_by_occupation",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_by_occupation_collapsed_acs1 = list(
+      tables = "C24050", dataset_type = "detailed", parser = "industry_by_occupation",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_by_occupation_collapsed_acs5 = list(
       tables = "C24050", dataset_type = "detailed", parser = "industry_by_occupation",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
@@ -184,6 +224,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     industry_by_class_acs5 = list(
+      tables = "B24070", dataset_type = "detailed", parser = "industry_by_class",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_by_class_collapsed_acs1 = list(
+      tables = "C24070", dataset_type = "detailed", parser = "industry_by_class",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    industry_by_class_collapsed_acs5 = list(
       tables = "C24070", dataset_type = "detailed", parser = "industry_by_class",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
@@ -194,6 +242,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     class_of_worker_acs5 = list(
+      tables = "B24080", dataset_type = "detailed", parser = "class_of_worker_counts",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    class_of_worker_collapsed_acs1 = list(
+      tables = "C24080", dataset_type = "detailed", parser = "class_of_worker_counts",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    class_of_worker_collapsed_acs5 = list(
       tables = "C24080", dataset_type = "detailed", parser = "class_of_worker_counts",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
@@ -202,6 +258,14 @@ acs_table_registry <- function() {
       universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
     ),
     class_of_worker_full_time_acs5 = list(
+      tables = "B24090", dataset_type = "detailed", parser = "class_of_worker_counts",
+      universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
+    ),
+    class_of_worker_full_time_collapsed_acs1 = list(
+      tables = "C24090", dataset_type = "detailed", parser = "class_of_worker_counts",
+      universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
+    ),
+    class_of_worker_full_time_collapsed_acs5 = list(
       tables = "C24090", dataset_type = "detailed", parser = "class_of_worker_counts",
       universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
     ),
@@ -210,6 +274,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
     ),
     class_of_worker_earnings_acs5 = list(
+      tables = c("B24081", "B24082"), dataset_type = "detailed", parser = "class_earnings",
+      universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    class_of_worker_earnings_collapsed_acs1 = list(
+      tables = c("C24081", "C24082"), dataset_type = "detailed", parser = "class_earnings",
+      universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    class_of_worker_earnings_collapsed_acs5 = list(
       tables = c("C24081", "C24082"), dataset_type = "detailed", parser = "class_earnings",
       universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
     ),
@@ -218,6 +290,14 @@ acs_table_registry <- function() {
       universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
     ),
     class_of_worker_earnings_full_time_acs5 = list(
+      tables = c("B24091", "B24092"), dataset_type = "detailed", parser = "class_earnings",
+      universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    class_of_worker_earnings_full_time_collapsed_acs1 = list(
+      tables = c("C24091", "C24092"), dataset_type = "detailed", parser = "class_earnings",
+      universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    class_of_worker_earnings_full_time_collapsed_acs5 = list(
       tables = c("C24091", "C24092"), dataset_type = "detailed", parser = "class_earnings",
       universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
     ),
@@ -226,6 +306,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     class_by_occupation_acs5 = list(
+      tables = "B24060", dataset_type = "detailed", parser = "class_by_occupation",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    class_by_occupation_collapsed_acs1 = list(
+      tables = "C24060", dataset_type = "detailed", parser = "class_by_occupation",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    class_by_occupation_collapsed_acs5 = list(
       tables = "C24060", dataset_type = "detailed", parser = "class_by_occupation",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
@@ -236,6 +324,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     occupation_detailed_total_acs5 = list(
+      tables = "B24010", dataset_type = "detailed", parser = "occupation_detailed_counts",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    occupation_detailed_total_collapsed_acs1 = list(
+      tables = "C24010", dataset_type = "detailed", parser = "occupation_detailed_counts",
+      universe = "Civilian employed population 16 years and over", shares = TRUE
+    ),
+    occupation_detailed_total_collapsed_acs5 = list(
       tables = "C24010", dataset_type = "detailed", parser = "occupation_detailed_counts",
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
@@ -244,6 +340,14 @@ acs_table_registry <- function() {
       universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
     ),
     occupation_detailed_full_time_acs5 = list(
+      tables = "B24020", dataset_type = "detailed", parser = "occupation_detailed_counts",
+      universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
+    ),
+    occupation_detailed_full_time_collapsed_acs1 = list(
+      tables = "C24020", dataset_type = "detailed", parser = "occupation_detailed_counts",
+      universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
+    ),
+    occupation_detailed_full_time_collapsed_acs5 = list(
       tables = "C24020", dataset_type = "detailed", parser = "occupation_detailed_counts",
       universe = "Full-time, year-round civilian employed population 16 years and over", shares = TRUE
     ),
@@ -252,6 +356,14 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
     ),
     occupation_earnings_acs5 = list(
+      tables = c("B24011", "B24012"), dataset_type = "detailed", parser = "occupation_earnings",
+      universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    occupation_earnings_collapsed_acs1 = list(
+      tables = c("C24011", "C24012"), dataset_type = "detailed", parser = "occupation_earnings",
+      universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    occupation_earnings_collapsed_acs5 = list(
       tables = c("C24011", "C24012"), dataset_type = "detailed", parser = "occupation_earnings",
       universe = "Civilian employed population 16 years and over with earnings", shares = FALSE
     ),
@@ -260,6 +372,14 @@ acs_table_registry <- function() {
       universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
     ),
     occupation_earnings_full_time_acs5 = list(
+      tables = c("B24021", "B24022"), dataset_type = "detailed", parser = "occupation_earnings",
+      universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    occupation_earnings_full_time_collapsed_acs1 = list(
+      tables = c("C24021", "C24022"), dataset_type = "detailed", parser = "occupation_earnings",
+      universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
+    ),
+    occupation_earnings_full_time_collapsed_acs5 = list(
       tables = c("C24021", "C24022"), dataset_type = "detailed", parser = "occupation_earnings",
       universe = "Full-time, year-round civilian employed population 16 years and over with earnings", shares = FALSE
     ),

@@ -97,8 +97,8 @@ acs_topic_catalog <- function() {
       getter = "get_acs_industry",
       tables = c("B24030 / C24030", "B24040 / C24040", "B24031", "B24032", "B24041", "B24042", "B24050 / C24050", "B24060 / C24060"),
       universe = "Civilian employed population 16 years and over",
-      components = c("industry", "industry_full_time", "earnings", "earnings_full_time", "industry_by_occupation", "industry_by_class"),
-      description = "Industry employment counts, full-time counts, median earnings, industry-by-occupation matrix, and class of worker.",
+      components = c("industry", "industry_collapsed", "industry_full_time", "industry_full_time_collapsed", "earnings", "earnings_collapsed", "earnings_full_time", "earnings_full_time_collapsed", "industry_by_occupation", "industry_by_occupation_collapsed", "industry_by_class", "industry_by_class_collapsed"),
+      description = "Industry employment counts, full-time counts, median earnings, industry-by-occupation matrix, and class of worker (detailed B-tables and collapsed C-tables).",
       default_var = "industry"
     ),
     class_of_worker = list(
@@ -106,12 +106,11 @@ acs_topic_catalog <- function() {
       category = c("Industry, Occupation & Class of Worker", "Labor Force & Employment"),
       title = "Class of Worker & Earnings (Private, Non-profit, Government, Self-employed)",
       getter = "get_acs_class_of_worker",
-      tables = c("B24080 / C24080", "B24090 / C24090", "B24081", "B24082", "B24091", "B24092"),
+      tables = c("B24080 / C24080", "B24090 / C24090", "B24081 / C24081", "B24082 / C24082", "B24091 / C24091", "B24092 / C24092"),
       universe = "Civilian employed population 16 years and over",
-      components = c("class_of_worker", "class_of_worker_full_time", "earnings", "earnings_full_time", "class_by_occupation"),
-      description = "Private for-profit, non-profit, local/state/federal government, and self-employed worker counts, full-time breakdowns, and earnings.",
-      default_var = "cow",
-      caveat = "Note: ACS 5-year ('acs5') uses collapsed table C24080. If table unavailability occurs for a vintage, consider using survey = 'acs1' (uses B24080) or vintage 2023."
+      components = c("class_of_worker", "class_of_worker_collapsed", "class_of_worker_full_time", "class_of_worker_full_time_collapsed", "earnings", "earnings_collapsed", "earnings_full_time", "earnings_full_time_collapsed", "class_by_occupation", "class_by_occupation_collapsed"),
+      description = "Private for-profit, non-profit, local/state/federal government, and self-employed worker counts, full-time breakdowns, and earnings (detailed B-tables and collapsed C-tables).",
+      default_var = "cow"
     ),
     national_detailed = list(
       id = "national_detailed",

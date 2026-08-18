@@ -299,118 +299,163 @@ get_acs_occupation_detailed <- function(year, survey = c("acs5", "acs1"), geogra
                                         cache_table = TRUE) {
   survey <- match.arg(survey)
   registry <- acs_table_registry()
+
   occ_key <- paste0("occupation_detailed_total_", survey)
+  occ_c_key <- paste0("occupation_detailed_total_collapsed_", survey)
   ft_key <- paste0("occupation_detailed_full_time_", survey)
+  ft_c_key <- paste0("occupation_detailed_full_time_collapsed_", survey)
   earn_key <- paste0("occupation_earnings_", survey)
+  earn_c_key <- paste0("occupation_earnings_collapsed_", survey)
   earn_ft_key <- paste0("occupation_earnings_full_time_", survey)
+  earn_ft_c_key <- paste0("occupation_earnings_full_time_collapsed_", survey)
 
   occ_raw <- load_acs_lmi_table(registry[[occ_key]], year, survey, geography, cache_table, ...)
+  occ_c_raw <- load_acs_lmi_table(registry[[occ_c_key]], year, survey, geography, cache_table, ...)
   ft_raw <- load_acs_lmi_table(registry[[ft_key]], year, survey, geography, cache_table, ...)
+  ft_c_raw <- load_acs_lmi_table(registry[[ft_c_key]], year, survey, geography, cache_table, ...)
   earn_raw <- load_acs_lmi_table(registry[[earn_key]], year, survey, geography, cache_table, ...)
+  earn_c_raw <- load_acs_lmi_table(registry[[earn_c_key]], year, survey, geography, cache_table, ...)
   earn_ft_raw <- load_acs_lmi_table(registry[[earn_ft_key]], year, survey, geography, cache_table, ...)
+  earn_ft_c_raw <- load_acs_lmi_table(registry[[earn_ft_c_key]], year, survey, geography, cache_table, ...)
 
   components <- list(
     occupation = parse_acs_topic(occ_raw, registry[[occ_key]]$parser, registry[[occ_key]]),
+    occupation_collapsed = parse_acs_topic(occ_c_raw, registry[[occ_c_key]]$parser, registry[[occ_c_key]]),
     occupation_full_time = parse_acs_topic(ft_raw, registry[[ft_key]]$parser, registry[[ft_key]]),
+    occupation_full_time_collapsed = parse_acs_topic(ft_c_raw, registry[[ft_c_key]]$parser, registry[[ft_c_key]]),
     earnings = parse_acs_topic(earn_raw, registry[[earn_key]]$parser, registry[[earn_key]]),
-    earnings_full_time = parse_acs_topic(earn_ft_raw, registry[[earn_ft_key]]$parser, registry[[earn_ft_key]])
+    earnings_collapsed = parse_acs_topic(earn_c_raw, registry[[earn_c_key]]$parser, registry[[earn_c_key]]),
+    earnings_full_time = parse_acs_topic(earn_ft_raw, registry[[earn_ft_key]]$parser, registry[[earn_ft_key]]),
+    earnings_full_time_collapsed = parse_acs_topic(earn_ft_c_raw, registry[[earn_ft_c_key]]$parser, registry[[earn_ft_c_key]])
   )
   new_acs_lmi_bundle(components, "Detailed occupation", year, survey)
 }
 
 #' Get tidy ACS industry data
 #'
-#' Downloads and parses ACS detailed industry tables. ACS 1-year uses B24030-B24070;
-#' ACS 5-year uses collapsed C24030-C24070. Includes industry counts, full-time
-#' counts, median earnings (overall and full-time), industry by occupation, and
-#' industry by class of worker.
+#' Downloads and parses ACS detailed industry tables (B24030-B24070) and collapsed
+#' industry tables (C24030-C24070). Includes industry counts, full-time counts,
+#' median earnings (overall and full-time), industry by occupation, and
+#' industry by class of worker for both detailed and collapsed variants.
 #'
 #' @inheritParams get_acs_employment
-#' @return An `acs_lmi_bundle` with `industry`, `industry_full_time`,
-#'   `earnings`, `earnings_full_time`, `industry_by_occupation`, and
-#'   `industry_by_class` tibbles.
+#' @return An `acs_lmi_bundle` with `industry`, `industry_collapsed`, `industry_full_time`,
+#'   `industry_full_time_collapsed`, `earnings`, `earnings_collapsed`,
+#'   `earnings_full_time`, `earnings_full_time_collapsed`, `industry_by_occupation`,
+#'   `industry_by_occupation_collapsed`, `industry_by_class`, and
+#'   `industry_by_class_collapsed` tibbles.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' ind <- get_acs_industry(2024, "acs5", "state", state = "MA")
 #' ind$industry
-#' ind$industry_full_time
-#' ind$earnings
-#' ind$earnings_full_time
-#' ind$industry_by_occupation
-#' ind$industry_by_class
+#' ind$industry_collapsed
 #' }
 get_acs_industry <- function(year, survey = c("acs5", "acs1"), geography, ...,
                              cache_table = TRUE) {
   survey <- match.arg(survey)
   registry <- acs_table_registry()
+
   ind_key <- paste0("industry_", survey)
+  ind_c_key <- paste0("industry_collapsed_", survey)
   ft_key <- paste0("industry_full_time_", survey)
+  ft_c_key <- paste0("industry_full_time_collapsed_", survey)
   earn_key <- paste0("industry_earnings_", survey)
+  earn_c_key <- paste0("industry_earnings_collapsed_", survey)
   earn_ft_key <- paste0("industry_earnings_full_time_", survey)
+  earn_ft_c_key <- paste0("industry_earnings_full_time_collapsed_", survey)
   occ_key <- paste0("industry_by_occupation_", survey)
+  occ_c_key <- paste0("industry_by_occupation_collapsed_", survey)
   class_key <- paste0("industry_by_class_", survey)
+  class_c_key <- paste0("industry_by_class_collapsed_", survey)
 
   ind_raw <- load_acs_lmi_table(registry[[ind_key]], year, survey, geography, cache_table, ...)
+  ind_c_raw <- load_acs_lmi_table(registry[[ind_c_key]], year, survey, geography, cache_table, ...)
   ft_raw <- load_acs_lmi_table(registry[[ft_key]], year, survey, geography, cache_table, ...)
+  ft_c_raw <- load_acs_lmi_table(registry[[ft_c_key]], year, survey, geography, cache_table, ...)
   earn_raw <- load_acs_lmi_table(registry[[earn_key]], year, survey, geography, cache_table, ...)
+  earn_c_raw <- load_acs_lmi_table(registry[[earn_c_key]], year, survey, geography, cache_table, ...)
   earn_ft_raw <- load_acs_lmi_table(registry[[earn_ft_key]], year, survey, geography, cache_table, ...)
+  earn_ft_c_raw <- load_acs_lmi_table(registry[[earn_ft_c_key]], year, survey, geography, cache_table, ...)
   occ_raw <- load_acs_lmi_table(registry[[occ_key]], year, survey, geography, cache_table, ...)
+  occ_c_raw <- load_acs_lmi_table(registry[[occ_c_key]], year, survey, geography, cache_table, ...)
   class_raw <- load_acs_lmi_table(registry[[class_key]], year, survey, geography, cache_table, ...)
+  class_c_raw <- load_acs_lmi_table(registry[[class_c_key]], year, survey, geography, cache_table, ...)
 
   components <- list(
     industry = parse_acs_topic(ind_raw, registry[[ind_key]]$parser, registry[[ind_key]]),
+    industry_collapsed = parse_acs_topic(ind_c_raw, registry[[ind_c_key]]$parser, registry[[ind_c_key]]),
     industry_full_time = parse_acs_topic(ft_raw, registry[[ft_key]]$parser, registry[[ft_key]]),
+    industry_full_time_collapsed = parse_acs_topic(ft_c_raw, registry[[ft_c_key]]$parser, registry[[ft_c_key]]),
     earnings = parse_acs_topic(earn_raw, registry[[earn_key]]$parser, registry[[earn_key]]),
+    earnings_collapsed = parse_acs_topic(earn_c_raw, registry[[earn_c_key]]$parser, registry[[earn_c_key]]),
     earnings_full_time = parse_acs_topic(earn_ft_raw, registry[[earn_ft_key]]$parser, registry[[earn_ft_key]]),
+    earnings_full_time_collapsed = parse_acs_topic(earn_ft_c_raw, registry[[earn_ft_c_key]]$parser, registry[[earn_ft_c_key]]),
     industry_by_occupation = parse_acs_topic(occ_raw, registry[[occ_key]]$parser, registry[[occ_key]]),
-    industry_by_class = parse_acs_topic(class_raw, registry[[class_key]]$parser, registry[[class_key]])
+    industry_by_occupation_collapsed = parse_acs_topic(occ_c_raw, registry[[occ_c_key]]$parser, registry[[occ_c_key]]),
+    industry_by_class = parse_acs_topic(class_raw, registry[[class_key]]$parser, registry[[class_key]]),
+    industry_by_class_collapsed = parse_acs_topic(class_c_raw, registry[[class_c_key]]$parser, registry[[class_c_key]])
   )
   new_acs_lmi_bundle(components, "Industry", year, survey)
 }
 
 #' Get tidy ACS class of worker data
 #'
-#' Downloads and parses ACS detailed class of worker tables. ACS 1-year uses
-#' B24080-B24092 & B24060; ACS 5-year uses collapsed C24080-C24092 & C24060.
+#' Downloads and parses ACS detailed class of worker tables (B24080-B24092 & B24060)
+#' and collapsed class of worker tables (C24080-C24092 & C24060).
 #'
 #' @inheritParams get_acs_employment
-#' @return An `acs_lmi_bundle` with `class_of_worker`, `class_of_worker_full_time`,
-#'   `earnings`, `earnings_full_time`, and `class_by_occupation` tibbles.
+#' @return An `acs_lmi_bundle` with `class_of_worker`, `class_of_worker_collapsed`,
+#'   `class_of_worker_full_time`, `class_of_worker_full_time_collapsed`, `earnings`,
+#'   `earnings_collapsed`, `earnings_full_time`, `earnings_full_time_collapsed`,
+#'   `class_by_occupation`, and `class_by_occupation_collapsed` tibbles.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' cow <- get_acs_class_of_worker(2024, "acs5", "state", state = "MA")
 #' cow$class_of_worker
-#' cow$class_of_worker_full_time
-#' cow$earnings
-#' cow$earnings_full_time
-#' cow$class_by_occupation
+#' cow$class_of_worker_collapsed
 #' }
 get_acs_class_of_worker <- function(year, survey = c("acs5", "acs1"), geography, ...,
                                     cache_table = TRUE) {
   survey <- match.arg(survey)
   registry <- acs_table_registry()
+
   cow_key <- paste0("class_of_worker_", survey)
+  cow_c_key <- paste0("class_of_worker_collapsed_", survey)
   ft_key <- paste0("class_of_worker_full_time_", survey)
+  ft_c_key <- paste0("class_of_worker_full_time_collapsed_", survey)
   earn_key <- paste0("class_of_worker_earnings_", survey)
+  earn_c_key <- paste0("class_of_worker_earnings_collapsed_", survey)
   earn_ft_key <- paste0("class_of_worker_earnings_full_time_", survey)
+  earn_ft_c_key <- paste0("class_of_worker_earnings_full_time_collapsed_", survey)
   occ_key <- paste0("class_by_occupation_", survey)
+  occ_c_key <- paste0("class_by_occupation_collapsed_", survey)
 
   cow_raw <- load_acs_lmi_table(registry[[cow_key]], year, survey, geography, cache_table, ...)
+  cow_c_raw <- load_acs_lmi_table(registry[[cow_c_key]], year, survey, geography, cache_table, ...)
   ft_raw <- load_acs_lmi_table(registry[[ft_key]], year, survey, geography, cache_table, ...)
+  ft_c_raw <- load_acs_lmi_table(registry[[ft_c_key]], year, survey, geography, cache_table, ...)
   earn_raw <- load_acs_lmi_table(registry[[earn_key]], year, survey, geography, cache_table, ...)
+  earn_c_raw <- load_acs_lmi_table(registry[[earn_c_key]], year, survey, geography, cache_table, ...)
   earn_ft_raw <- load_acs_lmi_table(registry[[earn_ft_key]], year, survey, geography, cache_table, ...)
+  earn_ft_c_raw <- load_acs_lmi_table(registry[[earn_ft_c_key]], year, survey, geography, cache_table, ...)
   occ_raw <- load_acs_lmi_table(registry[[occ_key]], year, survey, geography, cache_table, ...)
+  occ_c_raw <- load_acs_lmi_table(registry[[occ_c_key]], year, survey, geography, cache_table, ...)
 
   components <- list(
     class_of_worker = parse_acs_topic(cow_raw, registry[[cow_key]]$parser, registry[[cow_key]]),
+    class_of_worker_collapsed = parse_acs_topic(cow_c_raw, registry[[cow_c_key]]$parser, registry[[cow_c_key]]),
     class_of_worker_full_time = parse_acs_topic(ft_raw, registry[[ft_key]]$parser, registry[[ft_key]]),
+    class_of_worker_full_time_collapsed = parse_acs_topic(ft_c_raw, registry[[ft_c_key]]$parser, registry[[ft_c_key]]),
     earnings = parse_acs_topic(earn_raw, registry[[earn_key]]$parser, registry[[earn_key]]),
+    earnings_collapsed = parse_acs_topic(earn_c_raw, registry[[earn_c_key]]$parser, registry[[earn_c_key]]),
     earnings_full_time = parse_acs_topic(earn_ft_raw, registry[[earn_ft_key]]$parser, registry[[earn_ft_key]]),
-    class_by_occupation = parse_acs_topic(occ_raw, registry[[occ_key]]$parser, registry[[occ_key]])
+    earnings_full_time_collapsed = parse_acs_topic(earn_ft_c_raw, registry[[earn_ft_c_key]]$parser, registry[[earn_ft_c_key]]),
+    class_by_occupation = parse_acs_topic(occ_raw, registry[[occ_key]]$parser, registry[[occ_key]]),
+    class_by_occupation_collapsed = parse_acs_topic(occ_c_raw, registry[[occ_c_key]]$parser, registry[[occ_c_key]])
   )
   new_acs_lmi_bundle(components, "Class of worker", year, survey)
 }
