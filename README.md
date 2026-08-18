@@ -156,3 +156,7 @@ The requested geometry is retained in each bundle component.
 
 `explore_census_data()` launches the optional Shiny variable explorer. Install
 the suggested `DT` and `collapsibleTree` packages before launching it.
+
+## Developer & Agent Documentation
+
+For developer instructions, codebase architecture, and guidance on how modifying ACS tables impacts the interactive wizard, see [`AGENTS.md`](file:///Users/mremb/projects/ACSloadR/AGENTS.md).
