@@ -1,4 +1,7 @@
 parse_acs_topic <- function(data, parser, config) {
+  if (is.null(data) || nrow(data) == 0) {
+    return(tibble::tibble())
+  }
   if (identical(parser, "generic")) {
     return(parse_generic_table(data, config))
   }

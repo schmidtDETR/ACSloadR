@@ -110,7 +110,8 @@ acs_topic_catalog <- function() {
       universe = "Civilian employed population 16 years and over",
       components = c("class_of_worker", "class_of_worker_full_time", "earnings", "earnings_full_time", "class_by_occupation"),
       description = "Private for-profit, non-profit, local/state/federal government, and self-employed worker counts, full-time breakdowns, and earnings.",
-      default_var = "cow"
+      default_var = "cow",
+      caveat = "Note: ACS 5-year ('acs5') uses collapsed table C24080. If table unavailability occurs for a vintage, consider using survey = 'acs1' (uses B24080) or vintage 2023."
     ),
     national_detailed = list(
       id = "national_detailed",

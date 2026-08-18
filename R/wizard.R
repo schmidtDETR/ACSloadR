@@ -176,6 +176,9 @@ acs_wizard <- function(topic = NULL,
   cli::cli_text("{.field Tables}: {paste(selected_topic_info$tables, collapse = ', ')}")
   cli::cli_text("{.field Universe}: {selected_topic_info$universe}")
   cli::cli_text("{.field Components}: {paste(selected_topic_info$components, collapse = ', ')}")
+  if (!is.null(selected_topic_info$caveat)) {
+    cli::cli_alert_info("{selected_topic_info$caveat}")
+  }
   cli::cli_rule()
 
   # Step 3: Query Parameter Prompts (if interactive)
@@ -185,6 +188,10 @@ acs_wizard <- function(topic = NULL,
     geography = geography,
     state = state
   )
+
+  if (!is.null(selected_topic_info$caveat) && params$survey == "acs5") {
+    cli::cli_alert_warning("Reminder for survey '{params$survey}': {selected_topic_info$caveat}")
+  }
 
   # Step 4: Destination Selection
   dest <- prompt_destination(
@@ -358,6 +365,9 @@ prompt_topic_selection <- function(catalog) {
   cli::cli_text("{.field Tables}: {paste(chosen$tables, collapse = ', ')}")
   cli::cli_text("{.field Universe}: {chosen$universe}")
   cli::cli_text("{.field Components}: {paste(chosen$components, collapse = ', ')}")
+  if (!is.null(chosen$caveat)) {
+    cli::cli_alert_info("{chosen$caveat}")
+  }
 
   confirm_choices <- c("Use this topic", "Select a different topic")
   c_idx <- utils::menu(confirm_choices, title = "Proceed with this topic?")
