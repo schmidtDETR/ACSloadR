@@ -49,3 +49,8 @@ parse_label_levels <- function(data, label_col = "label", remove_measure = FALSE
   }
   out
 }
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) y else x
+}
+

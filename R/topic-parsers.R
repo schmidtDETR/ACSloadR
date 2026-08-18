@@ -1,12 +1,14 @@
 parse_acs_topic <- function(data, parser, config) {
+  if (identical(parser, "generic")) {
+    return(parse_generic_table(data, config))
+  }
   switch(
     parser,
-    age = parse_age_data(data, config),
+    generic = parse_generic_table(data, config),
+    # Core & Demographic Parsers
     employment = parse_employment_data(data, config),
     occupation = parse_occupation_data(data, config),
     occupation_race = parse_occupation_race_data(data, config),
-    earnings = parse_earnings_data(data, config),
-    commuting = parse_commuting_data(data, config),
 
     # Detailed Employment Parsers
     detailed_employment_status = parse_detailed_employment_status_data(data, config),
@@ -112,71 +114,111 @@ parse_acs_topic <- function(data, parser, config) {
     commuting_median_age = parse_commuting_median_age_data(data, config),
     commuting_race = parse_commuting_race_data(data, config),
     commuting_cross_earnings = parse_commuting_cross_earnings_data(data, config),
-    commuting_median_earnings = parse_commuting_median_earnings_data(data, config),
-    commuting_cross_poverty = parse_commuting_cross_poverty_data(data, config),
-    commuting_cross_occupation = parse_commuting_cross_occupation_data(data, config),
-    commuting_cross_industry = parse_commuting_cross_industry_data(data, config),
-    commuting_cross_class = parse_commuting_cross_class_data(data, config),
-    commuting_cross_vehicles = parse_commuting_cross_vehicles_data(data, config),
-
-    # Migration Parsers
-    migration_age = parse_migration_age_data(data, config),
-    migration_median_age = parse_migration_median_age_data(data, config),
-    migration_sex = parse_migration_sex_data(data, config),
-    migration_race = parse_migration_race_data(data, config),
-    migration_citizenship = parse_migration_citizenship_data(data, config),
-    migration_marital = parse_migration_marital_data(data, config),
-    migration_education = parse_migration_education_data(data, config),
-    migration_income = parse_migration_income_data(data, config),
-    migration_median_income = parse_migration_median_income_data(data, config),
-    migration_poverty = parse_migration_poverty_data(data, config),
-    migration_tenure = parse_migration_tenure_data(data, config),
-    migration_region = parse_migration_region_data(data, config),
-    migration_geo_level = parse_migration_geo_level_data(data, config),
-
     stop("Unknown ACS parser: ", parser, call. = FALSE)
   )
 }
 
-parse_age_data <- function(data, config) {
+parse_generic_table <- function(data, config) {
+  schema <- config$schema
+  if (is.null(schema)) {
+    stop("No schema defined for generic parser in table config.", call. = FALSE)
+  }
+
   tokens <- acs_label_tokens(data$label)
-  second <- token_at(tokens, 2L)
-  third <- token_at(tokens, 3L)
 
-  race_labels <- c(
-    A = "White alone",
-    B = "Black or African American alone",
-    C = "American Indian and Alaska Native alone",
-    D = "Asian alone",
-    E = "Native Hawaiian and Other Pacific Islander alone",
-    F = "Some other race alone",
-    G = "Two or more races",
-    H = "White alone, not Hispanic or Latino",
-    I = "Hispanic or Latino"
-  )
-  suffix <- stringr::str_match(data$table, "^B01001([A-I])$")[, 2]
+  # 1. Race / Ethnicity Suffix handling
+  if (isTRUE(schema$race_suffix)) {
+    race <- parse_income_race_suffix(data$table[[1]])
+    data$race_ethnicity <- if (!is.na(race)) race else NA_character_
+    if (!is.na(race) && !is.null(schema$race_universe_fmt)) {
+      data$universe <- sprintf(schema$race_universe_fmt, race)
+    } else if (!is.na(race)) {
+      data$universe <- paste0(race, " population")
+    } else {
+      data$universe <- config$universe
+    }
+  } else {
+    data$universe <- config$universe
+    if ("race_ethnicity" %in% (schema$key_cols %||% character())) {
+      data$race_ethnicity <- NA_character_
+    }
+  }
 
-  data$universe <- ifelse(
-    is.na(suffix),
-    config$universe,
-    paste0(unname(race_labels[suffix]), " population")
-  )
-  data$measure <- "population"
-  data$unit <- "count"
-  data$sex <- dplyr::case_when(
-    second == "Male" ~ "Male",
-    second == "Female" ~ "Female",
-    TRUE ~ "Total"
-  )
-  data$age_group <- dplyr::if_else(!is.na(third), third, "Total")
-  data$race_ethnicity <- unname(race_labels[suffix])
+  # 2. Measures and units
+  data$measure <- schema$measure %||% "population"
+  data$unit <- schema$unit %||% "count"
+
+  # 3. Process positional level columns
+  if (!is.null(schema$levels)) {
+    level_cols <- names(schema$levels)
+    has_sex_col <- "sex" %in% level_cols
+
+    for (col in level_cols) {
+      spec <- schema$levels[[col]]
+
+      if (col == "sex") {
+        tok_val <- token_at(tokens, spec)
+        data$sex <- dplyr::case_when(
+          tok_val == "Male" ~ "Male",
+          tok_val == "Female" ~ "Female",
+          TRUE ~ "Total"
+        )
+      } else if (isTRUE(schema$sex_cross) && has_sex_col) {
+        sex_pos <- schema$levels[["sex"]]
+        sex_tok <- token_at(tokens, sex_pos)
+        detail_tok <- token_at(tokens, spec)
+
+        data[[col]] <- dplyr::case_when(
+          sex_tok %in% c("Male", "Female") & !is.na(detail_tok) ~ detail_tok,
+          !sex_tok %in% c("Male", "Female") & !is.na(sex_tok) ~ sex_tok,
+          TRUE ~ "Total"
+        )
+      } else {
+        tok_val <- token_at(tokens, spec)
+        default_val <- if (is.character(schema$default_level)) schema$default_level else "Total"
+        data[[col]] <- dplyr::if_else(!is.na(tok_val), tok_val, default_val)
+      }
+    }
+  }
+
+  # 4. Process category token column
+  cat_col <- schema$category_col %||% schema$leaf_col
+  if (!is.null(cat_col)) {
+    start_pos <- schema$category_start_level %||% schema$leaf_start %||% 1L
+    cat_tok <- deepest_token(tokens, start = start_pos)
+    default_cat <- schema$default_category %||% schema$default_leaf %||% "Total"
+    data[[cat_col]] <- dplyr::if_else(!is.na(cat_tok), cat_tok, default_cat)
+  }
+
+  # 5. Metadata defaults
   data$value_source <- "published"
   data$denominator_variable <- NA_character_
 
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("race_ethnicity", "sex", "age_group"))
+  # 6. Share derivation
+  shares_enabled <- if (!is.null(schema$shares)) schema$shares else isTRUE(config$shares)
+  if (shares_enabled) {
+    denominator <- schema$denominator %||% paste0(data$table, "_001")
+    share_measure <- schema$share_measure %||% "share"
+    data <- add_share_rows(
+      data,
+      rep(TRUE, nrow(data)),
+      denominator,
+      share_measure = share_measure
+    )
+  }
+
+  # 7. Finalize column ordering and sorting keys
+  key_cols <- schema$key_cols %||% c(
+    if (isTRUE(schema$race_suffix)) "race_ethnicity",
+    names(schema$levels),
+    cat_col
+  )
+  key_cols <- unique(key_cols[key_cols %in% names(data)])
+
+  finalize_acs_data(data, key_cols)
 }
+
+
 
 employment_characteristics <- function(tokens) {
   headers <- c(
@@ -360,46 +402,7 @@ parse_occupation_race_data <- function(data, config) {
   )
 }
 
-parse_earnings_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  second <- token_at(tokens, 2L)
-  third <- token_at(tokens, 3L)
 
-  data$universe <- config$universe
-  data$measure <- "median_earnings"
-  data$unit <- "dollars"
-  data$sex <- dplyr::case_when(
-    second == "Male" ~ "Male",
-    second == "Female" ~ "Female",
-    TRUE ~ "Total"
-  )
-  data$educational_attainment <- dplyr::case_when(
-    second %in% c("Male", "Female") & !is.na(third) ~ third,
-    !second %in% c("Male", "Female") & !is.na(second) ~ second,
-    TRUE ~ "Total"
-  )
-  data$value_source <- "published"
-  finalize_acs_data(data, c("sex", "educational_attainment"))
-}
-
-parse_commuting_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  hierarchy <- purrr::map(tokens, function(x) if (length(x) > 1L) x[2:length(x)] else character())
-
-  data$universe <- config$universe
-  data$measure <- "workers"
-  data$unit <- "count"
-  data$transportation_mode <- deepest_token(hierarchy)
-  data$transportation_mode[is.na(data$transportation_mode)] <- "All transportation modes"
-  data$mode_major <- token_at(hierarchy, 1L)
-  data$mode_detail <- token_at(hierarchy, 2L)
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("transportation_mode", "mode_major", "mode_detail"))
-}
 
 # ------------------------------------------------------------------------------
 # Detailed Employment Parsers
@@ -2474,278 +2477,4 @@ parse_commuting_cross_occupation_data <- function(data, config) {
   finalize_acs_data(data, c("transportation_mode", "occupation_group"))
 }
 
-parse_commuting_cross_industry_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
 
-  data$universe <- config$universe
-  data$measure <- "workers"
-  data$unit <- "count"
-  data$transportation_mode <- dplyr::if_else(!is.na(first), first, "Total")
-  data$industry_group <- deepest_token(tokens, start = 2L)
-  data$industry_group[is.na(data$industry_group)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("transportation_mode", "industry_group"))
-}
-
-parse_commuting_cross_class_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "workers"
-  data$unit <- "count"
-  data$transportation_mode <- dplyr::if_else(!is.na(first), first, "Total")
-  data$class_of_worker <- deepest_token(tokens, start = 2L)
-  data$class_of_worker[is.na(data$class_of_worker)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("transportation_mode", "class_of_worker"))
-}
-
-parse_commuting_cross_vehicles_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "workers"
-  data$unit <- "count"
-  data$transportation_mode <- dplyr::if_else(!is.na(first), first, "Total")
-  data$vehicles_available <- deepest_token(tokens, start = 2L)
-  data$vehicles_available[is.na(data$vehicles_available)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("transportation_mode", "vehicles_available"))
-}
-
-# ------------------------------------------------------------------------------
-# Migration Parsers (Geographical Mobility)
-# ------------------------------------------------------------------------------
-
-parse_migration_age_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$age_group <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("age_group", "migration_status"))
-}
-
-parse_migration_median_age_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  data$universe <- config$universe
-  data$measure <- "median_age"
-  data$unit <- "years"
-  data$migration_status <- deepest_token(tokens)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  finalize_acs_data(data, c("migration_status"))
-}
-
-parse_migration_sex_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$sex <- dplyr::case_when(
-    first == "Male" ~ "Male",
-    first == "Female" ~ "Female",
-    TRUE ~ "Total"
-  )
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("sex", "migration_status"))
-}
-
-parse_migration_race_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  race <- parse_income_race_suffix(data$table[[1]])
-
-  data$race_ethnicity <- if (!is.na(race)) race else NA_character_
-  data$universe <- if (!is.na(race)) paste0(race, " population 1 year and over") else config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$migration_status <- deepest_token(tokens)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("race_ethnicity", "migration_status"))
-}
-
-parse_migration_citizenship_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$citizenship_status <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("citizenship_status", "migration_status"))
-}
-
-parse_migration_marital_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$marital_status <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("marital_status", "migration_status"))
-}
-
-parse_migration_education_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$educational_attainment <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("educational_attainment", "migration_status"))
-}
-
-parse_migration_income_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$income_bracket <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("income_bracket", "migration_status"))
-}
-
-parse_migration_median_income_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  data$universe <- config$universe
-  data$measure <- "median_income"
-  data$unit <- "dollars"
-  data$migration_status <- deepest_token(tokens)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  finalize_acs_data(data, c("migration_status"))
-}
-
-parse_migration_poverty_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$poverty_status <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("poverty_status", "migration_status"))
-}
-
-parse_migration_tenure_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$tenure <- dplyr::if_else(!is.na(first), first, "Total")
-  data$migration_status <- deepest_token(tokens, start = 2L)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("tenure", "migration_status"))
-}
-
-parse_migration_region_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  data$universe <- config$universe
-  data$measure <- "movers"
-  data$unit <- "count"
-  data$mover_region <- deepest_token(tokens)
-  data$mover_region[is.na(data$mover_region)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("mover_region"))
-}
-
-parse_migration_geo_level_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  data$universe <- config$universe
-  data$measure <- "population"
-  data$unit <- "count"
-  data$migration_status <- deepest_token(tokens)
-  data$migration_status[is.na(data$migration_status)] <- "Total"
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-  finalize_acs_data(data, c("migration_status"))
-}

@@ -1,9 +1,9 @@
 test_that("age tables remain separate and use their own age structures", {
   registry <- ACSloadR:::acs_table_registry()
-  total <- ACSloadR:::parse_age_data(
+  total <- ACSloadR:::parse_generic_table(
     fixture_rows("B01001"), registry$age_total_population
   )
-  race <- ACSloadR:::parse_age_data(
+  race <- ACSloadR:::parse_generic_table(
     fixture_rows("B01001A"), registry$age_race_ethnicity
   )
 
@@ -345,8 +345,8 @@ test_that("occupation race parser handles survey-specific table depth", {
 
 test_that("earnings and commuting parsers expose domain-specific columns", {
   registry <- ACSloadR:::acs_table_registry()
-  earnings <- ACSloadR:::parse_earnings_data(fixture_rows("B20004"), registry$earnings)
-  commuting <- ACSloadR:::parse_commuting_data(fixture_rows("B08301"), registry$commuting)
+  earnings <- ACSloadR:::parse_generic_table(fixture_rows("B20004"), registry$earnings)
+  commuting <- ACSloadR:::parse_generic_table(fixture_rows("B08301"), registry$commuting)
 
   male <- earnings[earnings$variable == "B20004_008", ]
   expect_equal(male$sex, "Male")
@@ -362,7 +362,7 @@ test_that("earnings and commuting parsers expose domain-specific columns", {
 
 test_that("derived share MOEs follow the ACS proportion formula", {
   config <- ACSloadR:::acs_table_registry()$commuting
-  parsed <- ACSloadR:::parse_commuting_data(fixture_rows("B08301"), config)
+  parsed <- ACSloadR:::parse_generic_table(fixture_rows("B08301"), config)
   share <- parsed[
     parsed$variable == "B08301_002" & parsed$value_source == "derived",
   ]
@@ -375,7 +375,7 @@ test_that("derived share MOEs follow the ACS proportion formula", {
 test_that("zero denominators produce missing shares", {
   rows <- fixture_rows("B08301")
   rows$estimate[rows$variable == "B08301_001"] <- 0
-  parsed <- ACSloadR:::parse_commuting_data(
+  parsed <- ACSloadR:::parse_generic_table(
     rows, ACSloadR:::acs_table_registry()$commuting
   )
   derived <- parsed[parsed$value_source == "derived", ]
@@ -386,7 +386,7 @@ test_that("zero denominators produce missing shares", {
 test_that("geometry-like columns are retained at the end", {
   rows <- fixture_rows("B20004")
   rows$geometry <- "POINT (0 0)"
-  parsed <- ACSloadR:::parse_earnings_data(
+  parsed <- ACSloadR:::parse_generic_table(
     rows, ACSloadR:::acs_table_registry()$earnings
   )
   expect_equal(tail(names(parsed), 1), "geometry")

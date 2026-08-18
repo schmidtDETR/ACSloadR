@@ -1,18 +1,46 @@
 # ACSloadR Package Architecture & Developer Guide
 
-This document describes the internal architecture of `ACSloadR` and provides guidance for developers adding new Census Bureau American Community Survey (ACS) tables, modifying parsers, or extending the interactive CLI wizard.
+This document describes the architecture of `ACSloadR` and serves as a step-by-step reference guide for developers and contributors adding new Census Bureau American Community Survey (ACS) tables, defining declarative schemas, exporting getter functions, or updating the interactive wizard.
 
 ---
 
-## 1. Overview & Design Philosophy
+## 1. Architecture Overview & Data Flow
 
-`ACSloadR` provides frictionless, tidy access to Census Bureau ACS data for Labor Market Information (LMI) and socioeconomic analysis. It follows these key design principles:
+`ACSloadR` transforms raw Census Bureau ACS API data (downloaded via `tidycensus`) into tidy long-data tibbles wrapped in structured `acs_lmi_bundle` objects.
 
-1. **Tidy Long-Data Format**: Raw ACS variables are transformed into standardized long-data tibbles containing explicit dimension columns (e.g. `age_group`, `sex`, `income_bracket`, `migration_status`).
-2. **Automated Share Derivation**: Where appropriate, percentage shares are derived automatically (`value_source = "derived_share"`), propagating 90% Margins of Error (MOEs) using Census Bureau formulas.
-3. **Survey Table Routing**: Automatically manages survey differences between 1-year and 5-year ACS releases (e.g., routing to detailed `B` tables for ACS 1-year and collapsed `C` tables for ACS 5-year).
-4. **Structured S3 Bundles**: Related ACS tables are grouped into cohesive `acs_lmi_bundle` objects for intuitive downstream analysis.
-5. **Interactive Exploration & Script Generation**: Provides CLI wizard (`acs_wizard()`) and Shiny explorer (`explore_census_data()`) backed by a central topic catalog.
+```
+                           +-------------------------------------+
+                           | 1. User / Public Getter Function    |
+                           |    get_acs_migration(...)           |
+                           +------------------+------------------+
+                                              |
+                                              v
+                           +-------------------------------------+
+                           | 2. Master Table Registry            |
+                           |    R/table-registry.R               |
+                           |    (Declarative Schema Configuration)|
+                           +------------------+------------------+
+                                              |
+                                              v
+                           +-------------------------------------+
+                           | 3. Raw Census Data Loader           |
+                           |    R/acs-core.R                     |
+                           |    (load_acs_lmi_table via tidycensus|
+                           +------------------+------------------+
+                                              |
+                                              v
+                           +-------------------------------------+
+                           | 4. Declarative Schema Parser Engine |
+                           |    R/topic-parsers.R                |
+                           |    parse_generic_table(data, config)|
+                           +------------------+------------------+
+                                              |
+                                              v
+                           +-------------------------------------+
+                           | 5. Tidy S3 Output Bundle            |
+                           |    acs_lmi_bundle(migration = ...)  |
+                           +-------------------------------------+
+```
 
 ---
 
@@ -20,13 +48,13 @@ This document describes the internal architecture of `ACSloadR` and provides gui
 
 ```
 R/
-├── acs-core.R            # Core table loader (load_acs_lmi_table), share calculations, S3 bundle constructor
-├── table-registry.R      # Central master registry of ACS table configurations (acs_table_registry)
-├── topic-parsers.R       # Label tokenizers, topic-specific parsers, and dispatch router (parse_acs_topic)
-├── get-acs-lmi.R         # Public exported topic getter functions (get_acs_* returning acs_lmi_bundle)
-├── label-parsing.R       # Tidy Census label tokenization helpers (acs_label_tokens, token_at, deepest_token)
+├── table-registry.R      # Master table registry & declarative schemas (acs_table_registry)
+├── topic-parsers.R       # Generic schema engine (parse_generic_table) & custom escape hatches
+├── get-acs-lmi.R         # Exported public topic getter functions (get_acs_* returning acs_lmi_bundle)
+├── label-parsing.R       # Label tokenization helpers (acs_label_tokens, token_at, deepest_token)
+├── acs-core.R            # Core table loader (load_acs_lmi_table), run_topic_getter helper, S3 bundles
 ├── globals.R             # Global NSE variable declarations for R CMD check (globalVariables)
-├── wizard-topics.R       # Topic catalog metadata (acs_topic_catalog) for wizard and script generator
+├── wizard-topics.R       # Topic catalog metadata (acs_topic_catalog) for CLI wizard & script generator
 ├── wizard.R              # Terminal CLI wizard (acs_wizard) & script builder (generate_acs_script)
 └── explore_census_data.R # Shiny interactive data explorer app launcher
 
@@ -42,255 +70,199 @@ tests/testthat/
 
 ---
 
-## 3. Core Data Flow & Layer Responsibilities
+## 3. End-to-End Guide: Adding a New Table (Start-to-Finish)
 
-```
-                                  +-----------------------+
-                                  | User / Public API     |
-                                  | (get_acs_migration_*) |
-                                  +-----------+-----------+
-                                              |
-                                              v
-                                  +-----------------------+
-                                  |  R/table-registry.R   |
-                                  | (acs_table_registry)  |
-                                  +-----------+-----------+
-                                              |
-                                              v
-                                  +-----------------------+
-                                  |    R/acs-core.R       |
-                                  | (load_acs_lmi_table)  |
-                                  +-----------+-----------+
-                                              |
-                                              v
-                                  +-----------------------+
-                                  |  R/topic-parsers.R    |
-                                  |  (parse_acs_topic)    |
-                                  +-----------+-----------+
-                                              |
-                                              v
-                                  +-----------------------+
-                                  | S3 acs_lmi_bundle     |
-                                  +-----------------------+
-```
+Adding a new standard ACS table to `ACSloadR` requires **zero custom parsing code**. Follow these 5 steps in order:
 
----
+### Step 1: Inspect Raw `tidycensus` API Output
 
-## 4. Impact of Table Changes on the Interactive Wizard
+Suppose you are adding ACS table **`B07001`** (*Geographical Mobility 1 Year Ago by Age*). Pull the raw table using `tidycensus` to inspect the `label` column:
 
-The terminal wizard (`acs_wizard()`), script generator (`generate_acs_script()`), and variable explorer rely directly on `acs_topic_catalog()` defined in [`R/wizard-topics.R`](file:///Users/mremb/projects/ACSloadR/R/wizard-topics.R).
-
-### Why Catalog Synchronization is Mandatory
-Whenever you:
-- **Add a new ACS table or public getter function**
-- **Modify existing table codes or survey routing (ACS 1-yr vs ACS 5-yr)**
-- **Add, remove, or rename returned bundle components**
-
-...you **MUST** update [`R/wizard-topics.R`](file:///Users/mremb/projects/ACSloadR/R/wizard-topics.R) to maintain complete synchronization between the package's public API and the topic catalog.
-
-If `acs_topic_catalog()` is out of date:
-- `acs_wizard()` will not present new topics to users in interactive CLI prompts.
-- `generate_acs_script()` will produce broken or incomplete R code.
-- Unit tests in `tests/testthat/test-wizard.R` will fail.
-
----
-
-## 5. Developer Step-by-Step Checklist for Adding/Modifying Tables
-
-When adding a new Census table or updating table logic, follow these steps in order:
-
-### Step 1: Add Table Configuration to [`R/table-registry.R`](file:///Users/mremb/projects/ACSloadR/R/table-registry.R)
-Add entry to `acs_table_registry()`:
 ```r
-my_topic_acs1 = list(
-  tables = "B12345",
-  dataset_type = "detailed",
-  parser = "my_topic",
-  universe = "Population description",
-  shares = TRUE
+raw_census_data <- tidycensus::get_acs(
+  geography = "state",
+  table = "B07001",
+  year = 2024,
+  survey = "acs1"
 )
 ```
 
-### Step 2: Implement Tidy Parser in [`R/topic-parsers.R`](file:///Users/mremb/projects/ACSloadR/R/topic-parsers.R)
-- Add switch case to `parse_acs_topic()`.
-- Write `parse_my_topic_data(data, config)` using `acs_label_tokens()`, `token_at()`, and `deepest_token()`.
-- Call `add_share_rows()` if derived shares are enabled, then `finalize_acs_data(data, key_cols)`.
-- *For detailed step-by-step guidance on writing topic parsers, see Section 6 below.*
+#### What `tidycensus` Returns:
+| `variable` | `label` | `estimate` |
+| :--- | :--- | :--- |
+| `B07001_001` | `Estimate!!Total:` | `7,025,000` |
+| `B07001_002` | `Estimate!!Total:!!1 to 4 years:` | `320,000` |
+| `B07001_003` | `Estimate!!Total:!!1 to 4 years:!!Same house 1 year ago` | `280,000` |
+| `B07001_004` | `Estimate!!Total:!!1 to 4 years:!!Moved; same county` | `25,000` |
+
+#### How `ACSloadR` Tokenizes the Labels (`acs_label_tokens()`):
+When `acs_label_tokens()` strips `"Estimate!!"` and trailing colons, it converts each label into a 1-indexed vector:
+- **Token Index `1L`**: `"Total"` (always position 0 of demographic breakdowns).
+- **Token Index `2L`**: `"1 to 4 years"` (the 1st demographic breakdown level).
+- **Token Index `3L`**: `"Same house 1 year ago"` (the 2nd demographic category level).
+
+---
+
+### Step 2: Register Table & Declarative Schema in [`R/table-registry.R`](file:///Users/mremb/projects/ACSloadR/R/table-registry.R)
+
+Add your topic entry to `acs_table_registry()`. Set `parser = "generic"` and provide a `schema`:
+
+```r
+# In R/table-registry.R -> acs_table_registry()
+migration_current_age_acs1 = list(
+  tables = "B07001",
+  dataset_type = "detailed",
+  parser = "generic",
+  universe = "Population 1 year and over in current residence",
+  shares = TRUE,
+  schema = list(
+    levels = c(age_group = 2L),              # Token index 2 (1st level after Total) -> age_group column
+    category_col = "migration_status",        # Innermost token -> migration_status column
+    category_start_level = 2L,                # Look for category starting at token index 2 (skipping Total)
+    measure = "population",
+    unit = "count",
+    key_cols = c("age_group", "migration_status")
+  )
+)
+```
+
+#### Declarative Schema Parameters Reference:
+- `levels`: Named integer vector mapping token depth index to column names (e.g. `c(sex = 2L, age_group = 3L)`).
+- `category_col`: Name of the column capturing the innermost category token (e.g. `"migration_status"`, `"transportation_mode"`).
+- `category_start_level`: Starting token depth level to search for the category token (defaults to `1L`).
+- `default_category`: Fallback value if category token is missing (defaults to `"Total"`).
+- `race_suffix`: Set `TRUE` for `A`-`I` race/ethnicity tables to parse suffixes automatically.
+- `sex_cross`: Set `TRUE` to cross-tabulate `sex` with a secondary dimension.
+- `measure`: Value for the `measure` column (e.g. `"population"`, `"workers"`, `"median_income"`).
+- `unit`: Value for the `unit` column (e.g. `"count"`, `"dollars"`, `"years"`).
+- `key_cols`: Character vector specifying output column sorting order.
+
+---
 
 ### Step 3: Export Public Getter Function in [`R/get-acs-lmi.R`](file:///Users/mremb/projects/ACSloadR/R/get-acs-lmi.R)
-- Define `get_acs_my_topic(year, survey, geography, ..., cache_table = TRUE)`.
-- Use roxygen2 doc tags (`#' @export`, `#' @return`, etc.).
-- Return an `acs_lmi_bundle` via `new_acs_lmi_bundle(components, topic_name, year, survey)`.
 
-### Step 4: Register NSE Columns in [`R/globals.R`](file:///Users/mremb/projects/ACSloadR/R/globals.R)
-- Add any newly introduced column names to `globalVariables()` to maintain clean `R CMD check` runs.
+Exporting a public getter function is simplified using the 1-line `run_topic_getter()` helper!
 
-### Step 5: Update Topic Catalog in [`R/wizard-topics.R`](file:///Users/mremb/projects/ACSloadR/R/wizard-topics.R)
-Add or update the topic specification in `acs_topic_catalog()`:
+#### A. Standard Single-Component Getter (Simplified):
 ```r
-my_topic = list(
-  id = "my_topic",
-  category = c("Category Name"),
-  title = "Human Readable Title",
-  getter = "get_acs_my_topic",
-  tables = c("B12345"),
-  universe = "Population description",
-  components = c("component_1", "component_2"),
-  description = "Detailed topic description.",
-  default_var = "my_var"
-)
-```
-
-### Step 6: Add Fixtures & Unit Tests
-- Add mock Census API rows to [`tests/testthat/fixtures/table_rows.csv`](file:///Users/mremb/projects/ACSloadR/tests/testthat/fixtures/table_rows.csv).
-- Add parser tests in [`tests/testthat/test-topic-parsers.R`](file:///Users/mremb/projects/ACSloadR/tests/testthat/test-topic-parsers.R).
-- Add bundle print tests in [`tests/testthat/test-bundle.R`](file:///Users/mremb/projects/ACSloadR/tests/testthat/test-bundle.R).
-- Ensure [`tests/testthat/test-wizard.R`](file:///Users/mremb/projects/ACSloadR/tests/testthat/test-wizard.R) passes.
-
-### Step 7: Documentation & Verification
-- Run `roxygen2::roxygenise()` to update `NAMESPACE` and `man/*.Rd`.
-- Run unit test suite: `Rscript -e "pkgload::load_all(); testthat::test_dir('tests/testthat')"`.
-- Update [`README.md`](file:///Users/mremb/projects/ACSloadR/README.md) and [`vignettes/getting-started.Rmd`](file:///Users/mremb/projects/ACSloadR/vignettes/getting-started.Rmd).
-
----
-
-## 6. Deep Dive: Topic Parser Mechanics & Implementation Guide
-
-Converting raw Census Bureau API rows into tidy long data is the core transformation engine of `ACSloadR`. This section explains label tokenization, parser architecture, edge-case handling, and share derivation.
-
-### 6.1 Understanding Census Variable Labels
-Raw Census variable labels are returned as colon-delimited hierarchical strings:
-```
-"Estimate!!Total:"
-"Estimate!!Total:!!Male:"
-"Estimate!!Total:!!Male:!!Management, business, science, and arts occupations:"
-"Estimate!!Total:!!Male:!!Management, business, science, and arts occupations:!!Management occupations"
-```
-
-### 6.2 Tokenizer Helpers (`R/label-parsing.R`)
-[`R/label-parsing.R`](file:///Users/mremb/projects/ACSloadR/R/label-parsing.R) provides 3 core tokenization functions used by all parsers:
-
-1. **`acs_label_tokens(labels, remove_measure = TRUE)`**:
-   Strips `"Estimate!!"` and `"Margin of Error!!"`, splits on `"!!"`, trims trailing colons, and returns a list of token vectors:
-   - Input: `"Estimate!!Total:!!Male:!!Management occupations:"`
-   - Output: `c("Total", "Male", "Management occupations")`
-
-2. **`token_at(tokens, position)`**:
-   Extracts the token at specific 1-indexed position across all rows, returning `NA_character_` if the row token depth is smaller:
-   - `token_at(tokens, 1L)` -> `"Total"`, `"Male"`, `"Female"`
-
-3. **`deepest_token(tokens, start = 1L)`**:
-   Extracts the innermost (leaf) node token starting at or after index `start`. Essential for extracting specific categories regardless of hierarchy depth.
-
----
-
-### 6.3 Anatomy of a Standard Topic Parser
-
-Every parser function takes two arguments: `data` (a downloaded data frame) and `config` (the table configuration list from `acs_table_registry()`).
-
-```r
-parse_my_topic_data <- function(data, config) {
-  # 1. Tokenize labels
-  tokens <- acs_label_tokens(data$label)
-  first <- token_at(tokens, 1L)
-
-  # 2. Assign standard metadata
-  data$universe <- config$universe
-  data$measure <- "population"      # or "workers", "median_income", "median_age", etc.
-  data$unit <- "count"             # or "dollars", "years", "minutes", etc.
-
-  # 3. Extract dimension columns using token helpers
-  data$group_level <- dplyr::if_else(!is.na(first), first, "Total")
-  data$category <- deepest_token(tokens, start = 2L)
-  data$category[is.na(data$category)] <- "Total"
-
-  # 4. Set default value source
-  data$value_source <- "published"
-  data$denominator_variable <- NA_character_
-
-  # 5. Derive percentage shares (if enabled in registry config)
-  denominator <- paste0(data$table, "_001")
-  data <- add_share_rows(data, rep(config$shares, nrow(data)), denominator)
-
-  # 6. Finalize output column order and sort keys
-  finalize_acs_data(data, c("group_level", "category"))
-}
-```
-
----
-
-### 6.4 The Parser Switch Router
-In [`R/topic-parsers.R`](file:///Users/mremb/projects/ACSloadR/R/topic-parsers.R), `parse_acs_topic()` dispatches table data based on `config$parser`:
-
-```r
-parse_acs_topic <- function(data, parser, config) {
-  switch(
-    parser,
-    employment_status = parse_employment_status_data(data, config),
-    migration_age     = parse_migration_age_data(data, config),
-    commuting_mode    = parse_commuting_mode_data(data, config),
+#' Get tidy ACS migration status data
+#'
+#' Downloads Census table B07001 containing geographical mobility status
+#' broken down by age group for current residence.
+#'
+#' @inheritParams get_acs_employment
+#'
+#' @return An `acs_lmi_bundle` containing a `migration` tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' migration <- get_acs_migration(2024, "acs5", "state", state = "MA")
+#' migration$migration
+#' }
+get_acs_migration <- function(year, survey = c("acs5", "acs1"), geography, ...,
+                              cache_table = TRUE) {
+  survey <- match.arg(survey)
+  run_topic_getter(
+    registry_name = "migration_current_age_acs1",
+    topic = "Geographical Mobility",
+    component_name = "migration",
+    year = year,
+    survey = survey,
+    geography = geography,
+    cache_table = cache_table,
     ...
-    stop("Unknown ACS parser: ", parser, call. = FALSE)
   )
 }
 ```
 
----
-
-### 6.5 Handling Complex Table Types & Edge Cases
-
-#### Case A: Racial Iteration Companion Tables (`A` through `I` Suffixes)
-Census publishes racial iterations of standard tables using letter suffixes (`B01001A` = White Alone, `B01001B` = Black Alone, etc.).
-Use `parse_income_race_suffix(table)` to automatically attach racial group names:
+#### B. Multi-Component Getter (e.g. Total Population + Race Breakdown):
+If your topic combines multiple table structures into a single bundle:
 ```r
-parse_migration_race_data <- function(data, config) {
-  tokens <- acs_label_tokens(data$label)
-  race <- parse_income_race_suffix(data$table[[1]])  # Maps "B07004A" -> "White alone"
+get_acs_age <- function(year, survey = c("acs5", "acs1"), geography, ...,
+                        cache_table = TRUE) {
+  survey <- match.arg(survey)
+  registry <- acs_table_registry()
+  
+  total_raw <- load_acs_lmi_table(registry$age_total_population, year, survey, geography, cache_table, ...)
+  race_raw  <- load_acs_lmi_table(registry$age_race_ethnicity, year, survey, geography, cache_table, ...)
 
-  data$race_ethnicity <- if (!is.na(race)) race else NA_character_
-  data$universe <- if (!is.na(race)) paste0(race, " population 1 year and over") else config$universe
-  ...
+  components <- list(
+    total_population = parse_acs_topic(total_raw, registry$age_total_population$parser, registry$age_total_population),
+    race_ethnicity   = parse_acs_topic(race_raw, registry$age_race_ethnicity$parser, registry$age_race_ethnicity)
+  )
+  new_acs_lmi_bundle(components, "Age and sex", year, survey)
 }
 ```
 
-#### Case B: Tables Lacking Total Sex Rows (`B24082`, `B24032`, `B24012`)
-Some Census earnings tables break down categories by `Male` and `Female` but omit total sex rows.
-In these parsers, `ACSloadR` calculates derived `sex = "Total"` rows by summing estimates and combining MOEs with $\sqrt{\text{MOE}_1^2 + \text{MOE}_2^2}$:
+---
+
+### Step 4: Synchronize Topic Catalog in [`R/wizard-topics.R`](file:///Users/mremb/projects/ACSloadR/R/wizard-topics.R)
+
+To make your topic accessible in the terminal wizard (`acs_wizard()`) and R script generator (`generate_acs_script()`), register it in `acs_topic_catalog()`:
+
 ```r
-data$value_source <- "derived"
-data$source_variables <- paste(male_var, female_var, sep = ", ")
+# In R/wizard-topics.R -> acs_topic_catalog()
+migration = list(
+  id = "migration",
+  category = c("Demographics & Population"),
+  title = "Geographical Mobility & Migration Status",
+  getter = "get_acs_migration",
+  tables = c("B07001"),
+  universe = "Population 1 year and over in current residence",
+  components = c("migration"),
+  description = "Geographical mobility (same house, moved within same county, moved within same state, etc.) by age group.",
+  default_var = "migration_status"
+)
 ```
-
-#### Case C: Collapsed Companion Series (`B` vs. `C` Tables)
-ACS 1-year uses detailed `B` series tables (e.g. `B24010`), while ACS 5-year uses collapsed `C` series tables (e.g. `C24010`).
-The parser uses `deepest_token()` so that both detailed and collapsed category labels map seamlessly to the same dimension columns.
 
 ---
 
-### 6.6 Share Derivation & Finalization
+### Step 5: Add Fixtures & Verify Unit Tests
 
-1. **`add_share_rows(data, eligible, denominator_variable)`**:
-   - Calculates $\text{share} = 100 \times \frac{\text{estimate}}{\text{denominator\_estimate}}$.
-   - Computes margin of error using the Census proportion MOE formula:
-     $$\text{MOE}_{\text{share}} = \frac{100}{\text{denom}} \sqrt{\text{MOE}_{\text{num}}^2 - \left(\text{share}^2 \times \text{MOE}_{\text{denom}}^2\right)}$$
-   - Adds derived share rows with `value_source = "derived_share"`, `measure = "share_of_table_universe"`, `unit = "percent"`.
-
-2. **`finalize_acs_data(data, key_cols)`**:
-   - Reorders columns into standard schema: `GEOID`, `NAME`, `variable`, `label`, `concept`, `table`, `year`, `survey`, `universe`, `measure`, `unit`, `estimate`, `moe`, `value_source`, `denominator_variable`, `source_variables`, followed by topic dimension columns (`key_cols`).
-   - Sorts rows deterministically by geography and variable keys.
+1. Add mock Census API rows to [`tests/testthat/fixtures/table_rows.csv`](file:///Users/mremb/projects/ACSloadR/tests/testthat/fixtures/table_rows.csv).
+2. Add parser tests in [`tests/testthat/test-topic-parsers.R`](file:///Users/mremb/projects/ACSloadR/tests/testthat/test-topic-parsers.R).
+3. Run the verification command:
+   ```bash
+   Rscript -e "pkgload::load_all(); testthat::test_dir('tests/testthat')"
+   ```
 
 ---
 
-## 7. Testing & Quality Assurance Protocols
+## 4. Resulting Tidy Long Data Structure
 
-To verify package integrity before submitting pull requests or committing:
+When a user invokes your exported getter function `get_acs_migration(2024, "acs5", "state", state = "MA")`, `parse_generic_table()` automatically formats the data into this tidy long tibble:
 
-```bash
-# 1. Regenerate roxygen documentation and NAMESPACE
-Rscript -e "roxygen2::roxygenise()"
+| `variable` | `age_group` | `migration_status` | `estimate` | `moe` | `measure` | `unit` | `value_source` |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `B07001_001` | `Total` | `Total` | `7025000` | `10000` | `population` | `count` | `published` |
+| `B07001_002` | `1 to 4 years` | `Total` | `320000` | `4000` | `population` | `count` | `published` |
+| `B07001_003` | `1 to 4 years` | `Same house 1 year ago` | `280000` | `3500` | `population` | `count` | `published` |
+| `B07001_004` | `1 to 4 years` | `Moved; same county` | `25000` | `1200` | `population` | `count` | `published` |
+| `B07001_004` | `1 to 4 years` | `Moved; same county` | `7.81` | `0.38` | `share` | `percent` | `derived_share` |
 
-# 2. Execute unit test suite
-Rscript -e "pkgload::load_all(); testthat::test_dir('tests/testthat')"
+---
+
+## 5. Custom Escape-Hatch Parsers (Only for Complex Subject Tables)
+
+For non-standard subject tables (such as `S2301` or `S2401`) where the label structure cannot be expressed with declarative schemas, write a custom imperative parser function in [`R/topic-parsers.R`](file:///Users/mremb/projects/ACSloadR/R/topic-parsers.R):
+
+```r
+# In R/topic-parsers.R
+parse_custom_subject_data <- function(data, config) {
+  tokens <- acs_label_tokens(data$label)
+  ...
+  finalize_acs_data(data, key_cols = c("dim1", "dim2"))
+}
 ```
 
-All 380+ unit tests must pass with **0 failures** and **0 warnings**.
+In `parse_acs_topic()`, add a switch case:
+```r
+parse_acs_topic <- function(data, parser, config) {
+  switch(parser,
+    generic = parse_generic_table(data, config),
+    custom_subject = parse_custom_subject_data(data, config),
+    stop("Unknown parser: ", parser)
+  )
+}
+```

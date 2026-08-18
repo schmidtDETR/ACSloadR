@@ -1,12 +1,24 @@
 acs_table_registry <- function() {
   list(
     age_total_population = list(
-      tables = "B01001", dataset_type = "detailed", parser = "age",
-      universe = "Total population", shares = TRUE
+      tables = "B01001", dataset_type = "detailed", parser = "generic",
+      universe = "Total population", shares = TRUE,
+      schema = list(
+        levels = c(sex = 2L, age_group = 3L),
+        measure = "population", unit = "count",
+        key_cols = c("race_ethnicity", "sex", "age_group")
+      )
     ),
     age_race_ethnicity = list(
       tables = paste0("B01001", LETTERS[1:9]), dataset_type = "detailed",
-      parser = "age", universe = "Race or ethnicity population", shares = TRUE
+      parser = "generic", universe = "Race or ethnicity population", shares = TRUE,
+      schema = list(
+        race_suffix = TRUE,
+        race_universe_fmt = "%s population",
+        levels = c(sex = 2L, age_group = 3L),
+        measure = "population", unit = "count",
+        key_cols = c("race_ethnicity", "sex", "age_group")
+      )
     ),
     employment = list(
       tables = "S2301", dataset_type = "subject", parser = "employment",
@@ -27,12 +39,23 @@ acs_table_registry <- function() {
       universe = "Civilian employed population 16 years and over", shares = TRUE
     ),
     earnings = list(
-      tables = "B20004", dataset_type = "detailed", parser = "earnings",
-      universe = "Population 25 years and over with earnings", shares = FALSE
+      tables = "B20004", dataset_type = "detailed", parser = "generic",
+      universe = "Population 25 years and over with earnings", shares = FALSE,
+      schema = list(
+        sex_cross = TRUE, levels = c(sex = 2L, educational_attainment = 3L),
+        measure = "median_earnings", unit = "dollars",
+        key_cols = c("sex", "educational_attainment")
+      )
     ),
     commuting = list(
-      tables = "B08301", dataset_type = "detailed", parser = "commuting",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "B08301", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(mode_major = 2L, mode_detail = 3L),
+        category_col = "transportation_mode", category_start_level = 2L, default_category = "All transportation modes",
+        measure = "workers", unit = "count",
+        key_cols = c("transportation_mode", "mode_major", "mode_detail")
+      )
     ),
 
     # Detailed Employment Status
@@ -717,224 +740,415 @@ acs_table_registry <- function() {
       universe = "Workers 16 years and over with earnings in workplace geography", shares = TRUE
     ),
     commuting_median_earnings_residence = list(
-      tables = "B08121", dataset_type = "detailed", parser = "commuting_median_earnings",
-      universe = "Workers 16 years and over with earnings", shares = FALSE
+      tables = "B08121", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over with earnings", shares = FALSE,
+      schema = list(category_col = "transportation_mode", measure = "median_earnings", unit = "dollars", key_cols = c("transportation_mode"))
     ),
     commuting_median_earnings_workplace = list(
-      tables = "B08521", dataset_type = "detailed", parser = "commuting_median_earnings",
-      universe = "Workers 16 years and over with earnings in workplace geography", shares = FALSE
+      tables = "B08521", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over with earnings in workplace geography", shares = FALSE,
+      schema = list(category_col = "transportation_mode", measure = "median_earnings", unit = "dollars", key_cols = c("transportation_mode"))
     ),
     commuting_poverty_residence_acs1 = list(
-      tables = "B08122", dataset_type = "detailed", parser = "commuting_cross_poverty",
-      universe = "Workers 16 years and over for whom poverty status is determined", shares = TRUE
+      tables = "B08122", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over for whom poverty status is determined", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "poverty_status", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "poverty_status")
+      )
     ),
     commuting_poverty_residence_acs5 = list(
-      tables = "C08122", dataset_type = "detailed", parser = "commuting_cross_poverty",
-      universe = "Workers 16 years and over for whom poverty status is determined", shares = TRUE
+      tables = "C08122", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over for whom poverty status is determined", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "poverty_status", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "poverty_status")
+      )
     ),
     commuting_poverty_workplace_acs1 = list(
-      tables = "B08522", dataset_type = "detailed", parser = "commuting_cross_poverty",
-      universe = "Workers 16 years and over for whom poverty status is determined in workplace geography", shares = TRUE
+      tables = "B08522", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over for whom poverty status is determined in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "poverty_status", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "poverty_status")
+      )
     ),
     commuting_poverty_workplace_acs5 = list(
-      tables = "C08522", dataset_type = "detailed", parser = "commuting_cross_poverty",
-      universe = "Workers 16 years and over for whom poverty status is determined in workplace geography", shares = TRUE
+      tables = "C08522", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over for whom poverty status is determined in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "poverty_status", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "poverty_status")
+      )
     ),
     commuting_occupation_residence_acs1 = list(
-      tables = "B08124", dataset_type = "detailed", parser = "commuting_cross_occupation",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "B08124", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "occupation_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "occupation_group")
+      )
     ),
     commuting_occupation_residence_acs5 = list(
-      tables = "C08124", dataset_type = "detailed", parser = "commuting_cross_occupation",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "C08124", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "occupation_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "occupation_group")
+      )
     ),
     commuting_occupation_workplace_acs1 = list(
-      tables = "B08524", dataset_type = "detailed", parser = "commuting_cross_occupation",
-      universe = "Workers 16 years and over in workplace geography", shares = TRUE
+      tables = "B08524", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "occupation_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "occupation_group")
+      )
     ),
     commuting_occupation_workplace_acs5 = list(
-      tables = "C08524", dataset_type = "detailed", parser = "commuting_cross_occupation",
-      universe = "Workers 16 years and over in workplace geography", shares = TRUE
+      tables = "C08524", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "occupation_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "occupation_group")
+      )
     ),
     commuting_industry_residence_acs1 = list(
-      tables = "B08126", dataset_type = "detailed", parser = "commuting_cross_industry",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "B08126", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "industry_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "industry_group")
+      )
     ),
     commuting_industry_residence_acs5 = list(
-      tables = "C08126", dataset_type = "detailed", parser = "commuting_cross_industry",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "C08126", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "industry_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "industry_group")
+      )
     ),
     commuting_industry_workplace_acs1 = list(
-      tables = "B08526", dataset_type = "detailed", parser = "commuting_cross_industry",
-      universe = "Workers 16 years and over in workplace geography", shares = TRUE
+      tables = "B08526", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "industry_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "industry_group")
+      )
     ),
     commuting_industry_workplace_acs5 = list(
-      tables = "C08526", dataset_type = "detailed", parser = "commuting_cross_industry",
-      universe = "Workers 16 years and over in workplace geography", shares = TRUE
+      tables = "C08526", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "industry_group", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "industry_group")
+      )
     ),
     commuting_class_residence_acs1 = list(
-      tables = "B08128", dataset_type = "detailed", parser = "commuting_cross_class",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "B08128", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "class_of_worker", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "class_of_worker")
+      )
     ),
     commuting_class_residence_acs5 = list(
-      tables = "C08128", dataset_type = "detailed", parser = "commuting_cross_class",
-      universe = "Workers 16 years and over", shares = TRUE
+      tables = "C08128", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "class_of_worker", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "class_of_worker")
+      )
     ),
     commuting_class_workplace_acs1 = list(
-      tables = "B08528", dataset_type = "detailed", parser = "commuting_cross_class",
-      universe = "Workers 16 years and over in workplace geography", shares = TRUE
+      tables = "B08528", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "class_of_worker", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "class_of_worker")
+      )
     ),
     commuting_class_workplace_acs5 = list(
-      tables = "C08528", dataset_type = "detailed", parser = "commuting_cross_class",
-      universe = "Workers 16 years and over in workplace geography", shares = TRUE
+      tables = "C08528", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "class_of_worker", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "class_of_worker")
+      )
     ),
     commuting_vehicles_residence_acs1 = list(
-      tables = "B08141", dataset_type = "detailed", parser = "commuting_cross_vehicles",
-      universe = "Workers 16 years and over in households", shares = TRUE
+      tables = "B08141", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in households", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "vehicles_available", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "vehicles_available")
+      )
     ),
     commuting_vehicles_residence_acs5 = list(
-      tables = "C08141", dataset_type = "detailed", parser = "commuting_cross_vehicles",
-      universe = "Workers 16 years and over in households", shares = TRUE
+      tables = "C08141", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in households", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "vehicles_available", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "vehicles_available")
+      )
     ),
     commuting_vehicles_workplace_acs1 = list(
-      tables = "B08541", dataset_type = "detailed", parser = "commuting_cross_vehicles",
-      universe = "Workers 16 years and over in households in workplace geography", shares = TRUE
+      tables = "B08541", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in households in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "vehicles_available", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "vehicles_available")
+      )
     ),
     commuting_vehicles_workplace_acs5 = list(
-      tables = "C08541", dataset_type = "detailed", parser = "commuting_cross_vehicles",
-      universe = "Workers 16 years and over in households in workplace geography", shares = TRUE
+      tables = "C08541", dataset_type = "detailed", parser = "generic",
+      universe = "Workers 16 years and over in households in workplace geography", shares = TRUE,
+      schema = list(
+        levels = c(transportation_mode = 1L), category_col = "vehicles_available", category_start_level = 2L,
+        measure = "workers", unit = "count", key_cols = c("transportation_mode", "vehicles_available")
+      )
     ),
 
     # Current Residence Migration
     migration_current_age_acs1 = list(
-      tables = "B07001", dataset_type = "detailed", parser = "migration_age",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07001", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(age_group = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("age_group", "migration_status")
+      )
     ),
     migration_current_age_acs5 = list(
-      tables = "C07001", dataset_type = "detailed", parser = "migration_age",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "C07001", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(age_group = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("age_group", "migration_status")
+      )
     ),
     migration_current_median_age = list(
-      tables = "B07002", dataset_type = "detailed", parser = "migration_median_age",
-      universe = "Population 1 year and over in current residence", shares = FALSE
+      tables = "B07002", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = FALSE,
+      schema = list(
+        category_col = "migration_status", measure = "median_age", unit = "years",
+        key_cols = c("migration_status")
+      )
     ),
     migration_current_sex = list(
-      tables = "B07003", dataset_type = "detailed", parser = "migration_sex",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07003", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(sex = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("sex", "migration_status")
+      )
     ),
     migration_current_race = list(
-      tables = paste0("B07004", LETTERS[1:9]), dataset_type = "detailed", parser = "migration_race",
-      universe = "Population 1 year and over in current residence by race/ethnicity", shares = TRUE
+      tables = paste0("B07004", LETTERS[1:9]), dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence by race/ethnicity", shares = TRUE,
+      schema = list(
+        race_suffix = TRUE, race_universe_fmt = "%s population 1 year and over",
+        category_col = "migration_status", measure = "population", unit = "count",
+        key_cols = c("race_ethnicity", "migration_status")
+      )
     ),
     migration_current_citizenship = list(
-      tables = "B07007", dataset_type = "detailed", parser = "migration_citizenship",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07007", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(citizenship_status = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("citizenship_status", "migration_status")
+      )
     ),
     migration_current_marital_acs1 = list(
-      tables = "B07008", dataset_type = "detailed", parser = "migration_marital",
-      universe = "Population 15 years and over in current residence", shares = TRUE
+      tables = "B07008", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(marital_status = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("marital_status", "migration_status")
+      )
     ),
     migration_current_marital_acs5 = list(
-      tables = "C07008", dataset_type = "detailed", parser = "migration_marital",
-      universe = "Population 15 years and over in current residence", shares = TRUE
+      tables = "C07008", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(marital_status = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("marital_status", "migration_status")
+      )
     ),
     migration_current_education = list(
-      tables = "B07009", dataset_type = "detailed", parser = "migration_education",
-      universe = "Population 25 years and over in current residence", shares = TRUE
+      tables = "B07009", dataset_type = "detailed", parser = "generic",
+      universe = "Population 25 years and over in current residence", shares = TRUE,
+      schema = list(
+        levels = c(educational_attainment = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("educational_attainment", "migration_status")
+      )
     ),
     migration_current_income = list(
-      tables = "B07010", dataset_type = "detailed", parser = "migration_income",
-      universe = "Population 15 years and over with income in current residence", shares = TRUE
+      tables = "B07010", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over with income in current residence", shares = TRUE,
+      schema = list(
+        levels = c(income_bracket = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("income_bracket", "migration_status")
+      )
     ),
     migration_current_median_income = list(
-      tables = "B07011", dataset_type = "detailed", parser = "migration_median_income",
-      universe = "Population 15 years and over with income in current residence", shares = FALSE
+      tables = "B07011", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over with income in current residence", shares = FALSE,
+      schema = list(
+        category_col = "migration_status", measure = "median_income", unit = "dollars",
+        key_cols = c("migration_status")
+      )
     ),
     migration_current_poverty = list(
-      tables = "B07012", dataset_type = "detailed", parser = "migration_poverty",
-      universe = "Population 1 year and over for whom poverty status is determined in current residence", shares = TRUE
+      tables = "B07012", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over for whom poverty status is determined in current residence", shares = TRUE,
+      schema = list(
+        levels = c(poverty_ratio = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("poverty_ratio", "migration_status")
+      )
     ),
     migration_current_tenure = list(
-      tables = "B07013", dataset_type = "detailed", parser = "migration_tenure",
-      universe = "Population 1 year and over in housing units in current residence", shares = TRUE
+      tables = "B07013", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in housing units in current residence", shares = TRUE,
+      schema = list(
+        levels = c(housing_tenure = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("housing_tenure", "migration_status")
+      )
     ),
     migration_current_region = list(
-      tables = "B07101", dataset_type = "detailed", parser = "migration_region",
-      universe = "Movers between regions in current residence", shares = TRUE
+      tables = "B07101", dataset_type = "detailed", parser = "generic",
+      universe = "Movers between regions in current residence", shares = TRUE,
+      schema = list(category_col = "mover_region", measure = "movers", unit = "count", key_cols = c("mover_region"))
     ),
     migration_current_msa_acs1 = list(
-      tables = "B07201", dataset_type = "detailed", parser = "migration_geo_level",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07201", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(category_col = "migration_status", measure = "population", unit = "count", key_cols = c("migration_status"))
     ),
     migration_current_msa_acs5 = list(
-      tables = "C07201", dataset_type = "detailed", parser = "migration_geo_level",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "C07201", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(category_col = "migration_status", measure = "population", unit = "count", key_cols = c("migration_status"))
     ),
     migration_current_micro = list(
-      tables = "B07202", dataset_type = "detailed", parser = "migration_geo_level",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07202", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(category_col = "migration_status", measure = "population", unit = "count", key_cols = c("migration_status"))
     ),
     migration_current_nonmetro = list(
-      tables = "B07203", dataset_type = "detailed", parser = "migration_geo_level",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07203", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(category_col = "migration_status", measure = "population", unit = "count", key_cols = c("migration_status"))
     ),
     migration_current_place_acs1 = list(
-      tables = "B07204", dataset_type = "detailed", parser = "migration_geo_level",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "B07204", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(category_col = "migration_status", measure = "population", unit = "count", key_cols = c("migration_status"))
     ),
     migration_current_place_acs5 = list(
-      tables = "C07204", dataset_type = "detailed", parser = "migration_geo_level",
-      universe = "Population 1 year and over in current residence", shares = TRUE
+      tables = "C07204", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in current residence", shares = TRUE,
+      schema = list(category_col = "migration_status", measure = "population", unit = "count", key_cols = c("migration_status"))
     ),
 
     # Prior Residence 1 Year Ago Migration
     migration_prior_age_acs1 = list(
-      tables = "B07401", dataset_type = "detailed", parser = "migration_age",
-      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE
+      tables = "B07401", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(age_group = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("age_group", "migration_status")
+      )
     ),
     migration_prior_age_acs5 = list(
-      tables = "C07401", dataset_type = "detailed", parser = "migration_age",
-      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE
+      tables = "C07401", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(age_group = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("age_group", "migration_status")
+      )
     ),
     migration_prior_median_age = list(
-      tables = "B07402", dataset_type = "detailed", parser = "migration_median_age",
-      universe = "Population 1 year and over in residence 1 year ago", shares = FALSE
+      tables = "B07402", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in residence 1 year ago", shares = FALSE,
+      schema = list(
+        category_col = "migration_status", measure = "median_age", unit = "years",
+        key_cols = c("migration_status")
+      )
     ),
     migration_prior_sex = list(
-      tables = "B07403", dataset_type = "detailed", parser = "migration_sex",
-      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE
+      tables = "B07403", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(sex = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("sex", "migration_status")
+      )
     ),
     migration_prior_race = list(
-      tables = paste0("B07404", LETTERS[1:9]), dataset_type = "detailed", parser = "migration_race",
-      universe = "Population 1 year and over in residence 1 year ago by race/ethnicity", shares = TRUE
+      tables = paste0("B07404", LETTERS[1:9]), dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in residence 1 year ago by race/ethnicity", shares = TRUE,
+      schema = list(
+        race_suffix = TRUE, race_universe_fmt = "%s population 1 year and over",
+        category_col = "migration_status", measure = "population", unit = "count",
+        key_cols = c("race_ethnicity", "migration_status")
+      )
     ),
     migration_prior_citizenship = list(
-      tables = "B07407", dataset_type = "detailed", parser = "migration_citizenship",
-      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE
+      tables = "B07407", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(citizenship_status = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("citizenship_status", "migration_status")
+      )
     ),
     migration_prior_marital = list(
-      tables = "B07408", dataset_type = "detailed", parser = "migration_marital",
-      universe = "Population 15 years and over in residence 1 year ago", shares = TRUE
+      tables = "B07408", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(marital_status = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("marital_status", "migration_status")
+      )
     ),
     migration_prior_education = list(
-      tables = "B07409", dataset_type = "detailed", parser = "migration_education",
-      universe = "Population 25 years and over in residence 1 year ago", shares = TRUE
+      tables = "B07409", dataset_type = "detailed", parser = "generic",
+      universe = "Population 25 years and over in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(educational_attainment = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("educational_attainment", "migration_status")
+      )
     ),
     migration_prior_income = list(
-      tables = "B07410", dataset_type = "detailed", parser = "migration_income",
-      universe = "Population 15 years and over with income in residence 1 year ago", shares = TRUE
+      tables = "B07410", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over with income in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(income_bracket = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("income_bracket", "migration_status")
+      )
     ),
     migration_prior_median_income = list(
-      tables = "B07411", dataset_type = "detailed", parser = "migration_median_income",
-      universe = "Population 15 years and over with income in residence 1 year ago", shares = FALSE
+      tables = "B07411", dataset_type = "detailed", parser = "generic",
+      universe = "Population 15 years and over with income in residence 1 year ago", shares = FALSE,
+      schema = list(
+        category_col = "migration_status", measure = "median_income", unit = "dollars",
+        key_cols = c("migration_status")
+      )
     ),
     migration_prior_poverty = list(
-      tables = "B07412", dataset_type = "detailed", parser = "migration_poverty",
-      universe = "Population 1 year and over for whom poverty status is determined in residence 1 year ago", shares = TRUE
+      tables = "B07412", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over for whom poverty status is determined in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(poverty_ratio = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("poverty_ratio", "migration_status")
+      )
     ),
     migration_prior_tenure = list(
-      tables = "B07413", dataset_type = "detailed", parser = "migration_tenure",
-      universe = "Population 1 year and over in housing units in residence 1 year ago", shares = TRUE
+      tables = "B07413", dataset_type = "detailed", parser = "generic",
+      universe = "Population 1 year and over in housing units in residence 1 year ago", shares = TRUE,
+      schema = list(
+        levels = c(housing_tenure = 2L), category_col = "migration_status", category_start_level = 2L,
+        measure = "population", unit = "count", key_cols = c("housing_tenure", "migration_status")
+      )
     )
   )
 }
