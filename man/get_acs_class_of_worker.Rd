@@ -26,20 +26,19 @@ and `output` cannot be supplied here.}
 \item{cache_table}{Logical; cache Census metadata and downloaded tables.}
 }
 \value{
-An `acs_lmi_bundle` with `class_of_worker`, `class_of_worker_full_time`,
-  `earnings`, `earnings_full_time`, and `class_by_occupation` tibbles.
+An `acs_lmi_bundle` with `class_of_worker`, `class_of_worker_collapsed`,
+  `class_of_worker_full_time`, `class_of_worker_full_time_collapsed`, `earnings`,
+  `earnings_collapsed`, `earnings_full_time`, `earnings_full_time_collapsed`,
+  `class_by_occupation`, and `class_by_occupation_collapsed` tibbles.
 }
 \description{
-Downloads and parses ACS detailed class of worker tables. ACS 1-year uses
-B24080-B24092 & B24060; ACS 5-year uses collapsed C24080-C24092 & C24060.
+Downloads and parses ACS detailed class of worker tables (B24080-B24092 & B24060)
+and collapsed class of worker tables (C24080-C24092 & C24060).
 }
 \examples{
 \dontrun{
 cow <- get_acs_class_of_worker(2024, "acs5", "state", state = "MA")
 cow$class_of_worker
-cow$class_of_worker_full_time
-cow$earnings
-cow$earnings_full_time
-cow$class_by_occupation
+cow$class_of_worker_collapsed
 }
 }

@@ -26,24 +26,22 @@ and `output` cannot be supplied here.}
 \item{cache_table}{Logical; cache Census metadata and downloaded tables.}
 }
 \value{
-An `acs_lmi_bundle` with `industry`, `industry_full_time`,
-  `earnings`, `earnings_full_time`, `industry_by_occupation`, and
-  `industry_by_class` tibbles.
+An `acs_lmi_bundle` with `industry`, `industry_collapsed`, `industry_full_time`,
+  `industry_full_time_collapsed`, `earnings`, `earnings_collapsed`,
+  `earnings_full_time`, `earnings_full_time_collapsed`, `industry_by_occupation`,
+  `industry_by_occupation_collapsed`, `industry_by_class`, and
+  `industry_by_class_collapsed` tibbles.
 }
 \description{
-Downloads and parses ACS detailed industry tables. ACS 1-year uses B24030-B24070;
-ACS 5-year uses collapsed C24030-C24070. Includes industry counts, full-time
-counts, median earnings (overall and full-time), industry by occupation, and
-industry by class of worker.
+Downloads and parses ACS detailed industry tables (B24030-B24070) and collapsed
+industry tables (C24030-C24070). Includes industry counts, full-time counts,
+median earnings (overall and full-time), industry by occupation, and
+industry by class of worker for both detailed and collapsed variants.
 }
 \examples{
 \dontrun{
 ind <- get_acs_industry(2024, "acs5", "state", state = "MA")
 ind$industry
-ind$industry_full_time
-ind$earnings
-ind$earnings_full_time
-ind$industry_by_occupation
-ind$industry_by_class
+ind$industry_collapsed
 }
 }

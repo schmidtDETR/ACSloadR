@@ -18,6 +18,17 @@ acs_wizard()
 create_acs_script(topic = "employment_detail", geography = "county", state = "MA")
 ```
 
+## Interactive Region Selection Tool
+
+ACSloadR includes a Shiny app to help users browse and identify various substate geography regions to help target local data analysis.
+
+```r
+library(ACSloadR)
+
+# Launch the region selector app
+region_select()
+```
+
 ## Topic helpers
 
 ```r

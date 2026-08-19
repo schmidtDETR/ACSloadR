@@ -1,7 +1,7 @@
 Package: ACSloadR
 Type: Package
 Title: Labor Market Information Tools for the American Community Survey
-Version: 0.2.0
+Version: 0.3.0
 Depends:
     R (>= 4.1.0)
 Authors@R: c(
@@ -24,13 +24,20 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     cli (>= 3.6.0),
-    dplyr (>= 1.1),
+    dplyr,
     shiny,
     tidycensus,
     stringr,
     purrr,
     rlang,
-    tidyr
+    tidyr,
+    leaflet,
+    leaflet.extras,
+    tigris,
+    sf,
+    jsonlite,
+    geojsonsf,
+    bslib
 Suggests:
     clipr,
     collapsibleTree,
@@ -45,3 +52,4 @@ VignetteBuilder: knitr
 URL: https://github.com/schmidtDETR/ACSloadR
 BugReports: https://github.com/schmidtDETR/ACSloadR/issues
 Config/roxygen2/version: 8.1.0
+RoxygenNote: 7.3.3
