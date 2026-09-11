@@ -193,7 +193,7 @@ server <- function(input, output, session) {
   # Initialize the base map
   output$map <- renderLeaflet({
     leaflet() %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
+      addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addDrawToolbar(
         targetGroup = "draw",
         editOptions = editToolbarOptions(selectedPathOptions = selectedPathOptions()),
