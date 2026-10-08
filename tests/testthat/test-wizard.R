@@ -121,3 +121,25 @@ test_that("create_acs_script / acs_wizard writes file non-interactively when opt
   content <- readLines(out_path)
   expect_true(any(grepl("get_acs_earnings", content)))
 })
+
+test_that("poverty topics expose a submenu and generate subtopic code", {
+  poverty <- ACSloadR:::acs_topic_catalog()$poverty
+  expect_equal(
+    names(poverty$subtopics),
+    c("individual", "unrelated_individuals", "families", "households", "ratios")
+  )
+  expect_true(all(vapply(poverty$subtopics, function(x) {
+    exists(x$getter, where = asNamespace("ACSloadR"), mode = "function")
+  }, logical(1))))
+
+  script <- generate_acs_script(
+    topic = poverty$subtopics$families,
+    year = 2024,
+    survey = "acs5",
+    geography = "state",
+    state = "MA"
+  )
+  expect_match(script, "get_acs_poverty_families")
+  expect_match(script, "families <- poverty_families\\$families")
+  expect_true(length(parse(text = script)) > 0)
+})

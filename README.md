@@ -118,6 +118,16 @@ fam_inc <- get_acs_family_income(2024, "acs5", "state", state = "MA")    # B1910
 inc_types <- get_acs_income_types(2024, "acs5", "state", state = "MA")  # B19051-B19070 (Earnings, Wages, SSI, Retirement, SNAP, etc.)
 ineq <- get_acs_income_inequality(2024, "acs5", "state", state = "MA")   # Gini Index (B19083), Quintiles (B19080-82), Per Capita (B19301)
 ind_inc <- get_acs_individual_income(2024, "acs5", "state", state = "MA")# Individual Income & Earnings by Sex and Work Exp (B20001-B20018, B19325-26)
+poverty <- get_acs_poverty(2024, "acs5", "state", state = "MA") # B17001-B17026 and B17101
+poverty$individual            # Individual poverty tables
+poverty$families              # Family poverty tables
+poverty$unrelated_individuals # Unrelated-individual poverty tables
+poverty$households            # Household and housing-unit poverty tables
+poverty$ratios                # Income-to-poverty ratio tables
+
+# The same poverty groups are available as separate downloads
+poverty_individual <- get_acs_poverty_individual(2024, "acs5", "state", state = "MA")
+poverty_families <- get_acs_poverty_families(2024, "acs5", "state", state = "MA")
 
 # Education, School Enrollment, & Field of Degree
 enroll <- get_acs_school_enrollment(2024, "acs5", "state", state = "MA") # B14001-B14007 (Level, Public/Private, Age, Poverty, Youth status)

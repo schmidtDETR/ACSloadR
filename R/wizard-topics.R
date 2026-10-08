@@ -1,3 +1,64 @@
+#' Poverty subtopic metadata for the interactive wizard.
+#'
+#' @return A named list of poverty subtopic specifications.
+#' @keywords internal
+#' @noRd
+
+acs_poverty_subtopic_catalog <- function() {
+  list(
+    individual = list(
+      id = "poverty_individual",
+      title = "Poverty of Individuals",
+      getter = "get_acs_poverty_individual",
+      tables = c("B17001", "B17003", "B17004", "B17005", "B17020", "B17025"),
+      universe = "Individuals and population for whom poverty status is determined",
+      components = c("individual"),
+      description = "Poverty status by age, sex, education, work experience, age, and nativity.",
+      default_var = "poverty_individual"
+    ),
+    unrelated_individuals = list(
+      id = "poverty_unrelated_individuals",
+      title = "Poverty of Unrelated Individuals",
+      getter = "get_acs_poverty_unrelated_individuals",
+      tables = c("B17007", "B17008", "B17009", "B17021"),
+      universe = "Unrelated individuals and people by living arrangement",
+      components = c("unrelated_individuals"),
+      description = "Poverty status, work experience, living arrangement, and aggregate income deficit for unrelated individuals.",
+      default_var = "poverty_unrelated"
+    ),
+    families = list(
+      id = "poverty_families",
+      title = "Poverty of Families",
+      getter = "get_acs_poverty_families",
+      tables = c("B17006", "B17010-B17016", "B17018-B17019", "B17023"),
+      universe = "Families for whom poverty status is determined",
+      components = c("families"),
+      description = "Family poverty by children, family type, size, workers, income sources, education, tenure, and work experience.",
+      default_var = "poverty_families"
+    ),
+    households = list(
+      id = "poverty_households",
+      title = "Poverty of Households and Housing Units",
+      getter = "get_acs_poverty_households",
+      tables = c("B17017", "B17101"),
+      universe = "Households and people in housing units for whom poverty status is determined",
+      components = c("households"),
+      description = "Poverty by household type, householder age, and people in housing units.",
+      default_var = "poverty_households"
+    ),
+    ratios = list(
+      id = "poverty_ratios",
+      title = "Income-to-Poverty Ratios and Deficits",
+      getter = "get_acs_poverty_ratios",
+      tables = c("B17002", "B17022", "B17024", "B17026"),
+      universe = "People and families for whom income-to-poverty ratios are determined",
+      components = c("ratios"),
+      description = "Income-to-poverty ratio distributions for people and families.",
+      default_var = "poverty_ratios"
+    )
+  )
+}
+
 #' ACS Topic Catalog for Interactive Explorer and Code Generator
 #'
 #' Provides metadata about available ACSloadR topic helpers, including categories,
@@ -6,6 +67,7 @@
 #' @return A named list of topic specifications.
 #' @keywords internal
 #' @noRd
+
 acs_topic_catalog <- function() {
   list(
     # --- Demographics ---
@@ -192,6 +254,18 @@ acs_topic_catalog <- function() {
       default_var = "ind_income"
     ),
 
+    poverty = list(
+      id = "poverty",
+      category = c("Income, Earnings & Inequality"),
+      title = "Poverty Status, Ratios & Family Characteristics",
+      getter = "get_acs_poverty",
+      tables = c("B17001-B17026", "B17101"),
+      universe = "People, individuals, families, and households for whom poverty status is determined",
+      components = c("individual", "unrelated_individuals", "families", "households", "ratios"),
+      description = "Poverty status and income-to-poverty ratios by individual, unrelated-individual, family, household, housing, age, sex, education, work experience, and nativity characteristics.",
+      default_var = "poverty",
+      subtopics = acs_poverty_subtopic_catalog()
+    ),
     # --- Education ---
     school_enrollment = list(
       id = "school_enrollment",

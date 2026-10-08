@@ -172,6 +172,15 @@ acs_wizard <- function(topic = NULL,
     selected_topic_info <- prompt_topic_selection(catalog)
   }
 
+
+  if (interactive() && !is.null(selected_topic_info$subtopics) &&
+      is.null(selected_topic_info$parent_id)) {
+    selected_topic_info <- prompt_subtopic_selection(selected_topic_info)
+    if (is.null(selected_topic_info)) {
+      stop("Wizard cancelled by user.", call. = FALSE)
+    }
+  }
+
   cli::cli_alert_success("Selected Topic: {.strong {selected_topic_info$title}}")
   cli::cli_text("{.field Tables}: {paste(selected_topic_info$tables, collapse = ', ')}")
   cli::cli_text("{.field Universe}: {selected_topic_info$universe}")
@@ -300,6 +309,30 @@ all_acs_geographies <- function() {
 # Internal Prompt Helpers
 # -----------------------------------------------------------------------------
 
+
+prompt_subtopic_selection <- function(topic) {
+  if (is.null(topic$subtopics)) return(topic)
+
+  subtopics <- topic$subtopics
+  subtopic_titles <- vapply(
+    subtopics,
+    function(x) paste0(x$title, " [Tables: ", paste(x$tables, collapse = ", "), "]"),
+    character(1)
+  )
+  choices <- c(subtopic_titles, "[Back to Topics]")
+  idx <- utils::menu(
+    choices,
+    title = paste0("Select a subtopic for ", topic$title, ":")
+  )
+  if (idx == 0 || idx == length(choices)) return(NULL)
+
+  selected <- subtopics[[idx]]
+  selected$category <- topic$category
+  selected$parent_id <- topic$id
+  selected$parent_title <- topic$title
+  selected
+}
+
 prompt_topic_selection <- function(catalog) {
   categories <- unique(unlist(lapply(catalog, function(x) x$category)))
 
@@ -338,7 +371,7 @@ prompt_topic_selection <- function(catalog) {
     if (top_idx == 0 || top_idx == length(topic_choices)) {
       return(NULL)
     }
-    return(matches[[top_idx]])
+    return(prompt_subtopic_selection(matches[[top_idx]]))
   }
 
   # Category browsing
@@ -358,6 +391,8 @@ prompt_topic_selection <- function(catalog) {
   }
 
   chosen <- cat_topics[[top_idx]]
+  chosen <- prompt_subtopic_selection(chosen)
+  if (is.null(chosen)) return(NULL)
 
   # Topic Preview & Confirmation
   cli::cli_h3(chosen$title)

@@ -1191,3 +1191,160 @@ get_acs_migration_prior <- function(year, survey = c("acs5", "acs1"), geography,
   )
   new_acs_lmi_bundle(components, "Geographical mobility by residence 1 year ago", year, survey)
 }
+
+
+
+#' Get tidy ACS poverty data
+#'
+#' Downloads and parses poverty tables B17001-B17026 and B17101, returning
+#' thematic subtopics for individual poverty, unrelated individuals, family
+#' poverty, household/housing poverty, and income-to-poverty ratios. Each
+#' subtopic retains the source table in its table column.
+#'
+#' @inheritParams get_acs_employment
+#' @return An acs_lmi_bundle with individual, unrelated_individuals,
+#'   families, households, and ratios tibbles.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' poverty <- get_acs_poverty(2024, "acs5", "state", state = "MA")
+#' poverty$individual
+#' poverty$families
+#' poverty$ratios
+#' }
+get_acs_poverty <- function(year, survey = c("acs5", "acs1"), geography, ...,
+                            cache_table = TRUE) {
+  survey <- match.arg(survey)
+  subtopics <- acs_poverty_subtopic_keys()
+  registry <- acs_table_registry()
+  registry_keys <- unique(unlist(subtopics))
+
+  raw <- lapply(
+    registry_keys,
+    function(key) {
+      config <- registry[[key]]
+      load_acs_lmi_table(config, year, survey, geography, cache_table, ...)
+    }
+  )
+  parsed <- stats::setNames(
+    Map(
+      function(data, key) {
+        config <- registry[[key]]
+        parse_acs_topic(data, config$parser, config)
+      },
+      raw, registry_keys
+    ),
+    registry_keys
+  )
+  components <- lapply(
+    subtopics,
+    function(keys) {
+      dplyr::bind_rows(parsed[keys])
+    }
+  )
+  new_acs_lmi_bundle(components, "Poverty", year, survey)
+}
+
+run_poverty_subtopic <- function(subtopic, topic, year, survey, geography,
+                                 cache_table, ...) {
+  keys <- acs_poverty_subtopic_keys()[[subtopic]]
+  if (is.null(keys)) {
+    stop("Unknown poverty subtopic: ", subtopic, call. = FALSE)
+  }
+
+  registry <- acs_table_registry()
+  raw <- lapply(
+    keys,
+    function(key) {
+      config <- registry[[key]]
+      load_acs_lmi_table(config, year, survey, geography, cache_table, ...)
+    }
+  )
+  parsed <- Map(
+    function(data, key) {
+      config <- registry[[key]]
+      parse_acs_topic(data, config$parser, config)
+    },
+    raw, keys
+  )
+  component <- dplyr::bind_rows(parsed)
+  new_acs_lmi_bundle(
+    stats::setNames(list(component), subtopic),
+    topic, year, survey
+  )
+}
+
+#' Get individual poverty tables
+#'
+#' @inheritParams get_acs_poverty
+#' @return An acs_lmi_bundle containing the individual poverty tables in
+#'   the individual component.
+#' @export
+get_acs_poverty_individual <- function(year, survey = c("acs5", "acs1"), geography,
+                                       ..., cache_table = TRUE) {
+  survey <- match.arg(survey)
+  run_poverty_subtopic(
+    "individual", "Poverty: Individual", year, survey, geography,
+    cache_table, ...
+  )
+}
+
+#' Get poverty tables for unrelated individuals
+#'
+#' @inheritParams get_acs_poverty
+#' @return An acs_lmi_bundle containing the unrelated-individual poverty
+#'   tables in the unrelated_individuals component.
+#' @export
+get_acs_poverty_unrelated_individuals <- function(year, survey = c("acs5", "acs1"),
+                                                  geography, ..., cache_table = TRUE) {
+  survey <- match.arg(survey)
+  run_poverty_subtopic(
+    "unrelated_individuals", "Poverty: Unrelated individuals", year,
+    survey, geography, cache_table, ...
+  )
+}
+
+#' Get family poverty tables
+#'
+#' @inheritParams get_acs_poverty
+#' @return An acs_lmi_bundle containing the family poverty tables in the
+#'   families component.
+#' @export
+get_acs_poverty_families <- function(year, survey = c("acs5", "acs1"), geography,
+                                     ..., cache_table = TRUE) {
+  survey <- match.arg(survey)
+  run_poverty_subtopic(
+    "families", "Poverty: Families", year, survey, geography, cache_table, ...
+  )
+}
+
+#' Get household and housing-unit poverty tables
+#'
+#' @inheritParams get_acs_poverty
+#' @return An acs_lmi_bundle containing the household and housing-unit
+#'   poverty tables in the households component.
+#' @export
+get_acs_poverty_households <- function(year, survey = c("acs5", "acs1"), geography,
+                                       ..., cache_table = TRUE) {
+  survey <- match.arg(survey)
+  run_poverty_subtopic(
+    "households", "Poverty: Households and housing units", year, survey,
+    geography, cache_table, ...
+  )
+}
+
+#' Get income-to-poverty ratio tables
+#'
+#' @inheritParams get_acs_poverty
+#' @return An acs_lmi_bundle containing income-to-poverty ratio tables in
+#'   the ratios component.
+#' @export
+get_acs_poverty_ratios <- function(year, survey = c("acs5", "acs1"), geography,
+                                   ..., cache_table = TRUE) {
+  survey <- match.arg(survey)
+  run_poverty_subtopic(
+    "ratios", "Poverty: Income-to-poverty ratios", year, survey, geography,
+    cache_table, ...
+  )
+}

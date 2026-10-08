@@ -494,3 +494,120 @@ test_that("migration parsers parse age, income, and geographical mobility correc
   res_prior <- ACSloadR:::parse_acs_topic(fixture_rows("B07401"), reg$migration_prior_age_acs1$parser, reg$migration_prior_age_acs1)
   expect_true("migration_status" %in% names(res_prior))
 })
+
+
+test_that("poverty registry covers requested tables and preserves key dimensions", {
+  registry <- ACSloadR:::acs_table_registry()
+  codes <- c(sprintf("B170%02d", 1:26), "B17101")
+  keys <- paste0("poverty_", sub("^B", "", codes))
+
+  expect_true(all(keys %in% names(registry)))
+  expect_equal(
+    unname(vapply(registry[keys], function(x) x$tables[[1]], character(1))),
+    codes
+  )
+  expect_equal(acs_topic_catalog()$poverty$getter, "get_acs_poverty")
+
+  rows <- data.frame(
+    GEOID = rep("25", 4), NAME = rep("Massachusetts", 4),
+    year = rep(2024, 4), survey = rep("acs5", 4), table = rep("B17001", 4),
+    variable = paste0("B17001_00", c(1, 2, 3, 4)),
+    concept = rep("Poverty status", 4),
+    label = c(
+      "Estimate!!Total:",
+      "Estimate!!Total:!!Income in the past 12 months below poverty level:",
+      "Estimate!!Total:!!Income in the past 12 months below poverty level:!!Male:",
+      "Estimate!!Total:!!Income in the past 12 months below poverty level:!!Male:!!Under 5 years"
+    ),
+    estimate = c(1000, 200, 90, 40), moe = c(20, 10, 8, 5),
+    stringsAsFactors = FALSE
+  )
+  parsed <- ACSloadR:::parse_generic_table(rows, registry$poverty_17001)
+  published <- parsed[parsed$variable == "B17001_004" & parsed$value_source == "published", ]
+
+  expect_equal(published$poverty_status, "Income in the past 12 months below poverty level")
+  expect_equal(published$sex, "Male")
+  expect_equal(published$age_group, "Under 5 years")
+  expect_true(any(parsed$value_source == "derived"))
+
+  deficit <- data.frame(
+    GEOID = rep("25", 3), NAME = rep("Massachusetts", 3),
+    year = rep(2024, 3), survey = rep("acs5", 3), table = rep("B17008", 3),
+    variable = paste0("B17008_00", 1:3),
+    concept = rep("Aggregate income deficit", 3),
+    label = c(
+      "Estimate!!Aggregate income deficit in the past 12 months of unrelated individuals (dollars):",
+      "Estimate!!Aggregate income deficit in the past 12 months of unrelated individuals (dollars):!!Male (dollars)",
+      "Estimate!!Aggregate income deficit in the past 12 months of unrelated individuals (dollars):!!Female (dollars)"
+    ),
+    estimate = c(100000, 40000, 60000), moe = c(2000, 1000, 1200),
+    stringsAsFactors = FALSE
+  )
+  parsed_deficit <- ACSloadR:::parse_generic_table(deficit, registry$poverty_17008)
+
+  expect_equal(unique(parsed_deficit$measure), "aggregate_income_deficit")
+  expect_equal(unique(parsed_deficit$unit), "dollars")
+  expect_equal(nrow(parsed_deficit), 3)
+})
+
+
+test_that("poverty getter returns thematic subtopics", {
+  testthat::with_mocked_bindings(
+    load_acs_lmi_table = function(config, ...) {
+      table <- config$tables[[1]]
+      data.frame(
+        GEOID = "25", NAME = "Massachusetts", year = 2024, survey = "acs5",
+        table = table, variable = paste0(table, "_001"),
+        concept = "Poverty", label = "Estimate!!Total:",
+        estimate = 100, moe = 5, stringsAsFactors = FALSE
+      )
+    },
+    code = {
+      bundle <- get_acs_poverty(2024, "acs5", "state", state = "MA")
+      expect_equal(
+        names(bundle),
+        c("individual", "unrelated_individuals", "families", "households", "ratios")
+      )
+      expect_true(all(vapply(bundle, nrow, integer(1)) > 0))
+      expect_setequal(
+        unique(unlist(lapply(bundle, function(x) x$table))),
+        c(sprintf("B170%02d", 1:26), "B17101")
+      )
+    },
+    .package = "ACSloadR"
+  )
+})
+test_that("poverty subtopic getters download their separate table groups", {
+  registry <- ACSloadR:::acs_table_registry()
+  keys <- ACSloadR:::acs_poverty_subtopic_keys()
+  getters <- list(
+    individual = get_acs_poverty_individual,
+    unrelated_individuals = get_acs_poverty_unrelated_individuals,
+    families = get_acs_poverty_families,
+    households = get_acs_poverty_households,
+    ratios = get_acs_poverty_ratios
+  )
+
+  testthat::with_mocked_bindings(
+    load_acs_lmi_table = function(config, ...) {
+      table <- config$tables[[1]]
+      data.frame(
+        GEOID = "25", NAME = "Massachusetts", year = 2024, survey = "acs5",
+        table = table, variable = paste0(table, "_001"),
+        concept = "Poverty", label = "Estimate!!Total:",
+        estimate = 100, moe = 5, stringsAsFactors = FALSE
+      )
+    },
+    code = {
+      for (subtopic in names(getters)) {
+        bundle <- getters[[subtopic]](2024, "acs5", "state", state = "MA")
+        expect_equal(names(bundle), subtopic)
+        expect_setequal(
+          unique(bundle[[subtopic]]$table),
+          vapply(registry[keys[[subtopic]]], function(x) x$tables[[1]], character(1))
+        )
+      }
+    },
+    .package = "ACSloadR"
+  )
+})

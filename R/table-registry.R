@@ -1,4 +1,15 @@
 acs_table_registry <- function() {
+  poverty_entry <- function(table, universe, levels, measure = "population",
+                            unit = "count", shares = TRUE) {
+    list(
+      tables = table, dataset_type = "detailed", parser = "generic",
+      universe = universe, shares = shares,
+      schema = list(
+        levels = levels, measure = measure, unit = unit,
+        key_cols = names(levels)
+      )
+    )
+  }
   list(
     age_total_population = list(
       tables = "B01001", dataset_type = "detailed", parser = "generic",
@@ -576,6 +587,131 @@ acs_table_registry <- function() {
       universe = "Population 15 years and over with income", shares = FALSE
     ),
 
+    # Poverty
+    poverty_17001 = poverty_entry(
+      "B17001", "Population for whom poverty status is determined",
+      c(poverty_status = 2L, sex = 3L, age_group = 4L)
+    ),
+    poverty_17002 = poverty_entry(
+      "B17002", "Population for whom poverty status is determined",
+      c(poverty_ratio = 2L)
+    ),
+    poverty_17003 = poverty_entry(
+      "B17003", "Individuals 25 years and over for whom poverty status is determined",
+      c(poverty_status = 2L, sex = 3L, educational_attainment = 4L)
+    ),
+    poverty_17004 = poverty_entry(
+      "B17004", "Individuals 16 years and over for whom poverty status is determined",
+      c(poverty_status = 2L, sex = 3L, work_experience = 4L)
+    ),
+    poverty_17005 = poverty_entry(
+      "B17005", "Individuals 16 years and over for whom poverty status is determined",
+      c(poverty_status = 2L, sex = 3L, labor_force_status = 4L,
+        employment_status = 5L)
+    ),
+    poverty_17006 = poverty_entry(
+      "B17006", "Related children under 18 years for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, family_detail = 4L,
+        age_group = 5L)
+    ),
+    poverty_17007 = poverty_entry(
+      "B17007", "Unrelated individuals 15 years and over for whom poverty status is determined",
+      c(poverty_status = 2L, sex = 3L, age_group = 4L)
+    ),
+    poverty_17008 = poverty_entry(
+      "B17008", "Unrelated individuals 15 years and over with a poverty status",
+      c(sex = 2L), measure = "aggregate_income_deficit", unit = "dollars",
+      shares = FALSE
+    ),
+    poverty_17009 = poverty_entry(
+      "B17009", "Unrelated individuals 15 years and over for whom poverty status is determined",
+      c(poverty_status = 2L, work_experience = 3L, householder_status = 4L)
+    ),
+    poverty_17010 = poverty_entry(
+      "B17010", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, children_presence = 4L,
+        age_group = 5L)
+    ),
+    poverty_17011 = poverty_entry(
+      "B17011", "Families with a poverty status",
+      c(family_type = 2L, family_detail = 3L),
+      measure = "aggregate_income_deficit", unit = "dollars", shares = FALSE
+    ),
+    poverty_17012 = poverty_entry(
+      "B17012", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, householder_type = 4L,
+        children_count = 5L)
+    ),
+    poverty_17013 = poverty_entry(
+      "B17013", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, householder_type = 4L,
+        persons_in_family = 5L)
+    ),
+    poverty_17014 = poverty_entry(
+      "B17014", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, householder_type = 4L,
+        workers_in_family = 5L)
+    ),
+    poverty_17015 = poverty_entry(
+      "B17015", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, family_detail = 4L,
+        social_security_status = 5L, supplemental_assistance_status = 6L)
+    ),
+    poverty_17016 = poverty_entry(
+      "B17016", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, family_detail = 4L,
+        householder_work_experience = 5L, spouse_work_experience = 6L)
+    ),
+    poverty_17017 = poverty_entry(
+      "B17017", "Households for whom poverty status is determined",
+      c(poverty_status = 2L, household_type = 3L, family_type = 4L,
+        householder_type = 5L, age_group = 6L)
+    ),
+    poverty_17018 = poverty_entry(
+      "B17018", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, householder_type = 4L,
+        educational_attainment = 5L)
+    ),
+    poverty_17019 = poverty_entry(
+      "B17019", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, householder_type = 4L,
+        housing_tenure = 5L)
+    ),
+    poverty_17020 = poverty_entry(
+      "B17020", "Population for whom poverty status is determined",
+      c(poverty_status = 2L, age_group = 3L)
+    ),
+    poverty_17021 = poverty_entry(
+      "B17021", "Individuals for whom poverty status is determined",
+      c(poverty_status = 2L, living_arrangement = 3L,
+        living_arrangement_detail = 4L, living_arrangement_subdetail = 5L)
+    ),
+    poverty_17022 = poverty_entry(
+      "B17022", "Families for whom the ratio of income to poverty level is determined",
+      c(poverty_ratio = 2L, family_type = 3L, children_presence = 4L,
+        age_group = 5L)
+    ),
+    poverty_17023 = poverty_entry(
+      "B17023", "Families for whom poverty status is determined",
+      c(poverty_status = 2L, family_type = 3L, householder_type = 4L,
+        children_presence = 5L, children_detail = 6L)
+    ),
+    poverty_17024 = poverty_entry(
+      "B17024", "Population for whom the ratio of income to poverty level is determined",
+      c(age_group = 2L, poverty_ratio = 3L)
+    ),
+    poverty_17025 = poverty_entry(
+      "B17025", "Population for whom poverty status is determined",
+      c(poverty_status = 2L, nativity = 3L, nativity_detail = 4L)
+    ),
+    poverty_17026 = poverty_entry(
+      "B17026", "Families for whom the ratio of income to poverty level is determined",
+      c(poverty_ratio = 2L)
+    ),
+    poverty_17101 = poverty_entry(
+      "B17101", "People in housing units for whom poverty status is determined",
+      c(poverty_status = 2L)
+    ),
     # School Enrollment
     school_enrollment_level = list(
       tables = "B14001", dataset_type = "detailed", parser = "school_enrollment_level",
@@ -1273,6 +1409,27 @@ acs_table_registry <- function() {
   )
 }
 
+
+acs_poverty_subtopic_keys <- function() {
+  list(
+    individual = c(
+      "poverty_17001", "poverty_17003", "poverty_17004",
+      "poverty_17005", "poverty_17020", "poverty_17025"
+    ),
+    unrelated_individuals = c(
+      "poverty_17007", "poverty_17008", "poverty_17009", "poverty_17021"
+    ),
+    families = c(
+      "poverty_17006", "poverty_17010", "poverty_17011", "poverty_17012",
+      "poverty_17013", "poverty_17014", "poverty_17015", "poverty_17016",
+      "poverty_17018", "poverty_17019", "poverty_17023"
+    ),
+    households = c("poverty_17017", "poverty_17101"),
+    ratios = c(
+      "poverty_17002", "poverty_17022", "poverty_17024", "poverty_17026"
+    )
+  )
+}
 acs_dataset <- function(survey, dataset_type) {
   survey <- match.arg(survey, c("acs1", "acs5"))
   if (identical(dataset_type, "subject")) paste0(survey, "/subject") else survey
